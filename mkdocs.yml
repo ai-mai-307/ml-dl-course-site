@@ -1,4 +1,5 @@
 site_name: Введение в машинное и глубокое обучение
+site_url: https://ai-mai-307.github.io/ml-dl-course-site/
 theme:
   name: material
   language: ru

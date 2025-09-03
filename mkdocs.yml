@@ -1,0 +1,26 @@
+site_name: Введение в машинное и глубокое обучение
+theme:
+  name: material
+  language: ru
+plugins:
+  - search
+  - mkdocs-jupyter
+  - table-reader:
+      data_path: docs/assets/data   # укоротит пути к табличкам
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+nav:
+  - Главная: index/index.md
+  - Курс ML:
+      - О курсе: ml/index.md
+      - Команды и оценки: ml/teams_grades.md
+      - Конспекты: ml/lectures.md
+      - Домашние задания: ml/hw.md
+  - Курс DL:
+      - О курсе: dl/index.md
+      - Команды и оценки: dl/teams_grades.md
+      - Конспекты: dl/lectures.md
+      - Домашние задания: dl/hw.md

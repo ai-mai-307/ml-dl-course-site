@@ -7,21 +7,31 @@ plugins:
   - search
   - mkdocs-jupyter
   - table-reader:
-      data_path: docs/assets/data   # укоротит пути к табличкам
+      data_path: docs/assets/data   
 markdown_extensions:
   - tables
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+extra_javascript:
+  - javascripts/mathjax.js   
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 nav:
-  - Главная: index/index.md
-  - Курс ML:
+  - Главная: index.md
+  - Инструкции:
+    - Запись на курс: index/assign_course.md
+    - Как успешно пройти курс: index/complete_course_instructionds.md
+    - Работа с GitHub Classroom: index/github_classroom_instructions.md
+    - Работа с Yandex Datasphere: index/datasphere_unstructions.md
+    - Работа на локальной машине: index/local_machine_instructions.md
+
+  - Классическое машинное обучение:
       - О курсе: ml/index.md
-      - Команды и оценки: ml/teams_grades.md
       - Конспекты: ml/lectures.md
       - Домашние задания: ml/hw.md
-  - Курс DL:
+  - Глубокое машинное обучение:
       - О курсе: dl/index.md
-      - Команды и оценки: dl/teams_grades.md
       - Конспекты: dl/lectures.md
       - Домашние задания: dl/hw.md

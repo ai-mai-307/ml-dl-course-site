@@ -129,6 +129,7 @@ $$
 Рассмотрим его по шагам.
 
 (1) Матрицы всех входов, взятых по строкам:
+
 $$
 X = \begin{bmatrix}
 0 & 0 & 1 & 1 \\ \\\\ 
@@ -146,6 +147,7 @@ WX = \begin{bmatrix}
 $$
 
 (3) Прибавляем смещение:
+
 $$
 WX + c^T = \begin{bmatrix}
 0 & 1 & 1 & 2 \\
@@ -154,6 +156,7 @@ WX + c^T = \begin{bmatrix}
 $$
 
 (4) Применяем поэлементно функцию активации:
+
 $$
 H = \sigma(WX + c^T) = \begin{bmatrix}
 0 & 1 & 1 & 2 \\\
@@ -162,6 +165,7 @@ H = \sigma(WX + c^T) = \begin{bmatrix}
 $$
 
 (5) Выход сети:
+
 $$
 \hat{y} = w^TH = \begin{bmatrix}
 1 & -2
@@ -292,21 +296,41 @@ $$
 
 1. **Ошибка на выходном слое** (для MSE):
    $$
-\delta^{\,L} = (a^{\,L} - y) \odot \sigma'(z^{\,L})
+
+
    $$
+
+\delta^{\,L} = (a^{\,L} - y) \odot \sigma'(z^{\,L})
+
+$$
+
+
+$$
+
 2. **Ошибка на скрытых слоях**:
+
 $$
 \delta^{\,l} = \bigl((W^{\,l+1})^\top \delta^{\,l+1}\bigr) \odot \sigma'(z^{\,l}), \qquad l = L-1, \dots, 1
 $$
+
 3. **Градиент по весам**:
+
 $$
-  \frac{\partial C}{\partial W^{l}} = \delta^{l}\,(a^{\,l-1})^T
+\frac{\partial C}{\partial W^{l}} = \delta^{l}\,(a^{\,l-1})^T
 $$
 
 4. **Градиент по смещениям**:
    $$
-\frac{\partial C}{\partial b^{\,l}} = \delta^{\,l}
+
+
    $$
+
+\frac{\partial C}{\partial b^{\,l}} = \delta^{\,l}
+
+$$
+
+
+$$
 
 ### Алгоритм по шагам
 
@@ -331,7 +355,6 @@ $$
 2. Гиперболический тангенс, $tanh(x)$
 3. ReLU, $\text{ReLU} = \max(0, x)$
 4. Leaky ReLU,$\text{Leaky ReLU} = \max(\alpha \cdot x, x), \alpha = \text{const}, 0 < \alpha < 1$
-
 
 ![1757586632357](image/lecture_01/1757586632357.png)
 
@@ -377,9 +400,7 @@ $$
 - **увеличение** дисперсии промежуточных представлений (активаций) приводит к вычислительным ошибкам и негативно влияет на обучение
 - **снижение дисперсии может привести к нулевым промежуточным представлениям, что также негативно влияет на обучение**
 
-Отсюда логично предположить, что при случайно инициализации весов для стабилизации обучения (сохранение дисперсии результата).
-
-Например, таким распределением может быть $\forall i, w_i \sim \mathcal{N} (0, \frac{1}{n_{in}})$.
+Отсюда логично предположить, что для стабилизации обучения мы можем инициализировать веса с помощью другого распределения. Например, таким распределением может быть $\forall i, w_i \sim \mathcal{N} (0, \frac{1}{n_{in}})$.
 
 ### Инициализация Xavier & Normalized Xavier
 
@@ -457,3 +478,11 @@ $$
 $$
 
 Например, подходит нормальное распределение $N(0,2n_{in})$
+
+## Список использованных источников
+
+1. [Deep Learning Book](https://www.deeplearningbook.org/): Introduction, Deep Feedforward Networks
+2. Курс от MIT: [1. Neural Networks](https://phillipi.github.io/6.s898/materials/notes/01_neural_nets.pdf)
+3. 3blue1brown (Grant Sanderson): Neural Networks ([Video](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi), [Texts](https://www.3blue1brown.com/#lessons))
+4. Michael Nielsen: [Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/index.html)
+5. [Яндекс ШАД](https://education.yandex.ru/handbook/ml): параграфы 5.2, 5.3, 5.4

@@ -939,6 +939,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Список использованных источников
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1263,6 +1272,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Список использованных источников
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1374,13 +1392,13 @@ w = \begin{bmatrix}
 b = 0
 \]</div>
 <p>Рассмотрим его по шагам.</p>
-<p>(1) Матрицы всех входов, взятых по строкам:
-$$
+<p>(1) Матрицы всех входов, взятых по строкам:</p>
+<div class="arithmatex">\[
 X = \begin{bmatrix}
-0 &amp; 0 &amp; 1 &amp; 1 \ \\ 
+0 &amp; 0 &amp; 1 &amp; 1 \\ \\\\ 
 0 &amp; 1 &amp; 0 &amp; 1
 \end{bmatrix}
-$$</p>
+\]</div>
 <p>(2) Перемножение матриц:</p>
 <div class="arithmatex">\[
 WX = \begin{bmatrix} 
@@ -1388,31 +1406,31 @@ WX = \begin{bmatrix}
 0 &amp; 1 &amp; 1 &amp; 2 \\
 \end{bmatrix}
 \]</div>
-<p>(3) Прибавляем смещение:
-$$
+<p>(3) Прибавляем смещение:</p>
+<div class="arithmatex">\[
 WX + c^T = \begin{bmatrix}
-0 &amp; 1 &amp; 1 &amp; 2 \
--1 &amp; 0 &amp; 0 &amp; 1 \
-\end{bmatrix}
-$$</p>
-<p>(4) Применяем поэлементно функцию активации:
-$$
-H = \sigma(WX + c^T) = \begin{bmatrix}
 0 &amp; 1 &amp; 1 &amp; 2 \\
-0 &amp; 0 &amp; 0 &amp; 1 \
+-1 &amp; 0 &amp; 0 &amp; 1 \\
+\end{bmatrix}
+\]</div>
+<p>(4) Применяем поэлементно функцию активации:</p>
+<div class="arithmatex">\[
+H = \sigma(WX + c^T) = \begin{bmatrix}
+0 &amp; 1 &amp; 1 &amp; 2 \\\
+0 &amp; 0 &amp; 0 &amp; 1 \\
 \end{bmatrix},
-$$</p>
-<p>(5) Выход сети:
-$$
+\]</div>
+<p>(5) Выход сети:</p>
+<div class="arithmatex">\[
 \hat{y} = w^TH = \begin{bmatrix}
 1 &amp; -2
 \end{bmatrix} \begin{bmatrix}
-0 &amp; 1 &amp; 1 &amp; 2 \\
+0 &amp; 1 &amp; 1 &amp; 2 \\\
 0 &amp; 0 &amp; 0 &amp; 1
 \end{bmatrix} = \begin{bmatrix}
-0 &amp; 1 &amp; 1 &amp; 0\
+0 &amp; 1 &amp; 1 &amp; 0\\
 \end{bmatrix}
-$$</p>
+\]</div>
 <p>Итого получаем правильные ответы для задачи XOR.</p>
 <h2 id="_6">Прямой и обратный проход</h2>
 <p><strong>(def)</strong> Применение нейронной сети к данным (вычисление выхода по заданному входу) часто называют <strong>прямым проходом</strong>, или же <strong>forward propagation</strong> (<strong>forward pass</strong>).</p>
@@ -1493,26 +1511,32 @@ a^{\,l-1}_k\,\delta^{\,l}_j,
 <p>Теперь мы можем выписать все шаги:</p>
 <ol>
 <li><strong>Ошибка на выходном слое</strong> (для MSE):
-   $$
-\delta^{\,L} = (a^{\,L} - y) \odot \sigma'(z^{\,L})
    $$</li>
-<li><strong>Ошибка на скрытых слоях</strong>:
-$$
-\delta^{\,l} = \bigl((W^{\,l+1})^\top \delta^{\,l+1}\bigr) \odot \sigma'(z^{\,l}), \qquad l = L-1, \dots, 1
-$$</li>
-<li>
-<p><strong>Градиент по весам</strong>:
-$$
-  \frac{\partial C}{\partial W^{l}} = \delta^{l}\,(a^{\,l-1})^T
-$$</p>
-</li>
-<li>
-<p><strong>Градиент по смещениям</strong>:
-   $$
-\frac{\partial C}{\partial b^{\,l}} = \delta^{\,l}
-   $$</p>
-</li>
 </ol>
+<p>$$</p>
+<p>\delta^{\,L} = (a^{\,L} - y) \odot \sigma'(z^{\,L})</p>
+<p>$$</p>
+<p>$$</p>
+<ol>
+<li><strong>Ошибка на скрытых слоях</strong>:</li>
+</ol>
+<div class="arithmatex">\[
+\delta^{\,l} = \bigl((W^{\,l+1})^\top \delta^{\,l+1}\bigr) \odot \sigma'(z^{\,l}), \qquad l = L-1, \dots, 1
+\]</div>
+<ol>
+<li><strong>Градиент по весам</strong>:</li>
+</ol>
+<div class="arithmatex">\[
+\frac{\partial C}{\partial W^{l}} = \delta^{l}\,(a^{\,l-1})^T
+\]</div>
+<ol>
+<li><strong>Градиент по смещениям</strong>:
+   $$</li>
+</ol>
+<p>$$</p>
+<p>\frac{\partial C}{\partial b^{\,l}} = \delta^{\,l}</p>
+<p>$$</p>
+<p>$$</p>
 <h3 id="_14">Алгоритм по шагам</h3>
 <ol>
 <li><strong>Прямой проход</strong>: для входа <span class="arithmatex">\(x\)</span> вычисляем все <span class="arithmatex">\(z^l\)</span> и <span class="arithmatex">\(a^l\)</span> вплоть до выхода.</li>
@@ -1563,8 +1587,7 @@ D(w^Tx) = n_{in} D(w)D(x)),
 <li><strong>увеличение</strong> дисперсии промежуточных представлений (активаций) приводит к вычислительным ошибкам и негативно влияет на обучение</li>
 <li><strong>снижение дисперсии может привести к нулевым промежуточным представлениям, что также негативно влияет на обучение</strong></li>
 </ul>
-<p>Отсюда логично предположить, что при случайно инициализации весов для стабилизации обучения (сохранение дисперсии результата).</p>
-<p>Например, таким распределением может быть <span class="arithmatex">\(\forall i, w_i \sim \mathcal{N} (0, \frac{1}{n_{in}})\)</span>.</p>
+<p>Отсюда логично предположить, что для стабилизации обучения мы можем инициализировать веса с помощью другого распределения. Например, таким распределением может быть <span class="arithmatex">\(\forall i, w_i \sim \mathcal{N} (0, \frac{1}{n_{in}})\)</span>.</p>
 <h3 id="xavier-normalized-xavier">Инициализация Xavier &amp; Normalized Xavier</h3>
 <p>Выкладки, рассмотренные в предыдущем разделе, можно провести и в обратную сторону. Дисперсия градиента при этом меняется в <span class="arithmatex">\(n_{out}D(w)\)</span> раз, где <span class="arithmatex">\(n_{out}\)</span> — размерность следующего за <strong>x</strong> промежуточного представления.</p>
 <p>И если мы хотим, чтобы сохранялись дисперсии и промежуточных представлений, и градиентов, у нас возникают сразу два ограничения:</p>
@@ -1614,6 +1637,14 @@ D(w^Tx)=\frac{1}{2}n_{in}D(w_i)D(z_{prev})
 ∀i,\frac{1}{2}n_{in}D(w_i)=1
 \]</div>
 <p>Например, подходит нормальное распределение <span class="arithmatex">\(N(0,2n_{in})\)</span></p>
+<h2 id="_19">Список использованных источников</h2>
+<ol>
+<li><a href="https://www.deeplearningbook.org/">Deep Learning Book</a>: Introduction, Deep Feedforward Networks</li>
+<li>Курс от MIT: <a href="https://phillipi.github.io/6.s898/materials/notes/01_neural_nets.pdf">1. Neural Networks</a></li>
+<li>3blue1brown (Grant Sanderson): Neural Networks (<a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi">Video</a>, <a href="https://www.3blue1brown.com/#lessons">Texts</a>)</li>
+<li>Michael Nielsen: <a href="http://neuralnetworksanddeeplearning.com/index.html">Networks and Deep Learning</a></li>
+<li><a href="https://education.yandex.ru/handbook/ml">Яндекс ШАД</a>: параграфы 5.2, 5.3, 5.4</li>
+</ol>
 
 
 

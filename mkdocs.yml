@@ -23,6 +23,7 @@ nav:
   - Инструкции:
     - Запись на курс: index/assign_course.md
     - Как успешно пройти курс: index/complete_course_instructionds.md
+    - Как склонировать репозиторий в Yandex Datasphere: index/clone_repo.md
     - Работа с GitHub Classroom: index/github_classroom_instructions.md
     - Работа с Yandex Datasphere: index/datasphere_unstructions.md
     - Работа на локальной машине: index/local_machine_instructions.md

@@ -2,70 +2,74 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/dl/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/dl/hw_01/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/dl/lecture_01/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
+    </url>
+    <url>
+         <loc>https://ai-mai-307.github.io/ml-dl-course-site/dl/lecture_02/</loc>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/dl/teams_grades/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/index/assign_course/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/index/clone_repo/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/index/complete_course_instructionds/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/index/datasphere_unstructions/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/index/github_classroom_instructions/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/index/local_machine_instructions/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/index/manage_budget/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/index/what_is_dataset/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/ml/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/ml/hw_01/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/ml/lecture_01/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
     <url>
          <loc>https://ai-mai-307.github.io/ml-dl-course-site/ml/teams_grades/</loc>
-         <lastmod>2025-10-03</lastmod>
+         <lastmod>2025-10-13</lastmod>
     </url>
 </urlset>

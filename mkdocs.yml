@@ -23,6 +23,7 @@ nav:
   - Инструкции:
     - Запись на курс: index/assign_course.md
     - Как успешно пройти курс: index/complete_course_instructionds.md
+    - Добросовестное использование LLM: index/llm_rules.md
     - Yandex Datasphere:
       - Как склонировать репозиторий: index/clone_repo.md
       - Как работать с датасетами: index/what_is_dataset.md

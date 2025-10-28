@@ -1,0 +1,2057 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ai-mai-307.github.io/ml-dl-course-site/dl/lecture_03/">
+      
+      
+        <link rel="prev" href="../lecture_02/">
+      
+      
+        <link rel="next" href="../hw_01/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Лекция №3. Обработка аудиосигнала с помощью глубокого оубчения - Введение в машинное и глубокое обучение</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-header__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Введение в машинное и глубокое обучение
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Лекция №3. Обработка аудиосигнала с помощью глубокого оубчения
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-nav__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Введение в машинное и глубокое обучение
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Главная
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Расписание
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Инструкции
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Инструкции
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/assign_course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Запись на курс
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/complete_course_instructionds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как успешно пройти курс
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/llm_rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Добросовестное использование LLM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/howtoclassroom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как принять задания в GitHub Classroom
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/work_with_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как работать с агентом-кодревьювером
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Yandex Datasphere
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Yandex Datasphere
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/clone_repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как склонировать репозиторий
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/what_is_dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как работать с датасетами
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/manage_budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как контролировать расходы
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Классическое машинное обучение
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Классическое машинное обучение
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    О курсе
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Конспекты
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Конспекты
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №1. Первое знакомство с машинным обучением
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №2. Предварительная обработка данных
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Домашние задания
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Домашние задания
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    №1. Предвариетельный анализ данных
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Глубокое машинное обучение
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Глубокое машинное обучение
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    О курсе
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Конспекты
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Конспекты
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №1. Основные понятия глубокого обучения
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №2. Обработка изображений с помощью глубокого обучения
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Лекция №3. Обработка аудиосигнала с помощью глубокого оубчения
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №3. Обработка аудиосигнала с помощью глубокого оубчения
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что такое аудиосигнал?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что такое аудиосигнал?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Физика звука
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Физические характеристики звука
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Физические характеристики звука">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Амплитуда и Интенсивность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Частота
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аналого-цифровое преобразование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wav" class="md-nav__link">
+    <span class="md-ellipsis">
+      Формат хранения аудиоданных WAV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Спектральная форма представления сигнала
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Спектральная форма представления сигнала">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Интуитивное понимание
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Акустический спектр
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Преобразование Фурье
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Быстрое преобразование Фурье
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как оценить изменение спектра во времени?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Как оценить изменение спектра во времени?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windowing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windowing (Оконное преобразование)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Оконные функции
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-time-fourier-transform-stft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Short-Time Fourier Transform (STFT)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Другие спектральные характеристики сигнала
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Другие спектральные характеристики сигнала">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шкала Мел
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mfcc-mel-frequency-cepstral-coefficients" class="md-nav__link">
+    <span class="md-ellipsis">
+      MFCC (Mel-Frequency Cepstral Coefficients)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Другие важные спектральные признаки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Задачи обработки аудиосигнала
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Задачи обработки аудиосигнала">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#speech-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speech Processing (Обработка речи)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#music-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Music Processing (Обработка музыки)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-other-audio-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Other Audio Tasks (Другие задачи)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поиск похожего трека с помощью автоэнкодера
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Поиск похожего трека с помощью автоэнкодера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Описание задачи
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритм первоначального, простого решения (MVP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Получение эмбеддингов с помощью автоэкнодера
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Домашние задания
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Домашние задания
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    №1. Обучение многослойного персептрона
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что такое аудиосигнал?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что такое аудиосигнал?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Физика звука
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Физические характеристики звука
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Физические характеристики звука">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Амплитуда и Интенсивность
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Частота
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Аналого-цифровое преобразование
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wav" class="md-nav__link">
+    <span class="md-ellipsis">
+      Формат хранения аудиоданных WAV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Спектральная форма представления сигнала
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Спектральная форма представления сигнала">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Интуитивное понимание
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Акустический спектр
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Преобразование Фурье
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Быстрое преобразование Фурье
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как оценить изменение спектра во времени?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Как оценить изменение спектра во времени?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windowing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windowing (Оконное преобразование)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Оконные функции
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-time-fourier-transform-stft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Short-Time Fourier Transform (STFT)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Другие спектральные характеристики сигнала
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Другие спектральные характеристики сигнала">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Шкала Мел
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mfcc-mel-frequency-cepstral-coefficients" class="md-nav__link">
+    <span class="md-ellipsis">
+      MFCC (Mel-Frequency Cepstral Coefficients)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Другие важные спектральные признаки
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Задачи обработки аудиосигнала
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Задачи обработки аудиосигнала">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#speech-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Speech Processing (Обработка речи)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#music-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Music Processing (Обработка музыки)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-other-audio-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Other Audio Tasks (Другие задачи)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Поиск похожего трека с помощью автоэнкодера
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Поиск похожего трека с помощью автоэнкодера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Описание задачи
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгоритм первоначального, простого решения (MVP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Получение эмбеддингов с помощью автоэкнодера
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Лекция №3. Обработка аудиосигнала с помощью глубокого оубчения</h1>
+
+<p>Следующий домен, который мы рассмотрим – аудиосигнал и задачи его обработки. Мы уже познакомились с компьютерным зрением, где модели учатся выделять скрытые признаки из изображений для решения ряда практических задач. Теперь настало время научить нейронные сети «слышать» и “понимать” звуковую информацию.</p>
+<h2 id="_1">Что такое аудиосигнал?</h2>
+<h3 id="_2">Физика звука</h3>
+<p>Понятие звука обычно ассоциируется у нас со слухом и, следовательно, с физиологическими процессами в ушах, а также с психологическими процессами в нашем мозгу, где происходит переработка ощущений, поступающих в органы слуха). Кроме того, под <em>звуком</em> мы понимаем физическое явление, вызывающее действие на наши уши, а именно продольные волны.</p>
+<p><strong>(def) Звук</strong> – физическое явление, представляющее собой распространение продольных волн в газообразной, жидкой или твердой среде.</p>
+<p>Любой звук имеет <strong>источник</strong>, являющийся телом, совершающее механические колебания.</p>
+<p>Звук <strong>регистрируется</strong> (воспринимается) ухом или специальным прибором.</p>
+<h3 id="_3">Физические характеристики звука</h3>
+<p><strong>Звуковая волна</strong> с физической точки зрения представляет собой колебание давления или смещения частиц среды, которое можно описать волновой функцией. Простейший случай — <strong>гармоническое колебание</strong> (чистый тон), которое математически описывается синусоидой:</p>
+<div class="arithmatex">\[
+s(t) = A * sin(2πft + \phi)
+\]</div>
+<p>где:</p>
+<ul>
+<li><span class="arithmatex">\(s(t)\)</span> — мгновенное значение звукового давления в момент времени t</li>
+<li><span class="arithmatex">\(A\)</span> — <strong>амплитуда</strong> колебаний, определяющая громкость,</li>
+<li><span class="arithmatex">\(f\)</span> — <strong>частота</strong> колебаний, определяющая высоту тона (в Герцах, Гц),</li>
+<li><span class="arithmatex">\(\phi\)</span> — начальная фаза колебаний.</li>
+</ul>
+<p>Эта формула является фундаментальной моделью, на которой основывается представление и анализ любого, даже самого сложного звукового сигнала.</p>
+<p>Для слушающего человека сразу становятся очевидными две характеристики звука – <strong>громкость</strong> и <strong>высота</strong>. Они характеризуют <em>ощущения</em>, которые возникают в сознании слушателя. Однако каждой из этих субъективных характеристик соответствует величина, измеряемая физическими методами. Так громкость связана с интенсивностью звуковой волны, а высота – с частотой её колебаний.</p>
+<h4 id="_4">Амплитуда и Интенсивность</h4>
+<p><strong>(def) Амплитуда</strong> колебаний — это максимальное отклонение физической величины (например, давления) от среднего значения. Чем больше амплитуда, тем больше энергия, переносимая волной, и тем <strong>громче</strong> мы воспринимаем звук.</p>
+<p><strong>(def) Интенсивность</strong> определяется как средняя по времени энергия, переносимая волной за единицу времени через единичную площадь, перпендикулярную направлению волны. Она обозначается как <span class="arithmatex">\(I\)</span> и имеет единицу измерения (Вт/мт^2).</p>
+<p>Для пло­ской си­ну­сои­даль­ной бе­гу­щей вол­ны интенсивность звука рав­на</p>
+<div class="arithmatex">\[
+I=\frac{p^2}{2\rho c},
+\]</div>
+<p>где <span class="arithmatex">\(p\)</span> – ам­пли­ту­да зву­ко­во­го дав­ле­ния и ко­ле­ба­тель­ной ско­ро­сти час­тиц в сре­де, <span class="arithmatex">\(\rho\)</span> – плот­ность сре­ды, <span class="arithmatex">\(с\)</span> – ско­рость зву­ка в ней.</p>
+<p><strong>Уровень интенсивности звука (Уровень громкости)</strong></p>
+<p>Человеческое ухо способно воспринимать невероятно широкий диапазон интенсивностей — от примерно <span class="arithmatex">\(10^{-12}\)</span> Вт/м² (порог слышимости) до 1 Вт/м² и более (болевой порог). Работать с такими большими числами неудобно. Кроме того, наше восприятие громкости является не линейным, а <strong>логарифмическим</strong>. Чтобы привести шкалу интенсивностей к удобному, компактному виду, отражающему субъективное восприятие, используют логарифмические единицы — <strong>децибелы (дБ)</strong>.</p>
+<p><strong>Уровень интенсивности</strong> звука вычисляется по формуле:</p>
+<div class="arithmatex">\[
+L = 10 * \log_{10} \Big(\frac{I}{I_0} \Big)
+\]</div>
+<p>где:</p>
+<ul>
+<li><span class="arithmatex">\(L\)</span> — уровень интенсивности в децибелах (дБ),</li>
+<li><span class="arithmatex">\(I\)</span> — интенсивность измеряемого звука,</li>
+<li><span class="arithmatex">\(I_0\)</span> — пороговая интенсивность слышимости (<span class="arithmatex">\(10^{-12}\)</span> Вт/м² ).</li>
+</ul>
+<p>Таким образом, порог слышимости соответствует 0 дБ, обычный разговор — около 60 дБ, а рок-концерт может достигать 110-120 дБ. Эта шкала позволяет удобно описать весь слышимый диапазон: изменение уровня на 10 дБ соответствует приблизительно двукратному изменению субъективной громкости.</p>
+<h4 id="_5">Частота</h4>
+<p>Если амплитуда и интенсивность определяют <strong>громкость</strong> звука, то <strong>частота</strong> определяет его <strong>высоту тона</strong>.</p>
+<p><strong>(def) Частота</strong> — это количество полных колебаний (циклов) звуковой волны в секунду. Единица измерения — Герц (Гц). Один Герц равен одному колебанию в секунду. Чем выше частота, тем более высоким мы воспринимаем звук. Например, бас в музыке может иметь частоту 80 Гц, а сопрано — 1000 Гц и выше.</p>
+<p>Человеческое ухо способно воспринимать частоты примерно в диапазоне от <strong>20 Гц до 20 000 Гц (20 кГц)</strong>. Этот диапазон называется <strong>слышимым</strong> или <strong>акустическим</strong>.</p>
+<ul>
+<li><strong>Инфразвук</strong> — колебания ниже 20 Гц. Мы их не слышим, но можем ощущать физически.</li>
+<li><strong>Ультразвук</strong> — колебания выше 20 кГц. Не слышим для человека, но используется животными (например, летучими мышами) и в различных технологиях (медицинская диагностика, эхолокация).</li>
+</ul>
+<p>Важно понимать, что большинство реальных звуков, таких как речь или музыка, не являются чистыми тонами (синусоидами одной частоты). Они представляют собой сложные колебания, которые можно представить <strong>как сумму множества простых синусоидальных волн с разными частотами и амплитудами</strong>. Совокупность этих частот образует <strong>акустический спектр</strong> сигнала, который является фундаментальным понятием для цифровой обработки звука.</p>
+<p>Об акустическом спектре мы поговорим чуть позже.</p>
+<h3 id="-">Аналого-цифровое преобразование</h3>
+<div class="admonition note">
+<p class="admonition-title">Теорема Котельникова-Найквиста</p>
+<p>Аналоговый сигнал с ограниченным спектром (т. е. со спектром, ограниченным некоторой частотой <span class="arithmatex">\(f_{max}\)</span>) полностью определяется последовательностью своих дискретных значений (отсчётов), взятых через интервалы времени <span class="arithmatex">\(\Delta t \leq \frac{1}{2 f_{max}}\)</span>, то есть с частотой дискретизации <span class="arithmatex">\(f_d \geq 2f_{max}\)</span></p>
+</div>
+<p>Для обработки звука с помощью компьютера необходимо преобразовать непрерывный аналоговый сигнал (звуковую волну) в дискретные цифровые значения. Этот процесс, называемый <strong>аналого-цифровым преобразованием</strong> (АЦП), состоит из трех ключевых этапов: дискретизации, квантования и кодирования.</p>
+<ol>
+<li><strong>Дискретизация</strong> – это процесс измерения амплитуды сигнала через равные промежутки времени. Количество таких измерений за одну секунду называется <strong>частотой дискретизации</strong> (sample rate) и измеряется в Герцах (Гц). Максимальная частота, которую можно корректно представить при данной частоте дискретизации, называется <strong>частотой Котельникова</strong> и равна половине частоты дискретизации. Например, человеческая речь в телефонной сети фильтруется до 4000 Гц, поэтому для её оцифровки достаточно частоты дискретизации 8000 Гц. Для более качественного звука стандартом является 16 000 Гц или 44 100 Гц (то, что можно услышать на CD дисках).</li>
+<li><strong>Квантование</strong> – это процесс замены реальных значений амплитуды на ближайшие значения из дискретного набора (уровней квантования). Разрядность квантования определяет точность этого представления. Чем больше бит используется, тем точнее представление амплитуды:<ol>
+<li><strong>8-бит</strong>: 256 возможных значений (от -128 до 127). К слову, вы наверняка хоть раз слышали характерный <a href="https://www.youtube.com/watch?v=1ebsX1VfjRg&amp;list=PLVO9-kJCzLJ9Ito4B5ImX9JFBslqhO11z">“восьмибитный” звук</a> старых видеоигр.</li>
+<li><strong>16-бит</strong>: 65536 возможных значений (от -32768 до 32767)</li>
+</ol>
+</li>
+<li><strong>Кодирование</strong>. На этапе <strong>кодирования</strong> квантованные значения преобразуются в битовые последовательности и упаковываются в файловый формат.</li>
+</ol>
+<h3 id="wav">Формат хранения аудиоданных WAV</h3>
+<p>Хотя существует множество аудиоформатов (как сжатых, таких как MP3, AAC, FLAC, так и несжатых), формат <strong>WAV</strong> (Waveform Audio File Format) является одним из наиболее распространенных стандартов для хранения несжатого аудио. Он был разработан совместно Microsoft и IBM и представляет собой подмножество более общего формата RIFF (Resource Interchange File Format).</p>
+<p>Структура WAV-файла представима следующим образом:</p>
+<ol>
+<li><strong>RIFF-заголовок</strong> (12 байт):<ul>
+<li><code>ChunkID</code>: 4 байта, всегда <code>"RIFF"</code></li>
+<li><code>ChunkSize</code>: 4 байта, размер всего файла минус 8 байт</li>
+<li><code>Format</code>: 4 байта, всегда <code>"WAVE"</code></li>
+</ul>
+</li>
+<li><strong>Форматный чанк</strong> <code>"fmt "</code> (24 байта для стандартного PCM)<ul>
+<li><code>Subchunk1ID</code>: 4 байта, всегда <code>"fmt "</code></li>
+<li><code>Subchunk1Size</code>: 4 байта, размер оставшейся части форматного чанка (16 для PCM)</li>
+<li><code>AudioFormat</code>: 2 байта, тип кодирования (1 = PCM, другие значения = сжатие)</li>
+<li><code>NumChannels</code>: 2 байта, количество каналов (1 = моно, 2 = стерео)</li>
+<li><code>SampleRate</code>: 4 байта, частота дискретизации (Гц)</li>
+<li><code>ByteRate</code>: 4 байта, = SampleRate * NumChannels * BitsPerSample/8</li>
+<li><code>BlockAlign</code>: 2 байта, = NumChannels * BitsPerSample/8</li>
+<li><code>BitsPerSample</code>: 2 байта, разрядность (8, 16, 24, 32 бита)</li>
+</ul>
+</li>
+<li><strong>Чанк данных</strong> <code>"data"</code><ul>
+<li><code>Subchunk2ID</code>: 4 байта, всегда <code>"data"</code></li>
+<li><code>Subchunk2Size</code>: 4 байта, количество байтов в данных</li>
+<li><code>Data</code>: сами аудиоданные - последовательные отсчеты</li>
+</ul>
+</li>
+</ol>
+<h2 id="_6">Спектральная форма представления сигнала</h2>
+<h3 id="_7">Интуитивное понимание</h3>
+<p>Математическая форма изложения таких фундаментальных понятий, как акустический спектр, спектральные характеристики сигнала, крайне непросты. Поэтому перед ознакомлением с ними мы, как уже принято в рамках этого курса, постараемся получить интуитивное понимание этих понятий. Здесь нужно внимательно проследить за цепочкой рассуждений.</p>
+<p>Пусть на временном отрезке <span class="arithmatex">\([a, b]\)</span> задан аудиосигнал f(t). Если мы дискретизируем его равномерно по времени, получив <span class="arithmatex">\(N\)</span> отсчетов, то можем интерпретировать этот набор значений как <strong>N-мерный вектор</strong>:</p>
+<div class="arithmatex">\[
+\mathbf{f} = (f[0], f[1], ..., f[N -1]) \in \mathbb{R}^N,
+\]</div>
+<p>При стремлении <span class="arithmatex">\(N\)</span> к бесконечности, <span class="arithmatex">\(N \rightarrow \infty\)</span>, наша дискретная аппроксимация становится точным представлением исходного непрерывного сигнала.</p>
+<p>По аналогии с тем, как двумерный вектор является точкой на плоскости, а трехмерный вектор – точкой в в трехмерном пространстве, <strong>N-мерный вектор является точкой в N-мерном пространстве функций.</strong></p>
+<p>Если мы представляем сигнал как вектор, то мы можем использовать для него знакомые геометрические понятия:</p>
+<ul>
+<li>норма вектора: <span class="arithmatex">\(||f||^2 = \sum^{N-1}_{n=0}|f[n]|^2\)</span>, при  <span class="arithmatex">\(N \rightarrow \infty\)</span> эта сумма превращается в интеграл, <span class="arithmatex">\(||f(t)|| = \sqrt{\int^b_a |f(t)|^2 dt}\)</span></li>
+<li>скалярное произведение двух векторов, <span class="arithmatex">\(f\)</span> и <span class="arithmatex">\(g\)</span>, определяется как <span class="arithmatex">\(\langle f, g \rangle = ||f||g|| \cos \theta = f_1 g_1 + f_2 g_2 + ... + f_N g_N = \sum^N_{k=1} f_k g_k\)</span>, в непрерывном случае это будет <span class="arithmatex">\(\langle f, g \rangle = \int^b_a f(t) g(t) dt\)</span></li>
+</ul>
+<p>Ключевая идея: в N-мерном пространстве мы можем выбрать <strong>ортонормированный базис</strong> — набор векторов <span class="arithmatex">\({e_1, e_2, ..., e_{N-1}}\)</span>, где</p>
+<ul>
+<li><span class="arithmatex">\(||e_k|| = 1\)</span> (нормированность)</li>
+<li><span class="arithmatex">\(⟨e_i,e_j⟩ = 0\)</span> при <span class="arithmatex">\(i ≠ j\)</span> (ортогональность)</li>
+</ul>
+<p>Любой вектор в этом пространстве можно представить как линейную комбинацию базисных векторов:</p>
+<div class="arithmatex">\[
+\mathbf{f} = \sum^{N-1}_{k=0} c_k \mathbf{e}_k, c_k  = \langle \mathbf{f}, \mathbf{e}_k\rangle
+\]</div>
+<p>В пространстве функций эта сумма превращается в интеграл, и мы ищем <strong>ортонормированную систему функций</strong>.</p>
+<p>Наиболее естественным базисом для анализа периодических процессов является <strong>система тригонометрических функций</strong>:</p>
+<div class="arithmatex">\[
+{1, sin(ωt), cos(ωt), sin(2ωt), cos(2ωt), ...}
+\]</div>
+<p>где <span class="arithmatex">\(ω = 2π/T\)</span> — основная частота.</p>
+<p>Любой сигнал можно представить как сумму простых гармонических составляющих:</p>
+<div class="arithmatex">\[
+f(t) = a_0 + ∑[a_k cos(kωt) + b_ksin(kωt)]
+\]</div>
+<p>где коэффициенты <span class="arithmatex">\(a_k\)</span> и <span class="arithmatex">\(b_k\)</span> показывают "вклад" каждой частоты в исходный сигнал.</p>
+<p><strong>Идея разложения сигнала на составляющие</strong>: сложный звук можно представить как сумму простых синусоидальных волн разных частот и амплитуд. Набор этих частот и их амплитуд и образует <strong>акустический спектр</strong> сигнала. Это преобразование из временной области в частотную и есть суть <strong>преобразования Фурье</strong>.</p>
+<p>Такой подход позволяет анализировать, какие частоты присутствуют в сигнале и с какой интенсивностью, что невозможно сделать, глядя лишь на временную форму сигнала <span class="arithmatex">\(f(t)\)</span>.</p>
+<h3 id="_8">Акустический спектр</h3>
+<p><strong>(def) Акустический спектр (спектр звука)</strong> — со­во­куп­ность гар­мо­ни­че­ских ко­леба­ний (т.е. таких, при которых физ. величина изменяется с течением времением по синусоидальному/косинусоидалному закону), на ко­то­рые мож­но раз­ло­жить конкретную зву­ко­вую вол­ну.</p>
+<p>Это представление описывает, <strong>какие частоты</strong> и <strong>с какими амплитудами</strong> присутствуют в сложном аудио сигнале.</p>
+<h3 id="_9">Преобразование Фурье</h3>
+<p>Преобразование Фурье (символ <span class="arithmatex">\(\mathcal{F}\)</span>) — операция, сопоставляющая одной функции вещественной переменной другую функцию вещественной переменной.</p>
+<p>Эта новая функция описывает коэффициенты («амплитуды») при разложении исходной функции на элементарные составляющие — гармонические колебания с разными частотами.</p>
+<p>Для непрерывного сигнала <span class="arithmatex">\(x(t)\)</span> преобразование Фурье определяется как:</p>
+<div class="arithmatex">\[
+X(\omega) = \mathcal{F}\{x(t)\} = \int_{-\infty}^{\infty} x(t) \cdot e^{-i\omega t}  dt,
+\]</div>
+<p>где:</p>
+<ul>
+<li><span class="arithmatex">\(X(\omega)\)</span> — комплекснозначная функция, представляющая спектр</li>
+<li><span class="arithmatex">\(∣X(\omega)∣\)</span> — амплитуда колебания на частоте <span class="arithmatex">\(\omega\)</span></li>
+</ul>
+<p>Эта операция фактически вычисляет "коэффициенты" (амплитуды и фазы) при разложении исходной функции на элементарные составляющие — гармонические колебания с разными частотами.</p>
+<p>Для дискретного сигнала x_n (полученного путём дискретизации) используется <strong>Дискретное Преобразование Фурье (DFT)</strong>:</p>
+<div class="arithmatex">\[
+X_k = ∑_{n=0}^{N-1} x_n⋅ e^{(-i 2π k n / N)}
+\]</div>
+<p>для <span class="arithmatex">\(k = 0, ..., N-1\)</span>.</p>
+<h3 id="_10">Быстрое преобразование Фурье</h3>
+<p>Прямое, поэлементное вычисление дискретного преобразования Фурье (ДПФ) по формуле имеет <strong>вычислительную сложность <span class="arithmatex">\(O(N^2)\)</span></strong>, что делает его непрактичным для больших значений <span class="arithmatex">\(N\)</span> (например, для аудиосигнала длительностью в несколько секунд, где <span class="arithmatex">\(N\)</span> может достигать сотен тысяч).</p>
+<p><strong>Быстрое преобразование Фурье (Fast Fourier Transform, FFT)</strong> —высокоэффективный <strong>алгоритм</strong> для вычисления ДПФ.</p>
+<ul>
+<li><strong>Сложность FFT</strong>: <span class="arithmatex">\(O(N \log_2 N)\)</span></li>
+<li><strong>Выигрыш в скорости</strong>: Для <span class="arithmatex">\(N = 1024\)</span> (<span class="arithmatex">\(2^{10}\)</span>) сложность падает с <span class="arithmatex">\(\sim\)</span> 1 миллиона операций до <span class="arithmatex">\(\sim\)</span> 10 тысяч. Для современных аудиоприложений, где <span class="arithmatex">\(N\)</span> может быть <span class="arithmatex">\(2^{16} = 65536\)</span> и более, это разница между вычислениями, занимающими секунды, и вычислениями, занимающими доли миллисекунды.</li>
+</ul>
+<p>Именно благодаря FFT стало возможным спектральный анализ аудио в реальном времени, что является основой для большинства современных технологий — от шумоподавления в наушниках до распознавания речи.</p>
+<h3 id="_11">Как оценить изменение спектра во времени?</h3>
+<p>Аудиосигналы, такие как речь или музыка, являются <strong>нестационарными</strong> — их спектральные характеристики изменяются во времени. Преобразование Фурье, примененное ко всему сигналу целиком, дает лишь усредненный спектр, скрывающий временную динамику. Для анализа изменяющихся спектральных свойств используется подход <strong>скользящего оконного анализа</strong>.</p>
+<h4 id="windowing">Windowing (Оконное преобразование)</h4>
+<p>Основная идея: сигнал разбивается на небольшие перекрывающиеся сегменты (окна), и к каждому такому сегменту независимо применяется преобразование Фурье.</p>
+<p>Фрагмент сигнала, извлеченный из каждого окна, называется <strong>фреймом</strong>.</p>
+<p><strong>Параметры оконного преобразования:</strong></p>
+<ol>
+<li><strong>Ширина окна</strong> (длительность в миллисекундах) — определяет временное разрешение</li>
+<li><strong>Смещение</strong> (шаг между последовательными окнами) — определяет плотность анализа</li>
+<li><strong>Оконная функция</strong> — определяет форму окна и влияет на качество спектральной оценки</li>
+</ol>
+<h4 id="_12">Оконные функции</h4>
+<p>Прямоугольное окно (когда мы просто "вырезаем" отрезок сигнала) создает резкие разрывы на границах, что приводит к возникновению <strong>спектральных искажений</strong> (эффект Гиббса) в частотной области.</p>
+<p>Для минимизации этих артефактов используются <strong>оконные функции</strong>, которые плавно уменьшают амплитуду сигнала к краям окна. Наиболее распространенные:</p>
+<p><strong>Окно Хэмминга</strong> — наиболее популярный выбор в обработке аудио:
+<span class="arithmatex">\(w(n) = 0.54 - 0.46 \cdot \cos\left(\frac{2\pi n}{N-1}\right)\)</span> для <span class="arithmatex">\(n = 0, \ldots, N-1\)</span></p>
+<p><strong>Окно Ханна</strong> (Хэннинга):
+<span class="arithmatex">\(w(n) = 0.5 \cdot \left(1 - \cos\left(\frac{2\pi n}{N-1}\right)\right)\)</span></p>
+<p><strong>Сравнение характеристик:</strong></p>
+<ul>
+<li><strong>Прямоугольное окно</strong>: лучшее временно́е разрешение, но худшее частотное</li>
+<li><strong>Окно Хэмминга</strong>: хороший компромисс между разрешением и динамическим диапазоном</li>
+<li><strong>Окно Ханна</strong>: лучшее подавление боковых лепестков</li>
+</ul>
+<h4 id="short-time-fourier-transform-stft">Short-Time Fourier Transform (STFT)</h4>
+<p>Комбинация оконного преобразования и БПФ дает <strong>Short Time Fourier Transform</strong>:</p>
+<p><span class="arithmatex">\(X(\tau, \omega) = \text{STFT}{x(t)} = \int [x(t) \cdot w(t-\tau)] \cdot e^{-i\omega t} dt\)</span></p>
+<p>где</p>
+<ul>
+<li><span class="arithmatex">\(w(t-\tau)\)</span> — оконная функция, сдвинутая во времени</li>
+<li><span class="arithmatex">\(\tau\)</span> — временной сдвиг окна</li>
+<li><span class="arithmatex">\(\omega\)</span> — частота</li>
+</ul>
+<p>Для дискретного случая:</p>
+<div class="arithmatex">\[
+X[m, k] = \sum_{n=0}^{N-1} x[n] \cdot w[n-mH] \cdot e^{-i2\pi kn/N},
+\]</div>
+<p>где <span class="arithmatex">\(H\)</span> — шаг сдвига окна (в отсчетах).</p>
+<p>Результат STFT — это <strong>спектрограмма</strong>, двумерное представление сигнала (время-частота-интенсивность), которое визуализирует эволюцию спектра во времени.</p>
+<h3 id="_13">Другие спектральные характеристики сигнала</h3>
+<h4 id="_14">Шкала Мел</h4>
+<p>Человеческий слух обладает нелинейной частотной характеристикой — мы лучше различаем изменения на низких частотах, чем на высоких. Для учета этой особенности была разработана <strong>мел-шкала</strong> (mel-scale), которая аппроксимирует нелинейное восприятие частоты человеком.</p>
+<p>Эмпирическая формула для преобразования частоты в герцах в мелы:</p>
+<div class="arithmatex">\[
+m = 2595 \cdot \log_{10}\left(1 + \frac{f}{700}\right),
+\]</div>
+<p>где:</p>
+<ul>
+<li><span class="arithmatex">\(f\)</span> — частота в Герцах</li>
+<li><span class="arithmatex">\(m\)</span> — частота в мелах</li>
+</ul>
+<p>На основе этой шкалы строится <strong>банк мел-фильтров</strong> — набор треугольных полосовых фильтров, равномерно распределенных по мел-шкале. Каждый фильтр выделяет энергию сигнала в определенной полосе частот, соответствующей восприятию человека.</p>
+<h4 id="mfcc-mel-frequency-cepstral-coefficients">MFCC (Mel-Frequency Cepstral Coefficients)</h4>
+<p><strong>MFCC</strong> — наиболее популярные признаки в распознавании речи. Их физический смысл связан с моделью производства речи:</p>
+<ol>
+<li><strong>Источник возбуждения</strong> (голосовые связки) создает периодические колебания</li>
+<li><strong>Голосовой тракт</strong> (рот, язык, губы) действует как фильтр, формирующий спектр</li>
+<li>Результирующий сигнал представляет собой <strong>свертку</strong> источника и фильтра</li>
+</ol>
+<p>MFCC позволяют разделить эти компоненты и выделить параметры фильтра (форму голосового тракта), которые наиболее информативны для распознавания фонем.</p>
+<p><strong>Этапы вычисления MFCC:</strong></p>
+<ol>
+<li><strong>Предобработка</strong>: предварительное усиление высоких частот</li>
+<li><strong>STFT</strong>: получение спектрограммы сигнала</li>
+<li><strong>Банк мел-фильтров</strong>: применение треугольных фильтров в мел-шкале</li>
+<li><strong>Логарифмирование</strong>: <span class="arithmatex">\(\log(E)\)</span> — переход к логарифмической шкале (имитирует логарифмическое восприятие громкости)</li>
+<li><strong>Дискретное косинусное преобразование (DCT)</strong>:<span class="arithmatex">\(c_n = \sum_{k=1}^{M} (\log E_k) \cdot \cos\left[n(k-0.5)\frac{\pi}{M}\right]\)</span></li>
+<li>Отделяет медленно меняющуюся огибающую спектра (форма голосового тракта) от быстро меняющейся информации об источнике</li>
+<li>Первые 12-13 коэффициентов обычно содержат наиболее важную информацию для обработки речевого сигнала</li>
+</ol>
+<h4 id="_15">Другие важные спектральные признаки</h4>
+<p><strong>Spectral Centroid (Спектральный центроид)</strong></p>
+<div class="arithmatex">\[
+\text{Центроид} = \frac{\sum_k (f_k \cdot A_k)}{\sum_k A_k}
+\]</div>
+<ul>
+<li>"Центр масс" спектра, характеризует яркость звука</li>
+<li>Высокие значения соответствуют "яркому" тембру</li>
+</ul>
+<p><strong>Spectral Roll-off (Спектральный откат)</strong>
+Частота, ниже которой сосредоточено 85% (или другая доля) спектральной энергии. Характеризует форму спектра.</p>
+<p><strong>Spectral Contrast (Спектральный контраст)</strong>
+Разница энергий между пиками и впадинами в различных частотных полосах. Полезен для различения музыки и речи.</p>
+<p><strong>Chromagram (Хромаграмма)</strong>
+Представление, где частотная ось свернута в 12 полутоновых классов октавы. Критически важен для анализа музыки.</p>
+<p><strong>Zero-Crossing Rate (Частота пересечения нуля)</strong>
+Количество переходов сигнала через ноль за единицу времени. Простой, но эффективный признак для различения звонких/глухих звуков и обнаружения ударных в музыке.</p>
+<p>Эти признаки, наряду с MFCC, образуют богатый набор характеристик, которые могут использоваться как по отдельности, так и в комбинации для различных задач анализа аудио.</p>
+<h2 id="_16">Задачи обработки аудиосигнала</h2>
+<h4 id="speech-processing">Speech Processing (Обработка речи)</h4>
+<p><strong>Automatic Speech Recognition (ASR)</strong> — автоматическое распознавание речи, которое заключается в преобразовании речевого сигнала в текст. Современные системы ASR используют глубокое обучение для построения монолитных моделей, способных распознавать спонтанную речь с высокой точностью.</p>
+<p><strong>Text-to-Speech (TTS)</strong> — синтез, генерация речи. Современные нейросетевые системы генерируют естественно звучащую речь, учитывая интонацию, ритм и эмоциональную окраску.</p>
+<p><strong>Другие задачи обработки речи:</strong></p>
+<ul>
+<li>Идентификация диктора</li>
+<li>Определение эмоций</li>
+<li>Распознавание ключевых слов</li>
+</ul>
+<h4 id="music-processing">Music Processing (Обработка музыки)</h4>
+<p>Обработка музыкальных сигналов включает широкий спектр задач</p>
+<ul>
+<li><strong>Классификация жанров</strong> и настроения музыки</li>
+<li><strong>Beat tracking</strong> — обнаружение ритма и темпа</li>
+<li><strong>Source separation</strong> — разделение смешанного аудио на составляющие (вокал, барабаны, бас)</li>
+<li><strong>Automatic transcription</strong> — автоматическая нотная запись</li>
+<li><strong>Music recommendation</strong> — рекомендательные системы для музыки</li>
+</ul>
+<h4 id="3-other-audio-tasks">3. Other Audio Tasks (Другие задачи)</h4>
+<ul>
+<li><strong>Acoustic scene classification</strong> — классификация акустических сцен (улица, офис, транспорт)</li>
+<li><strong>Sound event detection</strong> — обнаружение и классификация звуковых событий (звонок, лай, сирена)</li>
+<li><strong>Audio enhancement</strong> — улучшение качества звука (шумоподавление, восстановление)</li>
+</ul>
+<h2 id="_17">Поиск похожего трека с помощью автоэнкодера</h2>
+<h3 id="_18">Описание задачи</h3>
+<p>Пусть перед нами стоит задача — создать самое простое, первоначальное решение аналога функции "Моя волна по треку", то есть подбор плейлиста с похожими треками на понравившуюся нам композицию.</p>
+<p>Ключевая сложность: как количественно определить и оценить "похожесть" музыкальных треков, которые могут различаться по темпу, инструментовке, тональности, но при этом восприниматься как схожие по настроению или стилю?</p>
+<h3 id="mvp">Алгоритм первоначального, простого решения (MVP)</h3>
+<ol>
+<li><strong>Фрагментация</strong>: От каждого аудиотрека берем 30-секундный сегмент (например, из начала, середины или конца трека)</li>
+<li><strong>Извлечение признаков</strong>: Для каждого сегмента вычисляем фиксированный набор спектральных и временн<strong>ы</strong>х признаков. Например, может быть такой набор:</li>
+<li>MFCC (12-20 коэффициентов)</li>
+<li>Spectral Centroid</li>
+<li>Spectral Roll-off</li>
+<li>Zero-Crossing Rate</li>
+<li>Темп (BPM)</li>
+<li>Громкость (RMS)</li>
+<li><strong>Агрегация</strong>: Усредняем признаки по всему сегменту, получая вектор фиксированной размерности для каждого трека</li>
+<li><strong>Сравнение</strong>: Вычисляем косинусное близости между векторами признаков для каждого трека</li>
+</ol>
+<p>Выражение косинусной близости выглядит следующим образом:</p>
+<div class="arithmatex">\[
+\text{similarity}(A, B) = \cos(\theta )  = \frac{A \cdot B}{||A|| \space ||B||} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}
+\]</div>
+<p>Значения лежат в диапазоне [-1, 1], где:</p>
+<ul>
+<li>1 означает идентичные векторы</li>
+<li>0 означает ортогональность (нет схожести)</li>
+<li>-1 означает противоположность</li>
+</ul>
+<p>Часто используют выражение косинусной близости:</p>
+<div class="arithmatex">\[
+\text{distance} = 1 - \cos(\theta) = 1 - \frac{A \cdot B}{\|A\| \|B\|} = 1 - \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}
+\]</div>
+<p>Таким образом:</p>
+<ul>
+<li>distance = 0 — векторы идентичны (максимальная похожесть)</li>
+<li>distance = 1 — векторы ортогональны (нет схожести)</li>
+<li>distance = 2 — векторы противоположны (максимальное различие)</li>
+</ul>
+<h3 id="_19">Получение эмбеддингов с помощью автоэкнодера</h3>
+<p><strong>Что такое эмбеддинги?</strong></p>
+<p>Эмбеддинг – это результат процесса преобразования каких-либо данных в набор чисел, векторы.</p>
+<p>Этот термин получил распространение в рамках решения задачи получения векторного представления для текста, но его можно использовать и в контексте обработки аудио и изображений.</p>
+<p><strong>Что такое автоэкнодер?</strong></p>
+<p>Автоэнкодер (или автокодировщик) — специальная архитектура искусственных нейронных сетей, позволяющая применять обучение без учителя. Она состоит из двух компонентов:</p>
+<ul>
+<li><strong>Энкодер</strong> <span class="arithmatex">\(g\)</span>: преобразует входные данные <span class="arithmatex">\(x\)</span> в скрытое представление (код) <span class="arithmatex">\(h = g(x)\)</span></li>
+<li><strong>Декодер</strong> <span class="arithmatex">\(f\)</span>: восстанавливает данные из скрытого представления <span class="arithmatex">\(\hat{x} = f(h) = f(g(x))\)</span></li>
+</ul>
+<p>Прямой проход (инференс) автоэнкодера тривиален: он сначала “сжимает” входные данные, а затем “расжимает” их обратно (восстанавливает).</p>
+<p>Архитектура автоэнкодера обычно следует структуре "бутылочного горлышка" (bottleneck), где размерность скрытого представления <span class="arithmatex">\(h\)</span> значительно меньше размерности входных данных.</p>
+<p>Внутреннее, промежуточное отображение входных данные можно использовать как эмбеддинг.</p>
+<p><strong>Обучение автоэнкодера</strong></p>
+<p>Автоэнкодер обучается минимизировать разницу между исходными данными и их реконструкцией. Функция потерь обычно представляет собой MSE (Mean Squared Error):</p>
+<div class="arithmatex">\[
+L(x, \hat{x}) = \frac{1}{n} \sum_{i=1}^{n} (x_i - \hat{x}_i)^2
+\]</div>
+<p>или MAE (Mean Absolute Error):</p>
+<div class="arithmatex">\[
+L(x, \hat{x}) = \frac{1}{n} \sum_{i=1}^{n} |x_i - \hat{x}_i|
+\]</div>
+<p>После обучения, <strong>энкодер</strong> может использоваться независимо для преобразования аудио в эмбеддинги — компактные векторные представления, которые capture существенные характеристики звука. Эти эмбеддинги затем используются для поиска похожих треков через сравнение в векторном пространстве.</p>
+<p><strong>Преимущество подхода с автоэнкодером</strong>: сеть автоматически учится выделять наиболее информативные признаки аудио, без необходимости ручного конструирования и подбора признаков, как в MVP-решении.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

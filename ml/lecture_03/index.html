@@ -1,0 +1,1668 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ai-mai-307.github.io/ml-dl-course-site/ml/lecture_03/">
+      
+      
+        <link rel="prev" href="../lecture_02/">
+      
+      
+        <link rel="next" href="../hw_01/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Лекция №3. Обучение с учителем. Линейные модели - Введение в машинное и глубокое обучение</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-header__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Введение в машинное и глубокое обучение
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Лекция №3. Обучение с учителем. Линейные модели
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-nav__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Введение в машинное и глубокое обучение
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Главная
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Расписание
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Инструкции
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Инструкции
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/assign_course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Запись на курс
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/complete_course_instructionds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как успешно пройти курс
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/llm_rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Добросовестное использование LLM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/howtoclassroom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как принять задания в GitHub Classroom
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/work_with_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как работать с агентом-кодревьювером
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Yandex Datasphere
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Yandex Datasphere
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/clone_repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как склонировать репозиторий
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/what_is_dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как работать с датасетами
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/manage_budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Как контролировать расходы
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Классическое машинное обучение
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Классическое машинное обучение
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    О курсе
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Конспекты
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Конспекты
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №1. Первое знакомство с машинным обучением
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №2. Предварительная обработка данных
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Лекция №3. Обучение с учителем. Линейные модели
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №3. Обучение с учителем. Линейные модели
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Задачи обучения с учителем
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры прикладных задач
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Домашние задания
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Домашние задания
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    №1. Предвариетельный анализ данных
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Глубокое машинное обучение
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Глубокое машинное обучение
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    О курсе
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Конспекты
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Конспекты
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №1. Основные понятия глубокого обучения
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №2. Обработка изображений с помощью глубокого обучения
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Лекция №3. Обработка аудиосигнала с помощью глубокого оубчения
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Домашние задания
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Домашние задания
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    №1. Обучение многослойного персептрона
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Задачи обучения с учителем
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примеры прикладных задач
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">Что такое обучение с учителем (обучение по прецедентам)</h1>
+<p>Напомним, в чем заключается задача обучения <strong>с учителем</strong>.
+Предположим, что:</p>
+<ul>
+<li>Существует множество объектов <span class="arithmatex">\(X\)</span> (объекты, данные, примеры).</li>
+<li>Существует множество допустимых ответов, решений задачи <span class="arithmatex">\(Y\)</span>  (метки, целевые значения).</li>
+<li>Существует некая неизвестная нам <strong>целевая зависимость</strong> (target function) <span class="arithmatex">\(y^* : X \to Y\)</span>, которая идеально связывает объекты с их ответами.</li>
+</ul>
+<p>Значения этой целевой функции <span class="arithmatex">\(y_i = y^*(x_i)\)</span> нам известны только для конечного числа объектов <span class="arithmatex">\({x_1, \dots , x_l} \subset X\)</span>. Пары "объект-ответ" <span class="arithmatex">\((x_i, y_i)\)</span> называются <strong>прецедентами</strong>. Совокупность таких пар <span class="arithmatex">\(\mathbb{X}^l = (x_i, y_i)_{i=1}^l\)</span> называется <strong>обучающей выборкой</strong> (training sample).</p>
+<p><strong>Задача</strong> заключается в том, чтобы по обучающей выборке <span class="arithmatex">\(\mathbb{X}^l\)</span> восстановить зависимость <span class="arithmatex">\(y^*\)</span>, то есть построить <strong>алгоритм</strong> (решающую функцию, модель) <span class="arithmatex">\(a: X \to Y\)</span>, которая приближала бы целевую функцию <span class="arithmatex">\(y^*(x)\)</span>.</p>
+<p>При этом мы хотим, чтобы алгоритм работал хорошо не только на объектах из обучающей выборки, но и на всех возможных объектах множества <span class="arithmatex">\(X\)</span>.</p>
+<h4 id="_2">Задачи обучения с учителем</h4>
+<p>В зависимости от природы множества ответов <span class="arithmatex">\(Y\)</span>, задачи обучения с учителем делятся на основные типы:</p>
+<ul>
+<li><strong>Классификация (Classification):</strong></li>
+<li><em>Чем является</em> <span class="arithmatex">\(Y\)</span>?: <span class="arithmatex">\(Y\)</span> — конечное множество категорий (классов). <span class="arithmatex">\({\text{"спам"}, \text{"не спам"}}\)</span> или <span class="arithmatex">\(Y = {0, 1, \dots, K}\)</span>, где <span class="arithmatex">\(0, \dots , K\)</span> – номера классов.</li>
+<li><em>Задача</em>: отнести объект к одному из классов.</li>
+<li><strong>Регрессия (Regression):</strong></li>
+<li><em>Чем является</em> <span class="arithmatex">\(Y\)</span>? <span class="arithmatex">\(Y\)</span> — непрерывное числовое множество, <span class="arithmatex">\(\mathbb{R}\)</span>.</li>
+<li><em>Задача</em>: предсказать числовое значение.</li>
+</ul>
+<h4 id="_3">Примеры прикладных задач</h4>
+<ul>
+<li><strong>Примеры классификации:</strong></li>
+<li>Определение рукописной цифры (<span class="arithmatex">\(Y = {0, ..., 9}\)</span>).</li>
+<li>Определение спама в письме электронной почты (<span class="arithmatex">\(Y = {\text{спам}, \text{не спам}}\)</span>).</li>
+<li>Диагностика заболеваний по совокупности симптомов (<span class="arithmatex">\(Y = {\text{здоров}, \text{болен}}\)</span>).</li>
+<li><strong>Примеры регрессии:</strong></li>
+<li>Прогнозирование стоимости дома на основе его характеристик (площадь, район и т.д.).</li>
+<li>Предсказание спроса на товар в зависимости от сезона и рекламных активностей.</li>
+<li>Оценка времени доставки заказа.</li>
+</ul>
+<h1 id="_4">Линейные параметрические модели</h1>
+<p>Cреди каких отображений мы будем искать самое лучшее? Возможных отображений может быть много, но мы можем упростить себе задачу и договориться, что хотим искать решение только в каком-то заранее заданном параметризированном семействе функций.</p>
+<p>(def) <strong>Семейством алгоритмов</strong> будем называть параметрическое семейство отображений <span class="arithmatex">\(A = {g(x, \theta) \mid \theta \in \Theta}\)</span>, где <span class="arithmatex">\(g: X \times \Theta \to Y\)</span> — некоторая фиксированная функция, а <span class="arithmatex">\(\Theta\)</span> — множество допустимых значений параметра <span class="arithmatex">\(\theta\)</span>, называемое <strong>пространством параметров</strong>.</p>
+<p>Предположим, что каждый объект <span class="arithmatex">\(x\)</span> описывается вектором числовых признаков <span class="arithmatex">\(\mathbf{x} = (x_1, x_2, \dots, x_n)^T\)</span>, где <span class="arithmatex">\(x_j \in \mathbb{R}\)</span> — значение <span class="arithmatex">\(j\)</span>-го признака.
+Тогда <strong>линейная модель</strong> с вектором параметров <span class="arithmatex">\(\theta = (\theta_0, \theta_1, \ldots, \theta_n) \in \Theta = \mathbb{R}^{n+1}\)</span> выглядит следующим образом:</p>
+<ul>
+<li><strong>Для задачи регрессии</strong>(<span class="arithmatex">\(Y = \mathbb{R}\)</span>): <span class="arithmatex">\(g(\mathbf{x}, \theta) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_n x_n\)</span></li>
+<li><strong>Для задачи бинарной классификации</strong> (<span class="arithmatex">\(Y = {-1, +1}\)</span>):
+  <span class="arithmatex">\(g(\mathbf{x}, \theta) = \text{sign} \left( \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_n x_n \right)\)</span></li>
+</ul>
+<p>Таким образом, мы ищем наилучшую функцию не среди всех возможных, а только среди функций вида <span class="arithmatex">\(g(x, \theta)\)</span>, перебирая параметры <span class="arithmatex">\(\theta\)</span>.</p>
+<p><img alt="1761738259504" src="../image/lecture_03/1761738259504.png" /></p>
+<p><strong>Общий вид линейной модели</strong></p>
+<p>В общем случае линейная модель для объекта <span class="arithmatex">\(\mathbf{x} = (x_1, \dots, x_n)^T\)</span> имеет вид:</p>
+<div class="arithmatex">\[
+a(x,θ)=θ_0+θ_1x+θ_2x_2+⋯+θ_nx_n
+\]</div>
+<p>где <span class="arithmatex">\(\theta_0\)</span> — свободный член (bias, intercept), а <span class="arithmatex">\(\theta_1, \dots, \theta_n\)</span> — веса (weights), соответствующие каждому признаку. Часто для удобства вводят фиктивный признак <span class="arithmatex">\(f_0(x) = 1\)</span>, чтобы записывать модель в компактной форме:</p>
+<div class="arithmatex">\[
+a(x,θ)=j=\sum_{j=0}^n θ_jx_j=θ^T\mathbf{x}
+\]</div>
+<p>где <span class="arithmatex">\(\theta = (\theta_0, \theta_1, \dots, \theta_n)^T\)</span>, а <span class="arithmatex">\(\mathbf{x} = (1, x_1, \dots, x_n)^T\)</span> — расширенный вектор признаков.</p>
+<h1 id="_5">Решение задачи регрессии с помощью линейных параметрических моделей</h1>
+<h2 id="_6">Функционал качества</h2>
+<p>Мы хотим, чтобы на нашем датасете (то есть на множестве пар вида “объект-ответ”, <span class="arithmatex">\((x_i, y_i)\)</span>) решающая функцию (алгоритм, модель) как можно лучше приближала нашу искомую зависимость <span class="arithmatex">\(y^*\)</span>.</p>
+<p>Для решения задачи регрессии необходимо определить функцию, которая измеряет качество модели — <strong>функцию потерь (loss function)</strong>. Эта функция оценивает, насколько сильно модель ошибается на каждом объекте.</p>
+<p>Формально, функция потерь <span class="arithmatex">\(\mathcal{L}(a, x_i, y_i)\)</span> измеряет ошибку модели <span class="arithmatex">\(a\)</span> на объекте <span class="arithmatex">\(x_i\)</span> с истинным значением <span class="arithmatex">\(y_i\)</span>. Чтобы оценить качество модели на всей выборке, мы усредняем потери по всем объектам, получая <strong>функционал качества</strong>:</p>
+<div class="arithmatex">\[
+Q(a, X^l) = \frac{1}{l} \sum^l_{i=1} \mathcal{L}(a, x_i)
+\]</div>
+<p>Для задач регрессии наиболее распространенными являются следующие функции потерь:</p>
+<h4 id="mean-squared-error-mse">Mean Squared Error (MSE)</h4>
+<p>MSE вычисляет среднее значение квадратов разностей между предсказаниями модели и истинными значениями:</p>
+<div class="arithmatex">\[
+MSE(f, X, y) = \frac{1}{N} \sum^N_{i=1} (y_i - \langle x_i, w \rangle)^2
+\]</div>
+<h4 id="root-mean-squared-error-rmse">Root Mean Squared Error (RMSE)</h4>
+<p>RMSE является производной метрикой от MSE и вычисляется как корень из MSE:</p>
+<div class="arithmatex">\[
+RMSE(f, X, y) = \sqrt{\frac{1}{N} \sum^N_{i=1} (y_i - \langle x_i, w \rangle)^2}
+\]</div>
+<h4 id="mean-absolute-error-mae">Mean Absolute Error (MAE)</h4>
+<p>MAE вычисляет среднее значение абсолютных разностей между предсказаниями и истинными значениями:</p>
+<div class="arithmatex">\[
+MAE(f, X, y) = \frac{1}{N} \sum^N_{i=1} |y_i - \langle x_i, w \rangle)|
+\]</div>
+<h2 id="_7">Задача оптимизации</h2>
+<p>Для линейной регрессии с MSE-функцией потерь задача оптимизации принимает вид:</p>
+<div class="arithmatex">\[
+||y - X\theta||^2_2 \rightarrow \min_\theta,
+\]</div>
+<p>где <span class="arithmatex">\(X\)</span> — матрица объекты-признаки (каждая строка — вектор признаков одного объекта), <span class="arithmatex">\(y\)</span> — вектор целевых значений.</p>
+<h2 id="_8">Аналитическое решение</h2>
+<p>Задачу линейной регрессии с MSE можно решить аналитически. <strong>Что значит "решить аналитически"?</strong> Это значит найти точное решение в виде замкнутой формулы, без итеративных приближений. Говоря совсем просто – вы можете взять бумажку, ручку и решить задачу по формуле.</p>
+<p>Как это выглядит для регрессии: минимум функционала <span class="arithmatex">\(||y - X\theta||^2_2\)</span> достигается при:</p>
+<div class="arithmatex">\[
+\theta=(X^TX)^{−1}X^Ty
+\]</div>
+<p>Это решение называется <strong>нормальным уравнением</strong>.</p>
+<p><strong>Проблемы аналитического решения:</strong>
+Несмотря на свою элегантность, аналитическое решение имеет серьезные ограничения:</p>
+<ol>
+<li><strong>Вырожденность матрицы:</strong> Если матрица <span class="arithmatex">\(X^T X\)</span> является вырожденной (определитель равен нулю), то обратной матрицы не существует. Это происходит когда:</li>
+<li>Признаки линейно или приближенно линейно зависимы (<strong>мультиколлинеарность</strong>)</li>
+<li>Количество признаков превышает количество объектов (<span class="arithmatex">\(n &gt; l\)</span>)</li>
+<li><strong>Вычислительная сложность:</strong> Операция обращения матрицы имеет сложность <span class="arithmatex">\(O(n^3)\)</span>, где <span class="arithmatex">\(n\)</span> - количество признаков. Для задач с тысячами признаков это становится вычислительно затратным.</li>
+<li><strong>Численная неустойчивость:</strong> Даже если матрица формально обратима, при близких к линейно зависимым признаках вычисления становятся неустойчивыми к малым изменениям данных.</li>
+</ol>
+<p>Эти ограничения заставляют нас подумать над поиском <strong>алгоритмов оптимизации</strong>, которые находят не идеальное, приближенное решение, но делают это эффективно и устойчиво.</p>
+<h2 id="_9">Алгоритм оптимизации</h2>
+<p>Итеративные алгоритмы позволяют находить решение задачи в случае, когда аналитическое это невозможно или неэффективно.</p>
+<p>Одним из самых популярных и универсальных алгоритма оптимизации являются <strong>градиентный спуск и его модификации.</strong></p>
+<h4 id="_10">Что такое градиент? Свойства градиента</h4>
+<p><strong>Градиент</strong> функции — это вектор, состоящий из её частных производных:</p>
+<div class="arithmatex">\[
+\nabla f(\theta_1, \dots, \theta_d) = \left(\frac{\partial f}{\partial \theta_1}, \dots, \frac{\partial f}{\partial \theta_d}\right)^T
+\]</div>
+<p><strong>Свойства градиента:</strong></p>
+<ul>
+<li>Градиент указывает направление наискорейшего роста функции</li>
+<li>Антиградиент (<span class="arithmatex">\(-\nabla f\)</span>) указывает направление наискорейшего убывания функции</li>
+<li>В точке минимума градиент равен нулю</li>
+</ul>
+<h4 id="262">2.6.2 Описание алгоритма градиентного спуска</h4>
+<p><strong>(def) Градиентный спуск</strong> — это итеративный алгоритм оптимизации. На каждом шаге мы обновляем параметры в направлении антиградиента:</p>
+<div class="arithmatex">\[
+\theta^{(t+1)} = \theta^{(t)} - \alpha \cdot \nabla Q(\theta^{(t)})
+\]</div>
+<p>где:</p>
+<ul>
+<li><span class="arithmatex">\(\theta^{(t)}\)</span> — значение параметров на шаге <span class="arithmatex">\(t\)</span></li>
+<li><span class="arithmatex">\(\alpha\)</span> — <strong>скорость обучения (learning rate)</strong>, параметр, контролирующий величину шага</li>
+<li><span class="arithmatex">\(\nabla Q(\theta^{(t)})\)</span> — градиент функционала качества в точке <span class="arithmatex">\(\theta^{(t)}\)</span></li>
+</ul>
+<p>Для MSE-функции потерь градиент имеет вид:</p>
+<div class="arithmatex">\[
+\nabla Q(\theta) = -\frac{2}{N} X^T (y - X\theta)
+\]</div>
+<h2 id="sgd">Стохастический градиентный спуск (SGD)</h2>
+<p>Если функция потерь имеет вид суммы по отдельным парам объект-таргет:</p>
+<div class="arithmatex">\[
+Q(\theta) = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(\theta, x_i, y_i)
+\]</div>
+<p>то градиент записывается как сумма градиентов каждой функции потерь для конкретной пары “объект-ответ”:</p>
+<div class="arithmatex">\[
+\nabla Q(\theta) = \frac{1}{N} \sum_{i=1}^{N} \nabla \mathcal{L}(\theta, x_i, y_i)
+\]</div>
+<p><img alt="1761738562953" src="../image/lecture_03/1761738562953.png" /></p>
+<p>В SGD мы используем оценку градиента на небольшой по размеру выборке обучающего множества <span class="arithmatex">\(B\)</span>, которая называется <strong>батч, пакет</strong>. Чем больше величина батча, тем лучше ближе будет наша оценка градиента. Формула записывается следующим образом:</p>
+<div class="arithmatex">\[
+\nabla Q(\theta) \approx \frac{1}{B} \sum_{i \in B} \nabla \mathcal{L}(\theta, x_i, y_i)
+\]</div>
+<p>Обновление параметров в SGD:</p>
+<div class="arithmatex">\[
+\theta^{(t+1)} = \theta^{(t)} - \alpha \cdot \frac{1}{B} \sum_{i \in B} \nabla \mathcal{L}(\theta^{(t)}, x_i, y_i)
+\]</div>
+<h2 id="_11">Обобщающая способность и проблема переобучения</h2>
+<p>После обучения модели мы можем обнаружить, что на реальных данных (которые модель не видела во время обучения) она демонстрирует плохое качество предсказания. Это означает, что модель не смогла обобщить результаты обучения для новых данных. Такая ситуация называется <strong>переобучением</strong> (overfitting).</p>
+<p>Переобучение возникает, когда модель слишком сложна и "запоминает" обучающие данные вместо выявления общих закономерностей. В результате модель показывает отличные результаты на обучающей выборке, но плохо работает на новых данных.</p>
+<p>Для предотвращения переобучения необходимо:</p>
+<ol>
+<li>Научиться оценивать <strong>обобщающую способность</strong> модели</li>
+<li>Применять методы предотвращения переобучения</li>
+</ol>
+<h3 id="_12">Оценка обобщающей способности</h3>
+<p>Для оценки обобщающей способности модели мы используем <strong>отложенную выборку</strong> (test set). Идея заключается в разделении данных на две части:</p>
+<ul>
+<li><strong>Обучающая выборка</strong> (training set) - для обучения модели</li>
+<li><strong>Тестовая выборка</strong> (test set) - для оценки качества на новых данных</li>
+</ul>
+<p>Обычно используется разделение 70/30 или 80/20. Также часто применяется <strong>кросс-валидация</strong> - метод, при котором данные разбиваются на несколько частей, и модель поочередно обучается на разных комбинациях этих частей.</p>
+<h3 id="_13">Регуляризация</h3>
+<p>Основным методом предотвращения переобучения является <strong>регуляризация</strong>. Идея регуляризации состоит в добавлении к функции потерь дополнительного штрафного члена, который ограничивает сложность модели:</p>
+<div class="arithmatex">\[
+\min_\theta L(f,X,y)=\min_\theta(∣∣Xθ−y∣∣_2^2+\lambda\Omega(θ)
+\]</div>
+<p>где:</p>
+<ul>
+<li><span class="arithmatex">\(\lambda\)</span> - параметр регуляризации, контролирующий силу штрафа</li>
+<li><span class="arithmatex">\(\Omega(\theta)\)</span> - регуляризатор, штрафующая функция</li>
+</ul>
+<h4 id="_14">Основные виды регуляризации:</h4>
+<p><img alt="1761738601138" src="../image/lecture_03/1761738601138.png" /></p>
+<p><strong>L2-регуляризация (Ridge):</strong></p>
+<div class="arithmatex">\[
+\Omega(\theta) = ||\theta||_2^2 = \theta_1^2 + \ldots + \theta_n^2
+\]</div>
+<ul>
+<li>Способствует уменьшению всех весов, но не обнуляет их</li>
+<li>Аналитическое решение: <span class="arithmatex">\(\theta = (X^T X + \lambda I)^{-1} X^T y\)</span>
+  <strong>L1-регуляризация (Lasso):</strong></li>
+</ul>
+<div class="arithmatex">\[
+\Omega(\theta) = ||\theta||_1 = |\theta_1| + \ldots + |\theta_n|
+\]</div>
+<ul>
+<li>Способствует обнулению некоторых весов, выполняя отбор признаков</li>
+</ul>
+<h4 id="_15">Эффекты регуляризации:</h4>
+<ol>
+<li><strong>Нивелирование мультиколлинеарности</strong> - устранение приближенной линейной зависимости между признаками</li>
+<li><strong>Ограничение области допустимых значений</strong> параметров модели</li>
+<li><strong>Улучшение обобщающей способности</strong> за счет контроля сложности модели</li>
+<li><strong>Повышение устойчивости</strong> решения даже при вырожденной матрице <span class="arithmatex">\(X^T X\)</span></li>
+</ol>
+<p>Регуляризация позволяет найти баланс между точностью на обучающих данных и способностью модели хорошо работать на новых данных, что является ключевым аспектом практического машинного обучения.</p>
+<h2 id="r2"><span class="arithmatex">\(R^2\)</span> – коэффициент детерминации</h2>
+<p><span class="arithmatex">\(R^2\)</span> — это мера качества регрессионной модели, показывающая, какую долю дисперсии отклика она объясняет.</p>
+<div class="arithmatex">\[
+R2(y,y^)=1−\frac{\sum^n_{i=1} (y_i - \hat{y}_i)}{\sum^n_{i=1} (y_i - \bar{y}_i)}
+\]</div>
+<p>Где:</p>
+<ul>
+<li><span class="arithmatex">\(y_i\)</span> — истинное значение,</li>
+<li><span class="arithmatex">\(\hat{y}_i\)</span> — предсказание модели,</li>
+<li><span class="arithmatex">\(\bar{y}\)</span> — среднее по всем <span class="arithmatex">\(y_i\)</span>.</li>
+</ul>
+<p><strong>Как интерпретировать <span class="arithmatex">\(R^2\)</span>:</strong></p>
+<ul>
+<li><span class="arithmatex">\(R^2\)</span> ≈ 1: модель объясняет почти всю дисперсию данных, предсказания очень точные</li>
+<li><span class="arithmatex">\(R^2\)</span> ≈ 0: модель не лучше простого предсказания средним значением</li>
+<li><span class="arithmatex">\(R^2\)</span> &lt; 0: модель работает хуже, чем наивное предсказание средним значением</li>
+</ul>
+<p><strong>Смысл метрики:</strong> <span class="arithmatex">\(R^2\)</span> измеряет, насколько предсказания модели лучше, чем просто предсказание среднего <span class="arithmatex">\(\bar{y}\)</span>. Числитель дроби представляет собой сумму квадратов ошибок модели (SSE), а знаменатель — общую сумму квадратов (SST), которая характеризует разброс данных относительно среднего.</p>
+<h1 id="_16">Решение задачи классификации с помощью линейных моделей</h1>
+<h2 id="_17">Линейная классификация</h2>
+<p>Теперь таргеты <span class="arithmatex">\(y\)</span> представляют принадлежность рассматриваемого объекта к тому или иному классу. В простейшем случае классов будет два – это бинарная классификация, таким образом <span class="arithmatex">\(Y = {-1, 1}\)</span>.</p>
+<p>Мы можем решить эту задачу, найдя такую гиперплоскость, чтобы положительный класс находился по одну сторону от нее, а отрицательный – по другую. Математически это записывается так:</p>
+<div class="arithmatex">\[
+y = sign \langle w, x_i \rangle
+\]</div>
+<p>Мы хотим минимизировать число ошибок, тогда функционал ошибок будет выглядеть (в финале) следующим образом:</p>
+<div class="arithmatex">\[
+\sum_i \mathbb{I} [y_i \langle w, x_i \rangle &lt; 0] \rightarrow \min_{w}
+\]</div>
+<p>Величина <span class="arithmatex">\(y_i \langle w, x_i \rangle\)</span> называется отступом и он отрицателен тогда, когда таргет и линейная комбинация имеют разные знаки.</p>
+<p>От каждого из отступов мы вычисляем функцию:</p>
+<div class="arithmatex">\[
+F(M) = \mathbb[M &lt; 0] = 
+\begin{cases} 
+1, M &lt; 0\\
+0, M \geq 0
+\end{cases}
+\]</div>
+<p>Так как эта функция кусочно-постоянная, то она не дифференцируема и поэтому её мажорировать другой, более гладкой функцией.</p>
+<h3 id="_18">Ошибка персептрона</h3>
+<p>Следующая функция позволяет считать отступы только на неправильно классифицированных объектах линейно пропорционально их размеру:</p>
+<div class="arithmatex">\[
+F(max) = \max(0, -M)
+\]</div>
+<p>Чтобы применить стохастический градиентный спуск для поиска решения необходимо прийти к аналитической формуле градиента:</p>
+<div class="arithmatex">\[
+L(w, x, y) = \lambda ||w||^2_2 + \sum_i \max(0, -y_i \langle w, x_i \rangle)
+\]</div>
+<div class="arithmatex">\[
+\nabla_wL(w, x, y) = 2\lambda w + \sum_i
+\begin{cases}
+0, y_i \langle w, x_i \rangle &gt; 0\\
+-y_ix_i, \langle w, x_i \rangle \leq  0 \end{cases}
+\]</div>
+<h3 id="hinge-loss-svm">Hinge loss, SVM, Метод опорных векторов</h3>
+<p>В некоторых случаях возникает желание найти не только разделяющую прямую, но и равноудалить её от обоих классов, то есть максимизировать минимальный отступ.</p>
+<p><img alt="1761738504863" src="../image/lecture_03/1761738504863.png" /></p>
+<p>Это можно сделать если видоизменить функцию ошибки следующих образом:</p>
+<div class="arithmatex">\[
+F(max) = \max(0, 1-M)
+\]</div>
+<div class="arithmatex">\[
+L(w, x, y) = \lambda ||w||^2_2 + \sum_i \max(0, 1-y_i \langle w, x_i \rangle)
+\]</div>
+<div class="arithmatex">\[
+\nabla_wL(w, x, y) = 2\lambda w + \sum_i
+\begin{cases}
+0, 1- y_i \langle w, x_i \rangle &gt; 0\\
+-y_ix_i, 1-\langle w, x_i \rangle \leq  0 \end{cases}
+\]</div>
+<h2 id="_19">Логистическая регрессия</h2>
+<p>Пусть теперь для удобства <span class="arithmatex">\(Y = {0, 1}\)</span>. С помощью логистической регрессии мы можем по-другому подойти к задаче классификации, а именно как к задаче оценке вероятностей.</p>
+<p>Чтобы линейная модель могла давать предсказания, лежащие в диапазоне от 0 до 1, делается следующий трюк: регрессия будет предсказывать объект, связанный определенный образом с вероятностью. Этим объектом является <strong>логит</strong> – догарифм отношения вероятности положительного события к отрицательного, <span class="arithmatex">\(\log(\frac{p}{1-p})\)</span>, таким образом:</p>
+<div class="arithmatex">\[
+\langle w, x_i \rangle = \log  \left( \frac{p}{1-p} \right) \\
+\]</div>
+<div class="arithmatex">\[
+e^{\langle w, x_i \rangle} = \frac{p}{1-p}
+\]</div>
+<div class="arithmatex">\[
+p = \frac{1}{1 + e^{-\langle w, x_i \rangle}}
+\]</div>
+<div class="arithmatex">\[
+\sigma(z) = \frac{1}{1 + e^{-z}}
+\]</div>
+<p>таким образом, <span class="arithmatex">\(p = \sigma(\langle w, x_i \rangle)\)</span></p>
+<h3 id="_20">Оптимизация с помощью метода максимума правдоподобия</h3>
+<h4 id="_21">Распределение Бернулли</h4>
+<p>Для бинарной классификации удобно моделировать целевую переменную с помощью распределения Бернулли:</p>
+<div class="arithmatex">\[
+P(y|p) = p^y (1-p)^{1-y}, \quad y \in \{0, 1\}
+\]</div>
+<p><strong>Функция правдоподобия</strong></p>
+<p>Функция правдоподобия — это способ оценить, насколько вероятны наблюдаемые данные при различных значениях параметров модели. Проще говоря, она показывает, какая модель с какими параметрами лучше всего «объясняет» имеющиеся данные.</p>
+<p>Для всей выборки функция правдоподобия имеет вид:</p>
+<div class="arithmatex">\[
+L(\theta) = \prod_{i=1}^{N} P(y_i|x_i, \theta) = \prod_{i=1}^{N} \sigma(\theta^T x_i)^{y_i} (1 - \sigma(\theta^T x_i))^{1-y_i}
+\]</div>
+<p><strong>Логарифмическая функция правдоподобия</strong>
+Удобнее работать с логарифмом правдоподобия:</p>
+<div class="arithmatex">\[
+\log L(\theta) = \sum_{i=1}^{N} \left[ y_i \log(\sigma(\theta^T x_i)) + (1-y_i) \log(1 - \sigma(\theta^T x_i)) \right]
+\]</div>
+<p><strong>Функция потерь</strong>
+В задаче оптимизации обычно минимизируют функцию потерь, поэтому возьмем отрицательный логарифм правдоподобия:</p>
+<div class="arithmatex">\[
+\mathcal{L}(\theta) = -\log L(\theta) = -\sum_{i=1}^{N} \left[ y_i \log(\sigma(\theta^T x_i)) + (1-y_i) \log(1 - \sigma(\theta^T x_i)) \right]
+\]</div>
+<p>Это известная <strong>логистическая функция потерь</strong> или <strong>binary cross-entropy</strong>.</p>
+<p><strong>Градиент логистической функции потерь</strong>
+Вычислим градиент для оптимизации:</p>
+<div class="arithmatex">\[
+\nabla_\theta \mathcal{L}(\theta) = \sum_{i=1}^{N} (\sigma(\theta^T x_i) - y_i) x_i
+\]</div>
+<p>Это удобная форма градиента, которая позволяет применять градиентный спуск.</p>
+<p><strong>Преимущества метода максимального правдоподобия:</strong></p>
+<ul>
+<li>Получаем вероятностную интерпретацию предсказаний</li>
+<li>Градиент имеет простую аналитическую форму</li>
+<li>Функция потерь выпуклая, что гарантирует нахождение глобального минимума</li>
+</ul>
+<h2 id="_22">Метрики классификации</h2>
+<p>(def) <strong>Метрика</strong> –</p>
+<ul>
+<li>это критерий качества модели</li>
+<li>количественный показатель, используемый для оценки производительности и эффективности модели машинного обучения</li>
+</ul>
+<p><strong>Метрики бывают</strong></p>
+<ul>
+<li><strong>оффлан</strong> – могут быть измерены до введения модели в эксплуатацию, например, по историческим данным или с привлечением специальных людей, асессоров</li>
+<li><strong>онлайн</strong> – вычисляются по данным, собираемым с работающей системы, могут быть вычислены без людей</li>
+</ul>
+<p>Важно понимать разницу между функцией потерь и метрикой качества. Её можно сформулировать следующим образом:</p>
+<ul>
+<li><strong>Функция потерь</strong> возникает в тот момент, когда мы сводим задачу построения модели к задаче оптимизации. Обычно требуется, чтобы она обладала хорошими свойствами (например, дифференцируемостью).</li>
+<li><strong>Метрика</strong> — внешний, объективный критерий качества, обычно зависящий не от параметров модели, а только от предсказанных меток.</li>
+</ul>
+<h3 id="_23">Метрики бинарной классификации</h3>
+<p><strong>Accuray</strong> – доля объектов, для которых мы правильно предсказали класс:</p>
+<div class="arithmatex">\[
+\text{Accuracy}(y, y_{pred}) = \frac{1}{N} \sum^N_{i=1} \mathbb{I}[y_i = f(x_i)]
+\]</div>
+<p>Сопряженная с ней метрика – <strong>доля ошибочных классификаций (error rate)</strong>:</p>
+<div class="arithmatex">\[
+\text{Error} \space \text{rate} = 1 - \text{Accuracy}
+\]</div>
+<p>Проблемы этой метрики:</p>
+<ul>
+<li>нет учета дисбаланса классов (если один класс редко встречается, то модель может выдавать высокий accuracy, просто предсказывая самый част, преобладающий)</li>
+<li>не учета цены ошибки на объектах разных классов: ложноположительное или ложноотрицательной предсказание в конкретной задаче могут иметь разные</li>
+</ul>
+<p>Пусть класс, который представляет для нас интерес мы назовем “положительным”, а другой – “отрицательный”.</p>
+<p>Для каждого объекта результат бинарной классификации может быть:</p>
+<ul>
+<li>true positive (TP) – верно предсказан положительный класс</li>
+<li>false positive (FP) – положительный класс предсказан неверно</li>
+<li>true negative (TN) – верно предсказан отрицательный класс</li>
+<li>false negative (FN) – отрицательный класс предсказан неверно</li>
+</ul>
+<p>Эти четыре числа формируют <strong>матрицу ошибок (confusion matrix)</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>TP</th>
+<th>FN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FP</strong></td>
+<td><strong>TN</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>В случае ассиметрии (дисбаланса) классов, следует использовать метрики, которые не учитывают TN и ориентируются на TP.</strong></p>
+<p><strong>Точность(precision)</strong> – доля правильно предсказанных положительных  среди всех объектов, предсказанных как положительно.</p>
+<div class="arithmatex">\[
+\text{Precisoin} = \frac{TP}{TP + FP}
+\]</div>
+<p>Эта метрика показывает долю релевантных объектов среди всех найденных классификатором
+<strong>Полнота (recall)</strong> – доля правильно найденных положительных объектов среди всех положительных объектов.</p>
+<div class="arithmatex">\[
+\text{Recall} = \frac{TP}{TP + FN}
+\]</div>
+<p>Эта метрика показывает долю релевантных документов среди всех найденных классификатором.</p>
+<p><img alt="1761738215863" src="../image/lecture_03/1761738215863.png" /></p>
+<p><em>Например, в задаче предсказания злокачественности опухоли точность показывает, сколько из определённых нами как злокачественные опухолей действительно злокачественные, а полнота — какую долю злокачественных опухолей нам удалось выявить.</em></p>
+<p>В случае пары Precision-Recall существует популярный способ скомпоновать их в одну метрику - взять их среднее гармоническое. Данный показатель эффективности исторически носит <strong>название F1-меры (F1-measure)</strong>.</p>
+<div class="arithmatex">\[
+F_1 = 2 \cdot \frac{\text{Recall} \times \text{Precision}}{\text{Recall} + \text{Precision}}
+\]</div>
+<h3 id="_24">Метрики вероятностной бинарной классификации</h3>
+<p>В случае вероятностных моделей бинарной классификации (как логистическая регрессия) класс объекта определяется бинаризацией выхода классификатора:</p>
+<div class="arithmatex">\[
+f(x; w, w_o) = \mathbb{I}[g(x, w) &gt; w_0]
+\]</div>
+<p>Как оценить качество предсказываемых вероятностей в терминах метки класса? Для этого нужно учесть, что в зависимости от порога мы будем получать разные предсказания и разное качество на отложенной выборке.</p>
+<p>В таком случае подходящими будут две метрики – <strong>TPR и FPR</strong>.</p>
+<p><strong>TPR (true positive rate)</strong> – это полнота, доля положительных объектов, правильно предсказанных как положительные:</p>
+<div class="arithmatex">\[
+TPR = \frac{TP}{P} = \frac{TP}{TP + FN}
+\]</div>
+<p><strong>FPR (false positive rate)</strong> — это доля отрицательных объектов, неправильно предсказанных положительными:</p>
+<div class="arithmatex">\[
+FPR = \frac{FP}{N} = \frac{FP}{FP + TN}
+\]</div>
+<p>Обе эти величины растут при уменьшении порога. Кривая в осях TPR/FPR, которая получается при варьировании порога, исторически называется ROC-кривой (receiver operating characteristics curve, сокращённо ROC curve).</p>
+<p>Чем лучше классификатор разделяет два класса, тем больше площадь (<em>area under curve</em>) под ROC-кривой — и мы можем использовать её в качестве метрики. Эта метрика называется <strong>AUC.</strong></p>
+<p><img alt="1761738419668" src="../image/lecture_03/1761738419668.png" /></p>
+<p><strong>Average Precision</strong>. Будем постепенно уменьшать порог бинаризации. При этом полнота будет расти от 0 до 1, так как будет увеличиваться количество объектов, которым мы приписываем положительный класс (а количество объектов, на самом деле относящихся к положительному классу, очевидно, меняться не будет).</p>
+<p>Про точность же нельзя сказать ничего определённого, но мы понимаем, что скорее всего она будет выше при более высоком пороге отсечения (мы оставим только объекты, в которых модель «уверена» больше всего). Варьируя порог и пересчитывая значения Precision и Recall на каждом пороге, мы получим некоторую кривую примерно следующего вида:
+<img alt="1761738339101" src="../image/lecture_03/1761738339101.png" />
+Рассмотрим среднее значение точности (оно равно площади под кривой точность-полнота):</p>
+<div class="arithmatex">\[
+AP =\int_0^1p(r)dr
+\]</div>
+<p>Это и есть <strong>average precision</strong>.</p>
+<h2 id="_25">Многоклассовая классификация</h2>
+<p>Теперь пусть каждый объект выборки принадлежит одному из <span class="arithmatex">\(К\)</span> классов, т.е. <span class="arithmatex">\(Y = \{1, \dots, K\}\)</span>. Для того, чтобы решать задачу многоклассовой классификации с помощью линейных моделей, нужно её свести к набору бинарных. Существует два подхода, как это сделать.</p>
+<h3 id="one-vs-all">Один против всех (One-vs-all)</h3>
+<p>Обучаем K линейных классификаторов <span class="arithmatex">\(b_1(x), \dots, b_K(x)\)</span>, выдающих оценки принадлежности классам <span class="arithmatex">\(1,…,K\)</span> соответственно. В случае с линейными моделями эти классификаторы будут иметь вид</p>
+<div class="arithmatex">\[
+b_k(x)=sgn(\langle w_k,x \rangle+w_{0k})
+\]</div>
+<p>Классификатор с номером <span class="arithmatex">\(k\)</span> будем обучать по выборке <span class="arithmatex">\((x_i,2\mathbb{I}[y_i=k]−1)_{i=1}^N\)</span>; иными словами, мы учим классификатор отличать <span class="arithmatex">\(k\)</span>-й класс от всех остальных.</p>
+<p>Логично, чтобы итоговый классификатор выдавал класс, соответствующий самому уверенному из бинарных алгоритмов.
+Уверенность можно в каком-то смысле измерить с помощью значений линейных функций:</p>
+<div class="arithmatex">\[
+a(x)=\arg \max_k(⟨w_k,x⟩+w_{0k})
+\]</div>
+<p>Говоря простыми словами, эта формула возвращает предсказание с самым большим отступом.</p>
+<p>Проблема этого подхода заключается в том, что каждый из классификаторов обучается на своей выборке и в таком случае “выходы классификаторов” будет иметь разный масштаб.</p>
+<p>Нормирование векторов весов может быть не самым лучшим решением.</p>
+<h3 id="all-versus-all">Все против всех (all-versus-all)</h3>
+<p>В этом варианте мы обучаем <span class="arithmatex">\(C^2_K\)</span> классификаторов <span class="arithmatex">\(a_{i, j}\)</span>, таких что <span class="arithmatex">\(i, j =1, ..., K, i \neq j\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">"Вспомним комбинаторику</p>
+<p><span class="arithmatex">\(С^2_K\)</span> – это количество сочетаний из K по 2. По формуле оно будет равно: <span class="arithmatex">\(C^k_n = \frac{n!}{k! (n-k)!} = \frac{K!}{2(K-2)!}\)</span>. Таким образом, если <span class="arithmatex">\(K=3\)</span>, то у нас будет обучить <span class="arithmatex">\(\frac{6}{2(3-2)}=3\)</span> классификатора, каждый из которых будет различать два конкретных класса.</p>
+</div>
+<p>В случае с линейными моделями это будут:</p>
+<div class="arithmatex">\[
+b_{ij}(x)=sgn(⟨w_{ij},x⟩+w_{0,ij})
+\]</div>
+<p>Чтобы классифицировать новый объект, подадим его на вход каждого из построенных бинарных классификаторов. Каждый из них проголосует за свой класс; в качестве ответа выберем тот класс, за который наберется больше всего голосов:</p>
+<div class="arithmatex">\[
+a(x)=\arg \max_k \sum_{i=1}^K\sum_{j≠i}\mathbb{I}[a_{ij}(x)=k]
+\]</div>
+<h3 id="_26">Многоклассовая логистическая регрессия</h3>
+<p>Пусть мы построили <span class="arithmatex">\(K\)</span> линейных моделей вида:</p>
+<div class="arithmatex">\[
+b_k(x) = \langle w_k, x\rangle + w_{0k}
+\]</div>
+<p>каждая из которых дает оценку принадлежности объекта одному из классов. Для того, чтобы преобразовать вектор оценок <span class="arithmatex">\(b_1(x), b_2(x), \dots, b_K(x)\)</span> в вероятности можно воспользоваться многопеременной логистической функцией, <span class="arithmatex">\(\text{softmax}(z_1, \dots, z_K)\)</span>:</p>
+<div class="arithmatex">\[
+\text{softmax}(z_1, \dots, z_K) = \left( \frac{\exp(z_1)}{\sum^K_{k=1} \exp(z^k)}, \dots, \frac{\exp(z_K)}{\sum^K_{k=1} \exp(z^k)}\right)
+\]</div>
+<p>В этом случае вероятность k-го класса будет выражаться как</p>
+<div class="arithmatex">\[
+P(y=k∣x,w) = \frac{\exp(\langle w_k, x\rangle + w_{0, k})}{\sum^K_{j=1} \exp(\langle w_j, x\rangle + w_{0, j})}
+\]</div>
+<p>Обучать эти веса предлагается с помощью метода максимального правдоподобия: так же, как и в случае с двухклассовой логистической регрессией:</p>
+<div class="arithmatex">\[
+∑_{i=1}^N \log ⁡P(y=y_i∣x_i,w)→\max_{⁡w_1,…,w_K}
+\]</div>
+<h4 id="_27">Метрики многоклассовой классификации</h4>
+<p>При количестве классов K больше двух, расчет метрик усложняется. Рассмотрим задачу Один-Против-Всех, т.е. где обучаются К классификаторов (решается K задач классификации от отделении i-го класса от всех прочих, рассмотренных как один другой).</p>
+<p>В каждой задаче считается своя матрица ошибок. Затем есть два варианта получения итогового значения метрики из KK матриц ошибок:</p>
+<ol>
+<li>Усредняем элементы матрицы ошибок (TP, FP, TN, FN) между бинарными классификаторами (например <span class="arithmatex">\(TP = \frac{1}{K} \sum^K_{i=1} TP_i\)</span>. Затем по одной усреднённой матрице ошибок считаем Precision, Recall, F-меру. Это называют <strong>микроусреднением</strong>.</li>
+<li>Считаем Precision, Recall для каждого классификатора отдельно, а потом усредняем. Это называют <strong>макроусреднением</strong>.</li>
+</ol>
+<p>Макроусреднее более предпочтительно в ситуации несбалансированного распределения классов, потому что усреднение происходит по нормализованным величинам.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

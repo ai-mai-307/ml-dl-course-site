@@ -17,7 +17,7 @@
 
 1. The Little Book of Deep Learning, Francois Fleuret. [Ссылка на книгу.](https://fleuret.org/francois/lbdl.html)
 2. Deep Learning Book. Ian Goodfellow and Yoshua Bengio and Aaron Courville. [Ссылка на книгу.](https://www.deeplearningbook.org/)
-2. Deep Learning: Foundations and Concepts. Chris Bishop, Hugh Bishop. [Сайт.](www.bishopbook.com)
+2. Deep Learning: Foundations and Concepts. Chris Bishop, Hugh Bishop. [Сайт.](https://www.bishopbook.com/)
 3. Deep Learning with PyTorch. Eli Stevens, Luca Antiga, Thomax Viehmann. [Ссылка на книгу.](https://isip.piconepress.com/courses/temple/ece_4822/resources/books/Deep-Learning-with-PyTorch.pdf)
 4. Digital Image Processing. 4th edition.[ Ссылка на книгу.](https://www.cl72.org/090imagePLib/books/Gonzales,Woods-Digital.Image.Processing.4th.Edition.pdf)
 5. Speech and Language Proccesing. [Ссылка на книгу.](https://web.stanford.edu/~jurafsky/slp3/)

@@ -1,0 +1,12 @@
+/* Светлая схема */
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:   #009df3; /* ваш основной */
+  --md-accent-fg-color:    #FF7A00; /* ваш акцент */
+}
+
+/* Тёмная схема */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:   #009df2;
+  --md-accent-fg-color:    #FF9A3E;
+}

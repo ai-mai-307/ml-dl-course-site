@@ -1,0 +1,3216 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ai-mai-307.github.io/ml-dl-course-site/ml/lecture_04/">
+      
+      
+        <link rel="prev" href="../lecture_03/">
+      
+      
+        <link rel="next" href="../hw_01/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели - Введение в машинное и глубокое обучение</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../styles/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-header__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Введение в машинное и глубокое обучение
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-nav__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Введение в машинное и глубокое обучение
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Расписание
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инструкции
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инструкции
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/assign_course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Запись на курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/complete_course_instructionds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как успешно пройти курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/llm_rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Добросовестное использование LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GitHub Classroom
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/howtoclassroom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как принять задания в GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/work_with_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с агентом-кодревьювером
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Yandex Datasphere
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Yandex Datasphere
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/clone_repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как склонировать репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/datasphere_commint_and_push/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как сделать комит и запушить его в репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/what_is_dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с датасетами
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/manage_budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как контролировать расходы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Классическое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Классическое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Первое знакомство с машинным обучением
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обучение с учителем. Линейные модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Решающие деревья
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Решающие деревья">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интуиция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное определение решающего дерева
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Формальное определение решающего дерева">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как осуществляется предсказание?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Свойства решающих деревьев
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Построение деревьев
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Построение деревьев">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Жадный алгоритм построения решающего дерева
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Критерии информативности
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Критерии информативности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Информативность в задаче регрессии
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Информативность в задаче регрессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MSE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Информативность в задаче классификации
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Информативность в задаче классификации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Энтропия
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gini-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Критерий Джини (Gini Index)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classification-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ошибка классификации (Classification Error)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Работа с признаками
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Работа с признаками">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Категориальные признаки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Работа с пропусками
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ансамблевые модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ансамблевые модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bias-variance-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bias-Variance Decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интуиция: от теоремы Кондорсе к ансамблям
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Бэггинг
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Бэггинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Влияние на смещение и разброс
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Случайный лес
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Случайный лес">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Математическое обоснование
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Математическое обоснование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Влияние на разброс
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Влияние на смещение
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевые гиперпараметры и их настройка
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключевые гиперпараметры и их настройка">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Глубина деревьев
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Количество признаков для сплита
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Количество деревьев
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Бустинг
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Бустинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основная идея
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Градиентный бустинг
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Градиентный бустинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Неформальное определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Объяснение на примере задачи регрессии
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обобщение на другие функции потерь
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обобщение на другие функции потерь">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интуиция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное обоснование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Особые случаи и примеры
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обучение базового алгоритма
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Скорость обучения (Learning Rate)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Предварительный анализ данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Обучение линейных моделей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №4. Обучение деревьев решений и ансамблей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exam_ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Глубокое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Глубокое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Основные понятия глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Обработка изображений с помощью глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обработка аудиосигнала с помощью глубокого оубчения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Обучение многослойного персептрона
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Семантическая сегментация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Поисх похожих композиций с помощью автоэнкодера
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/exam_dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/dl_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Решающие деревья
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Решающие деревья">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интуиция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное определение решающего дерева
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Формальное определение решающего дерева">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как осуществляется предсказание?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Свойства решающих деревьев
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Построение деревьев
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Построение деревьев">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Жадный алгоритм построения решающего дерева
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Критерии информативности
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Критерии информативности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Информативность в задаче регрессии
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Информативность в задаче регрессии">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MSE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Информативность в задаче классификации
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Информативность в задаче классификации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Энтропия
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gini-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Критерий Джини (Gini Index)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classification-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ошибка классификации (Classification Error)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Работа с признаками
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Работа с признаками">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Категориальные признаки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Работа с пропусками
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ансамблевые модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ансамблевые модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bias-variance-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bias-Variance Decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интуиция: от теоремы Кондорсе к ансамблям
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Бэггинг
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Бэггинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Влияние на смещение и разброс
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Случайный лес
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Случайный лес">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Математическое обоснование
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Математическое обоснование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Влияние на разброс
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Влияние на смещение
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевые гиперпараметры и их настройка
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключевые гиперпараметры и их настройка">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Глубина деревьев
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Количество признаков для сплита
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Количество деревьев
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Бустинг
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Бустинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основная идея
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Градиентный бустинг
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Градиентный бустинг">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Неформальное определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Объяснение на примере задачи регрессии
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обобщение на другие функции потерь
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обобщение на другие функции потерь">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интуиция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное обоснование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Особые случаи и примеры
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обучение базового алгоритма
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Скорость обучения (Learning Rate)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели</h1>
+
+<h2 id="_1">Решающие деревья</h2>
+<h3 id="_2">Интуиция</h3>
+<p>Мы рассмотрели линейные модели, которые обладают рядом важным достоинств:</p>
+<ul>
+<li>они быстро обучаются</li>
+<li>они способны работать с большим количеством объектов и признаков</li>
+<li>они имеют небольшое количество параметров</li>
+<li>они легко регуляризуются</li>
+</ul>
+<p>Однако они могут эффективно восстанавливать только линейные зависимости между целевой переменной и признаками.</p>
+<p>Существует семейство моделей, которые позволяют восстанавливать нелинейные зависимости произвольной сложности – <strong>решающие деревья.</strong></p>
+<p>Решающие деревья хорошо описывают процесс принятия решения во многих жизненных ситуациях. Например, вы – страховой агент и вам необходимо принять решение, страховать ли автомобиль клиента или нет. Вы проверяете, соответствует ли клиент установленным критериям:</p>
+<p><img alt="1762949798810" src="../image/lecture_04/1762949798810.png" /></p>
+<p>Такой алгоритм, как и многие другие, очень хорошо описывается решающим деревом</p>
+<h3 id="_3">Формальное определение решающего дерева</h3>
+<p>(def) Рассмотрим бинарное дерево, в котором:</p>
+<ul>
+<li>каждой внутренней вершине <span class="arithmatex">\(v\)</span> приписана функция (или предикат) <span class="arithmatex">\(β_v := X → {0, 1}\)</span>;</li>
+<li>каждой листовой вершине v приписан прогноз <span class="arithmatex">\(c_v \in Y\)</span> (в случае с классификацией листу также может быть приписан вектор вероятностей).</li>
+</ul>
+<h4 id="_4">Как осуществляется предсказание?</h4>
+<p>Напомним, <span class="arithmatex">\(a(x)\)</span> – это алгоритм предсказания, “решающая функция”. Для каждого элемента выборки <span class="arithmatex">\(x\)</span> он стартует от корня и движется к некоторому листу. В очередной внутренней вершине <span class="arithmatex">\(v\)</span> проход продолжится вправо, если <span class="arithmatex">\(B_v(x)=1\)</span>, и влево, если <span class="arithmatex">\(B_v(x)=0\)</span>. Проход продолжается до момента, пока не будет достигнут некоторый лист, и ответом алгоритма на объекте <span class="arithmatex">\(x\)</span> считается прогноз <span class="arithmatex">\(c_v\)</span>​, приписанный этому листу.</p>
+<p>Предикат <span class="arithmatex">\(B_v(x)\)</span>, строго говоря, может быть любой функцией, но на практике используют сравнение с порогом <span class="arithmatex">\(t\)</span> <span class="arithmatex">\(\in \mathbb{R}\)</span> по какому-то <span class="arithmatex">\(j\)</span>-му признаку.
+$$
+B_v(x, j, t) = [x_j \leq t]
+$$</p>
+<h4 id="_5">Свойства решающих деревьев</h4>
+<ul>
+<li>выученная функция — кусочно-постоянная, из-за чего производная равна нулю везде, где задана. Следовательно, о <strong>градиентных методах при поиске оптимального решения можно забыть</strong>;</li>
+<li>дерево решений (в отличие от, например, линейной модели) н<strong>е сможет экстраполировать зависимости за границы области значений обучающей выборки</strong>;</li>
+<li>дерево решений способно идеально приблизить обучающую выборку и ничего не выучить (то есть такой классификатор будет обладать низкой обобщающей способностью): для этого достаточно построить такое дерево, в каждый лист которого будет попадать только один объект. Следовательно, <strong>при обучении нам надо не просто приближать обучающую выборку как можно лучше, но и стремиться оставлять дерево как можно более простым, чтобы результат обладал хорошей обобщающей способностью</strong>.</li>
+</ul>
+<h3 id="_6">Построение деревьев</h3>
+<p>В идеальной ситуации мы хотим получить оптимальное дерево решений. Это такое дерево, которое демонстрирует минимальную ошибку при минимально возможной глубине. Проблема в том, что это задача является NP-полной, то есть не существует такого алгоритма, который бы решил её за полиномиальное время</p>
+<div class="admonition question">
+<p class="admonition-title">Что такое P и NP полные задачи простыми словами?</p>
+<blockquote>
+<p><strong>P-задачи</strong> — это класс задач, которые можно <em>решить</em> "быстро", то есть за полиномиальное время (например, <span class="arithmatex">\(O(n^2)\)</span>) на обычном компьютере.</p>
+<p><strong>NP-задачи</strong> — это класс задач, для которых можно "быстро" <em>проверить</em> правильность предложенного решения  (за полиномиальное время), но на поиск этого решения может уйти много времени (возможно, мы найдем его за экспоненциальное время).</p>
+<p><strong>NP-полные задачи</strong> — это самые сложные задачи в классе NP. Если бы для какой-то одной NP-полной задачи нашли быстрый алгоритм решения, то и для всех остальных задач в классе NP его тоже можно было бы найти. Задача построения оптимального (самого маленького и точного) решающего дерева как раз относится к этому классу.</p>
+</blockquote>
+</div>
+<p>Тем не менее, мы все еще хотим находить “хорошие” решающие деревья, что можно сделать с помощью <strong>жадного алгоритма</strong>.</p>
+<div class="admonition question">
+<p class="admonition-title">Что такое жадный алгоритм?</p>
+<blockquote>
+<p><strong>Жадный алгоритм</strong> — это алгоритм, который на каждом шаге принимает <strong>локально оптимальное решение</strong>, надеясь, что в итоге получится <strong>глобально оптимальное</strong> решение. Он выбирает наилучший вариант "здесь и сейчас", не задумываясь о глобально оптимальном решении.
+В контексте построения решающего дерева это означает, что на каждой вершине мы выбираем такой признак и такое пороговое значение для предиката, при котором получается наилучшее в моменте разделение данных, попавших в данную вершину, без возможности “перестроить” её в дальнейшем.</p>
+</blockquote>
+</div>
+<h4 id="_7">Жадный алгоритм построения решающего дерева</h4>
+<p>Пусть <span class="arithmatex">\(X\)</span> — исходное множество объектов обучающей выборки, а <span class="arithmatex">\(X_m\)</span>— множество объектов, попавших в текущий лист (в самом начале <span class="arithmatex">\(X_m=X\)</span>). Тогда жадный алгоритм можно верхнеуровнево описать следующим образом:</p>
+<ol>
+<li>Создаём вершину <span class="arithmatex">\(v\)</span>.</li>
+<li>Если выполнен <em>критерий остановки</em> <span class="arithmatex">\(Stop(X_m)\)</span>, то останавливаемся, объявляем эту вершину листом и ставим ей в соответствие ответ <span class="arithmatex">\(Ans(X_m)\)</span>, после чего возвращаем её.</li>
+<li>Иначе: находим предикат (иногда ещё говорят <em>сплит</em>) <span class="arithmatex">\(B_j\)</span>,<span class="arithmatex">\(t​\)</span>, который определит наилучшее разбиение текущего множества объектов <span class="arithmatex">\(X_m\)</span>​ на две подвыборки <span class="arithmatex">\(X_l\)</span>​ и <span class="arithmatex">\(X_r\)</span>​, <strong>==максимизируя==</strong> <em>критерий ветвления</em> <span class="arithmatex">\(Branch(X_m, j, t)\)</span></li>
+<li>Для <span class="arithmatex">\(X_l​\)</span> и <span class="arithmatex">\(X_r\)</span>​ рекурсивно повторим процедуру.</li>
+</ol>
+<p>Рассмотрим ряд вспомогательных функций этого алгоритма, которые надо выбрать так, чтобы итоговое дерево было способно минимизировать <span class="arithmatex">\(L\)</span>:</p>
+<ul>
+<li><span class="arithmatex">\(Ans(X_m)\)</span> – вычисляет ответ для листа по попавшим в него объектам;<ul>
+<li>в случае задачи классификации — это может быть метка самого частого класса или оценка дискретного распределения вероятностей классов для объектов, попавших в этот лист;</li>
+<li>в случае задачи регрессии — это может быть среднее , медиана или другой статистическая характеристика таргета;</li>
+</ul>
+</li>
+<li><span class="arithmatex">\(Stop(X_m)\)</span> – функция, которая решает, нужно ли продолжать ветвление или пора остановиться. Это может быть какое-то тривиальное правило: например, остановиться только в тот момент, когда объекты в листе получились достаточно однородными и/или их не слишком много.</li>
+<li><span class="arithmatex">\(Branch(X_m, feature, value)\)</span> – функция, измеряющая, насколько хорошо предлагаемое разбиение. Чаще всего эта функция оценивает, насколько улучшится некоторая финальная метрика качества дерева в случае, если получившиеся два листа будут терминальными, по сравнению с ситуацией, когда сама исходная вершина — это лист. Выбирается такое разбиение, который даёт наиболее существенное улучшение.</li>
+</ul>
+<p>Таким образом, конкретный метод построения решающего дерева определяется набором из четырёх ключевых компонент:</p>
+<ol>
+<li><strong>Функция потерь (<span class="arithmatex">\(L\)</span>):</strong> Глобальная цель, которую дерево должно минимизировать (например, log-loss для классификации, MSE для регрессии).</li>
+<li><strong>Критерий ветвления (<span class="arithmatex">\(Branch\)</span>):</strong> Локальный критерий, который на каждом шаге выбирает наилучшее разбиение, служащее прокси для минимизации <span class="arithmatex">\(L\)</span>.</li>
+<li><strong>Критерий остановки (<span class="arithmatex">\(Stop\)</span>):</strong> Правило, предотвращающее переобучение и определяющее момент прекращения роста дерева.</li>
+<li><strong>Ответ для листа (<span class="arithmatex">\(Ans\)</span>):</strong> Алгоритм формирования итогового предсказания в терминальном узле.</li>
+</ol>
+<p>Именно вариации этих компонент (особенно критерия ветвления <span class="arithmatex">\(Branch\)</span>) порождают всё многообразие алгоритмов построения решающих деревьев, таких как CART, ID3, C4.5.</p>
+<h4 id="_8">Критерии информативности</h4>
+<p>Пусть <span class="arithmatex">\(X_m\)</span> – множество объектов, попавших в вершину, разбиваемую на данном шаге. <span class="arithmatex">\(X_l\)</span> и <span class="arithmatex">\(X_r\)</span> – объекты, попадающие в левое и право поддерево соответственно при заданном предикате. Также у нас определена функция потерь <span class="arithmatex">\(L(y_i, c)\)</span>, где <span class="arithmatex">\(c \in \mathbb{R}\)</span> – ответ дерева.</p>
+<p>В момент, когда мы ищем оптимальное разбиение <span class="arithmatex">\(X_m=X_l ⊔X_r\)</span>​, мы можем вычислить для объектов из <span class="arithmatex">\(X_m\)</span>​ тот константный таргет <span class="arithmatex">\(c\)</span>, которые предсказало бы дерево, будь текущая вершина терминальной, и связанное с ними значение исходного функционала качества <span class="arithmatex">\(L\)</span>. А именно — константа c должна минимизировать среднее значение функции потерь:
+$$
+\frac{1}{|X_m|} \sum_{(x_i, y_i) \in X_m} L(y_i, c)
+$$</p>
+<p>Оптимальное значение этой величины называют <strong>информативностью</strong> или <strong>impurity</strong>.
+$$
+H(X_m) = \min_{c \in Y} \frac{1}{|X_m|} \sum_{(x_i, y_i) \in X_m} L(y_i, c)
+$$
+Она показывает, насколько хорошо объекты можно приблизить константным значением. Иными словами её значение отвечает на вопрос: как бы хорошо текущий лист предсказывал значения для элементов из X_m, будь он терминальным (т.е. последним?). Чем <strong>меньше</strong> это значение, тем <strong>лучше</strong>.</p>
+<p>Дальше мы делаем разбиение и хотим узнать: стал ли результат более информативным? Для этого мы можем посчитать следующую разность (подробный вывод опущен):
+$$
+H(X_m) - \frac{|X_l|}{|X_m|}H(X_l) - \frac{|X_r|}{|X_m|} H(X_r)
+$$</p>
+<p>которую для симметрии умножают на |X_m| и получают:
+$$
+Branch(X_m, j, t) = |X_m| ⋅ H(X_m) - |X_l|⋅ H(X_l) - |X_r|⋅H(X_r) 
+$$
+Получившаяся величина не отрицательна и чем она <strong>больше</strong>, тем <strong>лучше</strong>.</p>
+<h5 id="_9">Информативность в задаче регрессии</h5>
+<h6 id="mse">MSE</h6>
+<p>Пусть мы решаем задачу регрессии с помощью решающего дерева и в качестве функции потерь используем MSE. В таком случае информативность будет выглядеть так:
+$$
+H(X_m) = \min_{c \in Y} \frac{1}{|X_m|} \sum_{(x_i, y_i) \in X_m} (y_i - c)^2
+$$</p>
+<p>Зная, что для константного регрессора для минимизации MSE лучше всего возвращать среднее значение  (т.е. <span class="arithmatex">\(c = \frac{\sum y_i}{|X_m}\)</span>), то при подстановке в формулу информативности выше имеем:</p>
+<p>$$
+H(X_m) = \min_{c \in Y} \frac{1}{|X_m|} \sum_{(x_i, y_i) \in X_m} (y_i - \overline{y})^2
+$$
+То есть при жадной минимизации MSE информативность — это оценка дисперсии таргетов для объектов, попавших в лист. Получается очень стройная картинка: оценка значения в каждом листе — это среднее, а выбирать сплиты надо так, чтобы сумма дисперсий в листьях была как можно меньше.</p>
+<h5 id="_10">Информативность в задаче классификации</h5>
+<p>В задаче классификации с <span class="arithmatex">\(K\)</span> классами мы можем определить информативностm вершины <span class="arithmatex">\(X_m\)</span> через неоднородность распределения классов в этой вершине. Пусть <span class="arithmatex">\(p_k = \frac{|X_m^{(k)}|}{|X_m|}\)</span> — доля объектов <span class="arithmatex">\(k\)</span>-го класса в вершине <span class="arithmatex">\(X_m\)</span>. Тогда мы можем определить несколько критериев информативности.</p>
+<h6 id="_11">Энтропия</h6>
+<p>Представьте, что вы тянете шары из мешка. Если в мешке шары только одного цвета, вы абсолютно уверены в результате — неопределенность равна нулю. Если цвета перемешаны равномерно, предсказать цвет следующего шара — неопределенность максимальна. Энтропия — это мера этой самой неопределенности.</p>
+<p>Энтропия Шеннона для распределения классов в узле определяется как:
+$$
+H(X_m) = -\sum_{k=1}^K p_k \log_2 p_k
+$$
+<strong>Свойства и пояснения к выражению:</strong></p>
+<ul>
+<li>Энтропия <strong>максимальна</strong>, когда все классы равновероятны (<span class="arithmatex">\(p_k = 1/K\)</span> для всех <span class="arithmatex">\(k\)</span>). В этом случае <span class="arithmatex">\(H_{max} = \log_2 K\)</span>. Это ситуация, при которой вершина максимально неинформативна.</li>
+<li>Энтропия <strong>равна нулю</strong>, когда все объекты в вершине принадлежат одному классу (<span class="arithmatex">\(p_k = 1\)</span> для какого-то <span class="arithmatex">\(k\)</span>). Неопределенность отсутствует.</li>
+<li>Основание логарифма 2 обусловлено исторически (информационная теория) и дает измерение в <strong>битах</strong>. Можно использовать и натуральный логарифм, это не повлияет на процесс оптимизации, так как изменит значения лишь на постоянный множитель.</li>
+<li>С точки зрения теории вероятностей, минимизация энтропии тесно связана с <strong>максимизацией правдоподобия</strong> для модели, в которой метки в листе генерируются из категориального распределения. Чем чище лист, тем выше вероятность (правдоподобие) наблюдать в нем именно те метки, которые там есть.</li>
+</ul>
+<p>Таким образом, используя энтропию в качестве <span class="arithmatex">\(H(X_m)\)</span>, мы стремимся к такого рода разбиениям, которые максимально уменьшают неопределенность в дочерних узлах.</p>
+<h6 id="gini-index">Критерий Джини (Gini Index)</h6>
+<p>Критерий Джини можно представить как вероятность ошибки, если мы случайным образом выберем два объекта из узла и они окажутся разных классов. Мы хотим минимизировать эту вероятность.
+$$
+H(X_m) = \sum_{k=1}^{K} p_k (1 - p_k) = 1 - \sum_{k=1}^{K} p_k^2
+$$
+<strong>Свойства и пояснения к выражению:</strong></p>
+<ul>
+<li>Критерий Джини <strong>максимален</strong>, когда распределение классов равномерно (<span class="arithmatex">\(p_k = 1/K\)</span>).</li>
+<li>Он <strong>равен нулю</strong> в чистой вершине (<span class="arithmatex">\(p_k=1\)</span> для какого-то <span class="arithmatex">\(k\)</span>).</li>
+<li>На практике критерий Джини и энтропия часто приводят к очень похожим результатам. Критерий Джини вычисляется немного быстрее, так как не требует вычисления логарифмов. Энтропия же сильнее "штрафует" неоднородные, но не чистые выершины, и может порождать немного более сбалансированные деревья.</li>
+</ul>
+<h6 id="classification-error">Ошибка классификации (Classification Error)</h6>
+<p>Это самый простой критерий, который измеряет долю неверно классифицированных объектов, если бы мы предсказывали в узле самый частый класс.
+$$
+H(X_m) = 1 - \max_k p_k
+$$
+<strong>Свойства и пояснения к выражению:</strong></p>
+<ul>
+<li>Этот критерий менее чувствителен к изменениям в распределении классов по сравнению с энтропией и Джини. Например, для бинарной классификации в узле с распределением [0.6, 0.4] и [0.6, 0.4] ошибка классификации будет одинаковой (0.4), в то время как энтропия и Джини уловят разницу в "чистоте".</li>
+<li>Из-за этой слабой чувствительности он редко используется для построения деревьев, так как хуже направляет процесс оптимизации (жадный алгоритм может "застрять").</li>
+</ul>
+<p>Независимо от выбора конкретного критерия <span class="arithmatex">\(H\)</span> (Энтропия, Джини), процесс ветвления остается единым: мы ищем разбиение, которое <strong>максимизирует</strong> величину
+$$
+Branch(X_m, j, t) = |X_m| \cdot H(X_m) - |X_l| \cdot H(X_l) - |X_r| \cdot H(X_r)$$
+Эту величину называют <strong>приростом информации (Information Gain)</strong> в случае энтропии или <strong>уменьшением примеси (Impurity Reduction)</strong> в общем случае.</p>
+<h3 id="_12">Работа с признаками</h3>
+<h4 id="_13">Категориальные признаки</h4>
+<p>Хотя деревья могут работать с категориальными признаками, создавая сплиты вида "принадлежит ли значение множеству <span class="arithmatex">\(C_r\)</span>", перебор всех <span class="arithmatex">\(2^{M-1}-1\)</span> возможных разбиений для признака с <span class="arithmatex">\(M\)</span> категориями вычислительно затратно. Решение этой проблемы — <strong>упорядочивание категорий</strong>, что позволяет работать с ними как с вещественными признаками, используя бинарные сплиты "<span class="arithmatex">\(\leq\)</span> порога".</p>
+<p>Для этого в задаче <strong>бинарной классификации</strong> категории упорядочивают по возрастанию доли положительного класса, а в <strong>регрессии</strong> — по среднему значению целевой переменной. Доказано, что оптимальный сплит, найденный таким образом, будет оптимальным и среди всех возможных разбиений.</p>
+<h4 id="_14">Работа с пропусками</h4>
+<p>Деревья могут эффективно обрабатывать пропущенные значения без необходимости предварительной импутации. <strong>На этапе обучения</strong> при выборе наилучшего сплита по признаку объекты с пропусками временно игнорируются. После выбора сплита эти объекты направляются в <strong>оба дочерних узла</strong> с весами, пропорциональными размерам этих подмножеств.</p>
+<p><strong>На этапе применения</strong> модели, если при проходе по дереву встречается пропуск в признаке, по которому нужно сделать сплит, объект аналогично отправляется по обеим ветвям. Итоговый прогноз формируется как взвешенное среднее прогнозов от всех листьев, в которые попал объект, что позволяет полноценно использовать всю доступную информацию.</p>
+<h2 id="_15">Ансамблевые модели</h2>
+<p>Прежде чем перейти к рассмотрению так называемых <strong>ансамблей</strong> или композиций моделей, рассмотрим математический инструмент декомпозиции ошибки предсказания модели на три состаляющие: смещение, разброс и шум.</p>
+<h3 id="bias-variance-decomposition">Bias-Variance Decomposition</h3>
+<p>Пусть:</p>
+<ul>
+<li><span class="arithmatex">\(X\)</span> — обучающая выборка</li>
+<li><span class="arithmatex">\(x\)</span> — элемент из тестового множества</li>
+<li><span class="arithmatex">\(y = f(x) + \epsilon\)</span> — целевая зависимость (<span class="arithmatex">\(f\)</span> — истинная функция, <span class="arithmatex">\(\epsilon\)</span> — шум с дисперсией <span class="arithmatex">\(\sigma^2\)</span>)</li>
+<li><span class="arithmatex">\(a(x, X)\)</span> — предсказание алгоритма <span class="arithmatex">\(a\)</span>, обученного на <span class="arithmatex">\(X\)</span>, в точке <span class="arithmatex">\(x\)</span></li>
+<li><span class="arithmatex">\(\mathbb{E}_{x}\)</span>​ — среднее по всем тестовым точкам и <span class="arithmatex">\(\mathbb{E}_{X, \epsilon}\)</span>​ — среднее по всем обучающим выборкам <span class="arithmatex">\(X\)</span> и случайному шуму <span class="arithmatex">\(ϵ\)</span></li>
+</ul>
+<p>Тогда ожидаемая ошибка по всем возможным выборкам <span class="arithmatex">\(X\)</span> и шуму <span class="arithmatex">\(\epsilon\)</span> равна:</p>
+<div class="arithmatex">\[
+% Ожидаемая ошибка
+Q(a) = \mathbb{E}_{x} \mathbb{E}_{X, \epsilon} \left[ y(x, \epsilon) - a(x, X) \right]^2
+\]</div>
+<p>Эту ошибку можно разложить на три компоненты:</p>
+<div class="arithmatex">\[
+% Bias-Variance Decomposition
+Q(a) = \underbrace{\mathbb{E}_{x} \left[ \text{bias}_X^2 a(x, X) \right]}_{\text{Смещение}} + \underbrace{\mathbb{E}_{x} \left[ \mathbb{V}_{X} \left[ a(x, X) \right] \right]}_{\text{Разброс}} + \underbrace{\sigma^2}_{\text{Шум}}
+\]</div>
+<p>где:</p>
+<ul>
+<li><strong>Смещение</strong>: <span class="arithmatex">\(\text{bias}_X a(x, X) = f(x) - \mathbb{E}_{X} \left[ a(x, X) \right]\)</span> — среднее отклонение предсказаний от истинного значения</li>
+<li><strong>Разброс</strong>: <span class="arithmatex">\(\mathbb{V}_{X} \left[ a(x, X) \right] = \mathbb{E}_{X} \left[ \left( a(x, X) - \mathbb{E}_{X} \left[ a(x, X) \right] \right)^2 \right]\)</span> — вариативность предсказаний при разных обучающих выборках</li>
+<li><strong>Шум</strong>: <span class="arithmatex">\(\sigma^2 = \mathbb{E}_{x} \mathbb{E}_{\epsilon} \left[ (y(x, \epsilon) - f(x))^2 \right]\)</span> — неустранимая ошибка данных</li>
+</ul>
+<p>Шум невозможно устранить, но на две другие компоненты можно повлиять. Часто попытка уменьшить смещение путем усложнения модели увеличивает разброс, и наоборот. Далее мы рассмотрим с вами подход к решению этой задачи.</p>
+<h3 id="_16">Интуиция: от теоремы Кондорсе к ансамблям</h3>
+<p><strong>Теореме Кондорсе о присяжных</strong> гласит, что если <strong>каждый</strong> член жюри (коллегии присяжных) имеет <strong>независимое</strong> мнение и вероятность вынести верный вердикт <strong>больше <span class="arithmatex">\(\frac{1}{2}\)</span></strong>, то коллективное решение большинства будет более точным, чем решение любого отдельного члена.</p>
+<p>Следуя этой интуиции, можно прийти к идее объединения алгоритмов машинного обучения в <strong>ансамбли</strong> (композиции). Далее мы рассмотрим, как различные способы объединения моделей помогают уменьшить смещение или разброс предсказаний.</p>
+<p>Существует несколько наиболее популярных вариантов объединения алгоритмов в ансамбли: бэггинг, случайный лес и бустинг. Рассмотрим их по порядку.</p>
+<h3 id="_17">Бэггинг</h3>
+<h4 id="_18">Определение</h4>
+<p><strong>Бэггинг</strong> (Bagging - Bootstrap Aggregation) — это метод построения ансамблей, направленный на <strong>уменьшение разброса предсказаний без увеличения смещения.</strong></p>
+<p>Алгоритм бэггинга:</p>
+<ol>
+<li>Из исходной обучающей выборки размера <span class="arithmatex">\(n\)</span> генерируется <span class="arithmatex">\(k\)</span> <strong>бутстреп-выборок</strong> <span class="arithmatex">\(X_1, \dots, X_k\)</span> путем выборки с возвращением (каждая выборка также имеет размер <span class="arithmatex">\(n\)</span>)</li>
+<li>На каждой бутстреп-выборке <span class="arithmatex">\(X_i\)</span> обучается <strong>базовая модель</strong> <span class="arithmatex">\(b_i(x) = b(x, X_i)\)</span> с помощью некоторого алгоритма <span class="arithmatex">\(b\)</span></li>
+<li>Итоговое предсказание ансамбля получается <strong>усреднением</strong> предсказаний всех базовых моделей: <span class="arithmatex">\(a(x) = \frac{1}{k} \sum_{i=1}^{k} b_i(x)\)</span></li>
+</ol>
+<h4 id="_19">Влияние на смещение и разброс</h4>
+<p><strong>Смещение</strong> ансамбля равно смещению отдельной базовой модели</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{bias}_X a(x,X) &amp;= f(x) - \mathbb{E}_X [a(x,X)] \\
+&amp;= f(x) - \mathbb{E}_X \left[ \frac{1}{k} \sum_{i=1}^{k} b(x,X_i) \right] \\
+&amp;= f(x) - \frac{1}{k} \sum_{i=1}^{k} \mathbb{E}_X [b(x,X_i)] \\
+&amp;= f(x) - \mathbb{E}_X b(x,X) = \color{RED} \text{bias}_X b(x,X)
+\end{aligned}
+\]</div>
+<p><strong>Разброс</strong> ансамбля зависит от ковариации между базовыми моделями:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbb{V}_X [a(x,X)] &amp;= \frac{1}{k^2} \sum_{i=1}^{k} \mathbb{V}_X b(x,X_i) + \frac{1}{k^2} \sum_{i \neq j} \text{cov}(b(x,X_i), b(x,X_j)) \\
+&amp;= \frac{1}{k} \mathbb{V}_X b(x,X) + \frac{k-1}{k} \cdot \text{cov}(b(x,X_i), b(x,X_j))
+\end{aligned}
+\]</div>
+<p>Если базовые модели <strong>некоррелированы</strong>, разброс уменьшается в <span class="arithmatex">\(k\)</span> раз:</p>
+<div class="arithmatex">\[
+\mathbb{V}_X [a(x,X)] = \color{RED} \frac{1}{k} \mathbb{V}_X b(x,X)
+\]</div>
+<p>Таким образом:</p>
+<ul>
+<li>Бэггинг <strong>не уменьшает смещение</strong> — оно остается таким же, как у базового алгоритма</li>
+<li>Бэггинг <strong>уменьшает разброс</strong> за счет усреднения предсказаний множества моделей</li>
+<li>Максимальное уменьшение разброса достигается при <strong>независимости</strong> базовых моделей</li>
+<li>На практике базовые модели часто коррелированы, поэтому реальное уменьшение разброса меньше теоретического максимума</li>
+</ul>
+<p>Это делает бэггинг особенно эффективным для <strong>неустойчивых</strong> алгоритмов (например, решающих деревьев), чьи предсказания сильно зависят от обучающей выборки.</p>
+<h3 id="_20">Случайный лес</h3>
+<p>Случайный лес развивает идею бэггинга, решая его ключевую проблему — <strong>корреляцию между деревьями</strong> в ансамбле. В то время как в обычном бэггинге деревья, обученные на пересекающихся выборках, часто оказываются коррелированными, случайный лес вводит дополнительный источник случайности — <strong>метод случайных подпространств</strong> (Random Subspaces).</p>
+<p>Алгоритм построения случайного леса:</p>
+<ol>
+<li>Для каждого дерева <span class="arithmatex">\(i\)</span>:<ul>
+<li>Генерируется <strong>бутстреп-выборка</strong> <span class="arithmatex">\(X_i\)</span> того же размера, что и исходная выборка <span class="arithmatex">\(X\)</span></li>
+<li>В процессе обучения дерева в каждой вершине <strong>случайно выбирается подмножество признаков</strong> размера <span class="arithmatex">\(n &lt; N\)</span> (где <span class="arithmatex">\(N\)</span> — полное число признаков)</li>
+<li>Среди выбранных признаков ищется оптимальный сплит</li>
+</ul>
+</li>
+<li>Предсказание ансамбля получается <strong>усреднением</strong> (регрессия) или <strong>голосованием</strong> (классификация) предсказаний отдельных деревьев</li>
+</ol>
+<h4 id="_21">Математическое обоснование</h4>
+<p>В случайном лесу базовый алгоритм зависит от двух источников случайности: обучающей выборки <span class="arithmatex">\(X_i\)</span> и случайного выбора признаков <span class="arithmatex">\(\Theta_i\)</span>:
+$$
+b_i(x)=b(x,X_i,Θ_i)
+$$</p>
+<h5 id="_22">Влияние на разброс</h5>
+<p>Выражение для разброса ансамбля с учетом случайности признаков:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbb{V}[a(x)] &amp;= \mathbb{V}_{X,\Theta} \left[ \frac{1}{k} \sum_{i=1}^{k} b(x, X_i, \Theta_i) \right] \\
+&amp;= \frac{1}{k} \mathbb{V}_{X,\Theta}[b(x,X,\Theta)] + \frac{k-1}{k} \cdot \rho \cdot \mathbb{V}_{X,\Theta}[b(x,X,\Theta)]
+\end{aligned}
+\]</div>
+<p>где <span class="arithmatex">\(\rho\)</span> — средняя корреляция между деревьями.</p>
+<p>Случайное подпространство признаков значительно уменьшает ковариацию между деревьями:
+$$
+\text{cov}(b(x, X_i, \Theta_i), b(x, X_j, \Theta_j)) \ll \text{cov}(b(x, X_i), b(x, X_j))
+$$</p>
+<p>Это происходит из-за того, что даже при пересекающихся бутстреп-выборках, разные случайные наборы признаков приводят к построению различных деревьев, принимающих решения на основе разных подмножеств признаков.</p>
+<h5 id="_23">Влияние на смещение</h5>
+<p>Случайное подпространство может незначительно увеличить смещение:
+$$
+\text{bias}[a(x)] = f(x) - \mathbb{E}_{X,\Theta}[a(x)] \geq \text{bias}[b(x,X)]
+$$</p>
+<p>Ограничение доступных признаков в каждом узле может помешать дереву найти оптимальный сплит, делая каждое отдельное дерево "слабее". Однако на практике это увеличение смещения обычно незначительно и перевешивается существенным уменьшением разброса.</p>
+<h4 id="_24">Ключевые гиперпараметры и их настройка</h4>
+<h5 id="_25">Глубина деревьев</h5>
+<p>Какой стоит выбрать глубины обучающего дерева? Существует эмпирическое правило:</p>
+<ul>
+<li><strong>Неглубокие деревья</strong>: низкая дисперсия и высокое смещение</li>
+<li><strong>Глубокие деревья</strong>: высокая дисперсия и низкое смещение</li>
+</ul>
+<p>Поскольку бэггинг уменьшает разброс, в случайном лесу используют <strong>глубокие деревья</strong> — их высокий разброс компенсируется ансамблированием, а низкое смещение сохраняется.</p>
+<h5 id="_26">Количество признаков для сплита</h5>
+<p>Сколько признаков мы должны случайно отбирать? Ограничение числа признаков управляет корреляцией между деревьями:</p>
+<ul>
+<li><strong>Больше признаков</strong> → выше корреляция → слабее эффект ансамблирования</li>
+<li><strong>Меньше признаков</strong> → отдельные деревья слабее.</li>
+</ul>
+<p>Практические рекомендации:</p>
+<ul>
+<li>Для <strong>классификации</strong>: <span class="arithmatex">\(\sqrt{N}\)</span> признаков</li>
+<li>Для <strong>регрессии</strong>: <span class="arithmatex">\(N/3\)</span> признаков</li>
+</ul>
+<h5 id="_27">Количество деревьев</h5>
+<p>Теоретически увеличение количества деревьев <span class="arithmatex">\(k\)</span> уменьшает разброс:
+$$
+\mathbb{V}_X [a(x,X)] = \frac{1}{k} \mathbb{V}_X b(x,X) + \frac{k-1}{k} \cdot \text{cov}(b(x,X_i), b(x,X_j))
+$$
+На практике количество деревьев выбирают, выполняют следующие действия</p>
+<ul>
+<li>Строят график ошибки от количества деревьев</li>
+<li>Останавливаются, когда ошибка перестает значимо уменьшаться</li>
+<li>Учитывают вычислительные ограничения (хотя алгоритм хорошо распараллеливается)</li>
+</ul>
+<p>Случайный лес демонстрирует, что для эффективного ансамблирования достаточно сделать базовые алгоритмы <strong>достаточно разнообразными</strong>, а не строго независимыми.</p>
+<h3 id="_28">Бустинг</h3>
+<h4 id="_29">Основная идея</h4>
+<p>В отличие от бэггинга, где базовые алгоритмы обучаются <strong>параллельно и независимо</strong>, бустинг использует <strong>последовательный</strong> подход. Каждый следующий базовый алгоритм в бустинге специально обучается для исправления ошибок, сделанных предыдущими алгоритмами ансамбля. Как следствие, <strong>итоговая композиция будет иметь меньшее смещение, чем каждый отдельный базовый алгоритм</strong> (хотя уменьшение разброса также может происходить).</p>
+<p>Поскольку основная цель бустинга — уменьшение смещения, в качестве базовых алгоритмов часто выбирают алгоритмы с высоким смещением и небольшим разбросом.</p>
+<p>Рассмотрим подробнее, как работает данный вид ансамблирования на примере самого популярной его реализации – <strong>градиентного бустинга</strong>.</p>
+<h2 id="_30">Градиентный бустинг</h2>
+<p>Для интуитивного понимания идеи, стоящей за градиентным бустингом, можно поразмышлять над двумя аналогиями:</p>
+<ol>
+<li>Представьте, что гольфист пытается загнать мяч в лунку. Первый удар (первая модель) перемещает мяч из начального положения ближе к цели, но не точно в лунку. Каждый следующий удар (последующая модель) корректирует положение мяча, учитывая ошибки предыдущих ударов. Удары становятся все более аккуратными и целенаправленными, пока мяч не окажется в лунке.</li>
+<li>Любую сложную функцию можно приблизить суммой более простых функций. Первое слагаемое дает грубое приближение, каждое следующее уточняет его. Аналогично в градиентном бустинге: первая модель грубо приближает целевую зависимость, а каждая последующая корректирует ошибки предыдущих, постепенно улучшая общее предсказание.</li>
+</ol>
+<h4 id="_31">Неформальное определение</h4>
+<p>Градиентный бустинг — это метод построения ансамбля моделей, где:</p>
+<ul>
+<li>Модели строятся <strong>последовательно</strong> (в отличие от параллельного построения в бэггинге)</li>
+<li>Каждая следующая модель учится <strong>предсказывавать ошибки</strong> предыдущих моделей</li>
+<li>Общее предсказание является <strong>взвешенной суммой</strong> предсказаний всех моделей</li>
+<li>Процесс <em>напоминает</em> <strong>градиентный спуск</strong> в пространстве функций</li>
+</ul>
+<h4 id="_32">Объяснение на примере задачи регрессии</h4>
+<p>Рассмотрим задачу регрессии с квадратичной функцией потерь:</p>
+<p>$$
+L(y, a(x)) = \frac{1}{2} \sum_{i=1}^{N} (y_i - a(x_i))^2 \to \min
+$$
+Мы строим композицию из <span class="arithmatex">\(K\)</span> базовых алгоритмов (например, решающих деревьев):</p>
+<div class="arithmatex">\[
+a(x) = a_K(x) = \sum_{k=1}^{K} b_k(x)
+\]</div>
+<p><strong>Шаг 1:</strong> Обучаем первую модель <span class="arithmatex">\(b_1(x)\)</span> для минимизации ошибки на исходных данных:
+$$
+b_1(x) = \arg\min_{b \in B} L(y, b(x))
+$$
+<strong>Шаг 2:</strong> Вычисляем ошибку первой модели:</p>
+<div class="arithmatex">\[
+s_i^1 = y_i - b_1(x_i)
+\]</div>
+<p><strong>Шаг 3:</strong> Обучаем вторую модель <span class="arithmatex">\(b_2(x)\)</span> для предсказания этой ошибки:</p>
+<p>$$
+b_2(x) = \arg\min_{b \in B} L(s^1, b(x))
+$$
+Теперь композиция двух моделей дает улучшенное предсказание:</p>
+<p>$$
+a_2(x_i) = b_1(x_i) + b_2(x_i) \approx b_1(x_i) + (y_i - b_1(x_i)) = y_i
+$$
+<strong>Шаг <em>k</em>:</strong> На каждом последующем шаге мы обучаем модель для предсказания ошибки текущей композиции:</p>
+<p>$$
+s_i^{k-1} = y_i - a_{k-1}(x_i)
+$$
+$$
+b_k(x) = \arg\min_{b \in B} L(s^{k-1}, b(x))
+$$
+И обновляем композицию:
+$$
+a_k(x) = a_{k-1}(x) + b_k(x)
+$$
+Этот процесс продолжается до тех пор, пока не будет построено <span class="arithmatex">\(K\)</span> моделей или пока ошибка не перестанет существенно уменьшаться.</p>
+<h4 id="_33">Обобщение на другие функции потерь</h4>
+<h5 id="_34">Интуиция</h5>
+<p>Для квадратичной функции потерь мы просто предсказывали ошибку. Но как быть с другими функциями потерь? Идея градиентного бустинга заключается в том, чтобы использовать <strong>градиенты</strong> функции потерь по текущим предсказаниям как целевые значения для следующей модели.</p>
+<p>Рассмотрим задачу регрессии с квадратичной функцией потерь. Производная функции потерь по предсказанию <span class="arithmatex">\(z = a_k(x_i)\)</span> равна:</p>
+<div class="arithmatex">\[
+\frac{\partial L(y_i, z)}{\partial z} \bigg|_{z=a_k(x_i)} = \frac{\partial}{\partial z} \frac{1}{2}(y_i - z)^2 \bigg|_{z=a_k(x_i)} = a_k(x_i) - y_i
+\]</div>
+<p>Таким образом, разность, на которую обучается <span class="arithmatex">\(k\)</span>-й алгоритм, выражается через производную:</p>
+<div class="arithmatex">\[
+s_i^k = y_i - a_k(x_i) = -\frac{\partial L(y_i, z)}{\partial z} \bigg|_{z=a_k(x_i)}
+\]</div>
+<p>Это наблюдение позволяет обобщить подход на произвольные дифференцируемые функции потерь. Вместо обучения на разности <span class="arithmatex">\(s_i^k\)</span> мы обучаем на антиградиент функции потерь:</p>
+<div class="arithmatex">\[
+-g_i^k = -\frac{\partial L(y_i, z)}{\partial z} \bigg|_{z=a_k(x_i)}
+\]</div>
+<p>Такой подход оптимален с точки зрения минимизации функции потерь, поскольку движение в направлении антиградиента обеспечивает наискорейшее уменьшение ошибки.</p>
+<h5 id="_35">Формальное обоснование</h5>
+<p>Пусть <span class="arithmatex">\(L\)</span> — дифференцируемая функция потерь, а наша модель <span class="arithmatex">\(a(x)\)</span> представляет собой композицию базовых алгоритмов:</p>
+<div class="arithmatex">\[
+a(x) = a_K(x) = \sum_{k=1}^K b_k(x)
+\]</div>
+<p>Мы строим композицию жадным образом:</p>
+<div class="arithmatex">\[
+a_k(x) = a_{k-1}(x) + b_k(x)
+\]</div>
+<p>где каждый новый базовый алгоритм выбирается для улучшения текущей композиции:</p>
+<div class="arithmatex">\[
+b_k = \arg\min_{b \in B} \sum_{i=1}^N L(y_i, a_{k-1}(x_i) + b(x_i))
+\]</div>
+<p>Рассмотрим разложение Тейлора функции потерь до первого порядка:</p>
+<div class="arithmatex">\[
+L(y_i, a_{k-1}(x_i) + b(x_i)) \approx L(y_i, a_{k-1}(x_i)) + b(x_i) \cdot \frac{\partial L(y_i, z)}{\partial z} \bigg|_{z=a_{k-1}(x_i)}
+\]</div>
+<p>Обозначив <span class="arithmatex">\(g_i^{k-1} = \frac{\partial L(y_i, z)}{\partial z} \big|_{z=a_{k-1}(x_i)}\)</span>, получаем:</p>
+<div class="arithmatex">\[
+b_k \approx \arg\min_{b \in B} \sum_{i=1}^N b(x_i) \cdot g_i^{k-1}
+\]</div>
+<p>Это выражение минимизируется, когда <span class="arithmatex">\(b(x_i)\)</span> пропорциональны <span class="arithmatex">\(-g_i^{k-1}\)</span>. Следовательно, на каждом шаге базовый алгоритм обучается приближать антиградиент функции потерь.</p>
+<h5 id="_36">Особые случаи и примеры</h5>
+<ul>
+<li><strong>Квадратичная потеря</strong>: <span class="arithmatex">\(g_i = a_k(x_i) - y_i\)</span> (антиградиент совпадает с остатком)</li>
+<li><strong>Абсолютная потеря</strong>: <span class="arithmatex">\(g_i = \text{sign}(a_k(x_i) - y_i)\)</span></li>
+<li><strong>Логистическая потеря</strong>: <span class="arithmatex">\(g_i = \sigma(a_k(x_i)) - y_i\)</span>, где <span class="arithmatex">\(\sigma\)</span> — сигмоида</li>
+<li><strong>Poisson loss</strong>: <span class="arithmatex">\(g_i = \exp(a_k(x_i)) - y_i\)</span></li>
+</ul>
+<h4 id="_37">Обучение базового алгоритма</h4>
+<p>На каждом шаге <span class="arithmatex">\(k\)</span> базовый алгоритм обучается на выборке <span class="arithmatex">\((x_i, -g_i^{k-1})\)</span>. Для построения решающего дерева используется критерий ветвления:</p>
+<div class="arithmatex">\[
+|R| \cdot S(R) - |R_{\text{right}}| \cdot S(R_{\text{right}}) - |R_{\text{left}}| \cdot S(R_{\text{left}}) \to \max
+\]</div>
+<p>где <span class="arithmatex">\(S(R)\)</span> — оценочная функция, например:</p>
+<ul>
+<li><strong>L2-ошибка</strong>: <span class="arithmatex">\(S(R) = \frac{1}{|R|} \sum_{i \in R} (p_i - g_i)^2\)</span></li>
+<li><strong>Косинусное расстояние</strong>: <span class="arithmatex">\(S(R) = -\frac{\sum_{i \in R} (p_i \cdot g_i)}{\sqrt{\sum_{i \in R} p_i^2} \cdot \sqrt{\sum_{i \in R} g_i^2}}\)</span></li>
+</ul>
+<h4 id="learning-rate">Скорость обучения (Learning Rate)</h4>
+<p>Для предотвращения переобучения вводится темп обучения <span class="arithmatex">\(\eta \in (0,1]\)</span>:</p>
+<div class="arithmatex">\[
+a_k(x) = a_{k-1}(x) + \eta \cdot b_k(x)
+\]</div>
+<p>Меньший темп обучения требует больше итераций, но улучшает обобщающую способность. В современных реализациях (например, CatBoost) темп обучения может выбираться автоматически.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

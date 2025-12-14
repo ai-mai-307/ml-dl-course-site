@@ -1,0 +1,3010 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ai-mai-307.github.io/ml-dl-course-site/dl/hw_05/">
+      
+      
+        <link rel="prev" href="../hw_03/">
+      
+      
+        <link rel="next" href="../exam_dl/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>№5. Дообучение LLM - Введение в машинное и глубокое обучение</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../styles/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-header__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Введение в машинное и глубокое обучение
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              №5. Дообучение LLM
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-nav__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Введение в машинное и глубокое обучение
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Расписание
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инструкции
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инструкции
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/assign_course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Запись на курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/complete_course_instructionds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как успешно пройти курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/llm_rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Добросовестное использование LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GitHub Classroom
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/howtoclassroom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как принять задания в GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/work_with_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с агентом-кодревьювером
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Yandex Datasphere
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Yandex Datasphere
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/clone_repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как склонировать репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/datasphere_commint_and_push/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как сделать комит и запушить его в репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/what_is_dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с датасетами
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/manage_budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как контролировать расходы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Классическое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Классическое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Первое знакомство с машинным обучением
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обучение с учителем. Линейные модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Предварительный анализ данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Обучение линейных моделей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №4. Обучение деревьев решений и ансамблей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/exam_ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/ml_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Глубокое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Глубокое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Основные понятия глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Обработка изображений с помощью глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обработка аудиосигнала с помощью глубокого оубчения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Обучение многослойного персептрона
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Семантическая сегментация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Поисх похожих композиций с помощью автоэнкодера
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №5. Дообучение LLM
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №5. Дообучение LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание задания
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Постановка задачи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Критерии оценки
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Критерии оценки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обязательные условия
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Начисления баллов
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендации по выполнению практического задания №5
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации по выполнению практического задания №5">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Выбор модели и токенизатора
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Первоначальный тест модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Первоначальный тест модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проверка служебных токенов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-510" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Мини-бенчмарк на 5–10 промптов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Генерация текста: базовый шаблон
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Варьирование параметров генерации
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что зафиксировать в тексте блокнота
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Поиск и подготовка датасета
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Поиск и подготовка датасета">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где искать датасеты
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Критерии качества данных и их фильтрация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Очистка текста анекдота
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формирование промпта
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chat-training_text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Форматирование в chat-формат (training_text)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataset-hugging-face" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Несколько слов про Dataset в экосистеме Hugging Face
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoRA дообучение
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoRA дообучение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transformers-trl-peft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Трейнеры в экосистеме Transformers / TRL / PEFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lora-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основные этапы LoRA-SFT обучения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Важный нюанс: лосс только на ответ ассистента
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lora_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендации по выбору гиперпараметров LoRA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trainingarguments-sftconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендации по гиперпараметрам обучения (TrainingArguments / SFTConfig)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации по гиперпараметрам обучения (TrainingArguments / SFTConfig)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Размер батча и gradient accumulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Частота eval / сохранений / логирования
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендуемая последовательность действий
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сохранение результата обучения
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exam_dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dl_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Описание задания
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Постановка задачи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Критерии оценки
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Критерии оценки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обязательные условия
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Начисления баллов
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендации по выполнению практического задания №5
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации по выполнению практического задания №5">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Выбор модели и токенизатора
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Первоначальный тест модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Первоначальный тест модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проверка служебных токенов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-510" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Мини-бенчмарк на 5–10 промптов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Генерация текста: базовый шаблон
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Варьирование параметров генерации
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что зафиксировать в тексте блокнота
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Поиск и подготовка датасета
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Поиск и подготовка датасета">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где искать датасеты
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Критерии качества данных и их фильтрация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Очистка текста анекдота
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формирование промпта
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chat-training_text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Форматирование в chat-формат (training_text)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataset-hugging-face" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Несколько слов про Dataset в экосистеме Hugging Face
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoRA дообучение
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoRA дообучение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transformers-trl-peft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Трейнеры в экосистеме Transformers / TRL / PEFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lora-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основные этапы LoRA-SFT обучения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Важный нюанс: лосс только на ответ ассистента
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lora_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендации по выбору гиперпараметров LoRA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trainingarguments-sftconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендации по гиперпараметрам обучения (TrainingArguments / SFTConfig)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекомендации по гиперпараметрам обучения (TrainingArguments / SFTConfig)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradient-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Размер батча и gradient accumulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Частота eval / сохранений / логирования
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекомендуемая последовательность действий
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сохранение результата обучения
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h2 id="_1">Описание задания</h2>
+<p>Дообучить LLM проще, чем кажется. В этом задании вам предстоит выбрать <em>маленькую</em> <strong>большую</strong> языковую модель (т.е число её параметров &lt;= ~1.5 млрд.) и дообучить её на генерацию приколов (шуток, анекдотов, текстовых мемов) на русском языке путем параметро-эффективного тюнинга (рекомендуется выбрать LoRA).</p>
+<h2 id="_2">Постановка задачи</h2>
+<ol>
+<li>
+<p><strong>Выбор модели</strong></p>
+<p>Выберите языковую модель подходящего объёма из HuggingFace Hub (порядка 1–2B параметров). Кратко зафиксируйте в ноутбуке:</p>
+<ul>
+<li>название и размер модели;</li>
+<li>почему вы считаете её подходящей для русскоязычного теста.</li>
+</ul>
+</li>
+<li>
+<p><strong>Оценка исходных возможностей модели</strong></p>
+<p>Реализуйте базовый код генерации текста и проверьте, как модель в исходном, предобученном состоянии отвечает на запросы вида:</p>
+<blockquote>
+<p>«Расскажи мне анекдот про …»</p>
+</blockquote>
+<p>Сформируйте небольшой набор таких промптов (например, 5–10 штук), выполните генерацию и сохраните ответы как <strong>baseline</strong> (выведите их в ноутбуке и при желании сохраните в таблицу или словарь).</p>
+</li>
+<li>
+<p><strong>Выбор и подготовка текстового датасета</strong></p>
+<p>Выберите и подготовьте текстовый корпус для дообучения модели:</p>
+<ul>
+<li>можно использовать предложенный датасет анекдотов или найти собственный корпус;</li>
+<li>при необходимости выполните базовую очистку (уберите мусорные символы, артефакты переносов строк и т.п.);</li>
+<li>приведите данные к формату, удобному для обучения LLM (например, пары «инструкция / промпт → текст анекдота»).</li>
+</ul>
+</li>
+<li>
+<p><strong>Дообучение LLM с помощью LoRA</strong></p>
+<p>Настройте дообучение выбранной модели на подготовленном датасете, используя метод LoRA (через библиотеку <code>peft</code> или аналогичный инструмент):</p>
+<ul>
+<li>оберните модель в LoRA-адаптер;</li>
+<li>задайте разумные гиперпараметры (размер батча, число шагов/эпох, скорость обучения и т.п.);</li>
+<li>запустите обучение и проследите, чтобы лосс на обучении и/или валидации вёл себя осмысленно (хотя бы несколько десятков/сотен шагов).</li>
+</ul>
+</li>
+<li>
+<p><strong>Сохранение дообученной модели</strong></p>
+<p>Сохраните результат дообучения:</p>
+<ul>
+<li>либо в виде LoRA-адаптера (рекомендуется),</li>
+<li>либо в виде полной модели.  </li>
+</ul>
+<p>Убедитесь, что вы можете в отдельной ячейке/ноутбуке заново загрузить базовую модель + адаптер и выполнить инференс.</p>
+</li>
+<li>
+<p><strong>Качественное сравнение «до» и «после»</strong></p>
+<p>Используя тот же набор промптов, что на шаге 2, сравните, как модель генерирует анекдоты <strong>до</strong> и <strong>после</strong> дообучения:</p>
+<ul>
+<li>дайте короткий комментарий: стало ли лучше соответствие теме, структура анекдота, «человечность» текста и т.п.;</li>
+<li>при желании дополнительно посчитайте простую количественную метрику (например, лосс/перплексию на валидационном наборе), но это не строго обязательно.</li>
+</ul>
+</li>
+</ol>
+<h2 id="_3">Критерии оценки</h2>
+<h3 id="_4">Обязательные условия</h3>
+<ul>
+<li>аккуратный вид блокнота</li>
+<li>ссылка на Google таблицу с результатами экспериментов</li>
+<li>наличие текстовых ячеек с ходом рассуждений и интерпретаций экспериментов</li>
+<li>отсутствие подозрений в незадекларированном использовании LLM</li>
+</ul>
+<h3 id="_5">Начисления баллов</h3>
+<ol>
+<li>
+<p><strong>Выбор модели и анализ её исходных возможностей (2 балла)</strong>  </p>
+<ul>
+<li>корректно выбрана и загружена LLM из HuggingFace Hub;  </li>
+<li>показаны и кратко прокомментированы исходные ответы модели на промпты вида «Расскажи анекдот про …».</li>
+</ul>
+</li>
+<li>
+<p><strong>Подготовка датасета (2 балла)</strong>  </p>
+<ul>
+<li>выбран и осмысленно подготовлен корпус анекдотов (или аналогичный текстовый датасет);  </li>
+<li>данные приведены к удобному формату для обучения (есть понятные примеры в ноутбуке).</li>
+</ul>
+</li>
+<li>
+<p><strong>Дообучение с помощью LoRA (3 балла)</strong>  </p>
+<ul>
+<li>модель обёрнута в LoRA-адаптер и корректно запускается процесс обучения;  </li>
+<li>заданы внятные гиперпараметры;  </li>
+<li>по логам видно, что обучение идёт осмысленно (лосс не взрывается, есть тенденция к снижению).</li>
+</ul>
+</li>
+<li>
+<p><strong>Сравнение до/после и выводы (3 балла)</strong>  </p>
+<ul>
+<li>представлены примеры генерации анекдотов до и после дообучения по одним и тем же промптам;  </li>
+<li>есть краткий текстовый анализ того, что изменилось в поведении модели.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h1 id="no5">Рекомендации по выполнению практического задания №5</h1>
+<h2 id="_6">Выбор модели и токенизатора</h2>
+<p>В рамках данной работы настоятельно рекомендуется воспользоваться ресурсами платформы <a href="https://huggingface.co/">Hugging Face</a> и её библиотеки <a href="https://huggingface.co/docs/transformers/index">transformers</a>.</p>
+<p>Эти программные инструменты предоставляют удобный поиск и использование существующих LLM.</p>
+<p>В данной работе вам нужно выбрать модель, которая должна удовлетворять нескольким главным критериям:</p>
+<ul>
+<li>это decoder-only модель генерации текста;</li>
+<li>количество параметров должно находиться в пределах 1-2 млрд. параметров;</li>
+<li>в текстовом корпусе предобучения присутствует русский язык;</li>
+<li>это open-source модель, она скачивается и распространяется свободно.</li>
+</ul>
+<p>Таким критериям соответствует<a href="https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0"> TinyLlama/TinyLlama-1.1B-Chat-v1.0</a>. При этом мы можете выбрать другую модель в <a href="https://huggingface.co/models?pipeline_tag=text-generation&amp;num_parameters=min:0,max:1B&amp;language=en&amp;sort=likes&amp;search=llama">поиске</a>.</p>
+<p>В блокноте первыми в первых ячейках будет выполнить вход</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">notebook_login</span>
+
+<span class="n">notebook_login</span><span class="p">()</span>
+</code></pre></div>
+<p>и загрузить локально веса модели:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span>
+
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_7">Первоначальный тест модели</h2>
+<p>Перед тем как приступать к дообучению, важно зафиксировать исходные возможности выбранной модели. Это позволит вам:</p>
+<ul>
+<li>получить baseline, относительно которого вы потом сможете показать улучшение качества генерации;</li>
+<li>проверить работоспособность пайплайна: токенизатор -&gt; модель -&gt; генерация -&gt; декодирование. Это позволяет найти ошибки на раннем этапе и не тратить вычислительный бюджет на обучение “вслепую”.</li>
+</ul>
+<h3 id="_8">Проверка служебных токенов</h3>
+<p>Перед генерацией рекомендуется проверить, какие специальные токены используются в вашей модели:</p>
+<ul>
+<li><code>bos_token</code> (начало последовательности);</li>
+<li><code>eos_token</code> (конец последовательности);</li>
+<li><code>pad_token</code> (паддинг при выравнивании батча).</li>
+</ul>
+<p>В ряде decoder-only моделей <code>pad_token</code> отсутствует или совпадает с <code>eos_token</code>. Это не является ошибкой, однако может влиять на корректность некоторых процедур паддинга и логирования.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bos:&quot;</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">bos_token</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">bos_token_id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;eos:&quot;</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pad:&quot;</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">)</span>
+</code></pre></div>
+<p>Если<code>pad_token</code> равен <code>None</code>, то для корректной работы паддинга (например, при батчевой генерации или обучении) допустимо назначить его равным <code>eos_token</code>:</p>
+<div class="highlight"><pre><span></span><code>if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
+</code></pre></div>
+<h3 id="-510">Мини-бенчмарк на 5–10 промптов</h3>
+<p>Для baseline-теста достаточно небольшого набора промптов (5–10 штук). Рекомендуется заранее выписать список тем (например, “про студентов”, “про программистов”, “про математику”, “про спорт”) и использовать их и до, и после дообучения.</p>
+<p>Пример списка промптов:</p>
+<div class="highlight"><pre><span></span><code><span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Расскажи анекдот про студентов!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Расскажи анекдот про программистов!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Расскажи анекдот про математику!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Расскажи анекдот про футбол!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Расскажи анекдот про Ленина!&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+<h3 id="_9">Генерация текста: базовый шаблон</h3>
+<p>Допустим, вы выбрали chat модель. В таком случае она опрабатывает текстовые последотваельности со специальными служебными словами, обозначающие диалог, например: system, user, assistant. В таком случае следует  формировать запрос в виде такого диалога. Для этого удобно использовать метод <code>apply_chat_template</code>, который приведёт сообщения к корректному формату модели.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">system_msg</span> <span class="o">=</span> <span class="s2">&quot;Ты ассистент, который рассказывает короткие смешные анекдоты на русском языке.&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_one</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">repetition_penalty</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">system_msg</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">},</span>
+    <span class="p">]</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">apply_chat_template</span><span class="p">(</span>
+        <span class="n">messages</span><span class="p">,</span>
+        <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">add_generation_prompt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>   <span class="c1"># добавляет маркер начала ответа ассистента</span>
+    <span class="p">)</span>
+
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">inputs</span><span class="p">,</span>
+            <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">max_new_tokens</span><span class="p">,</span>
+            <span class="n">do_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+            <span class="n">top_p</span><span class="o">=</span><span class="n">top_p</span><span class="p">,</span>
+            <span class="n">repetition_penalty</span><span class="o">=</span><span class="n">repetition_penalty</span><span class="p">,</span>
+            <span class="n">pad_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span><span class="p">,</span>
+            <span class="n">eos_token_id</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>Далее прогоните модель по списку промптов:</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PROMPT:&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">generate_one</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">120</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="_10">Варьирование параметров генерации</h3>
+<p>Качество генерации сильно зависит от параметров семплирования. Перед обучением имеет смысл попробовать 2–3 режима, чтобы понимать, как модель ведёт себя “из коробки”.</p>
+<p>Рекомендуемые режимы:</p>
+<ul>
+<li>Более связный (меньше случайности): <code>temperature=0.6–0.8</code>, <code>top_p=0.6–0.9</code></li>
+<li>Более разнообразный (больше случайности): <code>temperature=0.9–1.1</code>, <code>top_p=0.9–0.95</code></li>
+</ul>
+<p>Например:</p>
+<div class="highlight"><pre><span></span><code><span class="n">settings</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">120</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">120</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">150</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SETTINGS:&quot;</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PROMPT:&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">generate_one</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">cfg</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="_11">Что зафиксировать в тексте блокнота</h3>
+<p>После baseline-теста рекомендуется зафиксировать:</p>
+<ul>
+<li>выбранную модель (<code>model_id</code>);</li>
+<li>список промптов;</li>
+<li>параметры генерации (<code>temperature</code>, <code>top_p</code>, <code>max_new_tokens</code>, <code>repetition_penalty</code>);</li>
+<li>5–10 примеров ответов модели (в основной таблице можно указать один самый лучший на ваш взгляд).</li>
+</ul>
+<p>Эта часть нужна, чтобы в конце задания можно было корректно сравнить результаты до и после дообучения.</p>
+<h2 id="_12">Поиск и подготовка датасета</h2>
+<p>Качество результата дообучения в задаче генерации анекдотов в значительной степени определяется качеством данных. Практика показывает, что <strong>лучше обучаться на меньшем объёме, но более качественных примерах</strong>, чем на большом исходном неотфильтрованном корпусе.</p>
+<p>В рамках данного задания вам необходимо подготовить датасет, содержащий пары вида:</p>
+<ul>
+<li><strong>prompt</strong>: запрос пользователя (тема анекдота),</li>
+<li><strong>text</strong>: ответ ассистента (сам анекдот).</li>
+</ul>
+<p>При этом датасет должен удовлетворять следующим требованиям:</p>
+<ul>
+<li>тексты должны быть преимущественно на русском языке;</li>
+<li>тексты не должны быть слишком короткими или явно мусорными;</li>
+<li>желательно наличие признака качества (например, <code>rating</code>, количество лайков, “популярность”), чтобы вы могли фильтровать данные;</li>
+<li>формат данных должен позволять преобразовать запись в "диалог" <code>system → user → assistant</code>.</li>
+</ul>
+<h3 id="_13">Где искать датасеты</h3>
+<p>Рекомендуется рассмотреть следующие источники:</p>
+<ol>
+<li><strong>Hugging Face Datasets</strong> — каталог готовых датасетов, которые удобно загружать в ноутбук и преобразовывать в нужный формат.</li>
+<li><strong>Kaggle / открытые репозитории</strong> — часто содержат тематические наборы данных (в том числе юмористические), но могут потребовать более тщательной очистки.</li>
+<li><strong>Собственный сбор (парсинг)</strong> — возможен, но требует больше времени и усилий.</li>
+</ol>
+<p>Например, вы можете найти на Kaggle датасет <a href="https://www.kaggle.com/datasets/konstantinalbul/russian-jokes">Russian Jokes</a>. В нем текстовые данные представлены в виде CSV таблицы, которую можно удобно предобработать с помощью библиотеки Pandas, добавляя нужные колонки.</p>
+<blockquote>
+<p><strong>Примечание:</strong>это не идеальный и довольно грязный датасет!</p>
+</blockquote>
+<h3 id="_14">Критерии качества данных и их фильтрация</h3>
+<p>Перед форматированием рекомендуется выполнить <strong>минимальный предварительный анализ датасета</strong>:</p>
+<ol>
+<li>посмотреть распределение качества (если есть <code>rating</code>);</li>
+<li>посмотреть на распределение длины текстовых последовательностей;</li>
+<li>выявить наличие мусорных символов и повторов.</li>
+</ol>
+<p>Например, если у вас есть столбец <code>rating</code>, обычно имеет смысл:</p>
+<ul>
+<li>исключить примеры с наихудшими оценками;</li>
+<li>начать с поднабора, который заведомо лучше (например, <code>rating &gt; 0</code> или <code>rating &gt;= k</code>).</li>
+</ul>
+<p>Если признака качества нет, можно использовать эвристики:</p>
+<ul>
+<li>исключить слишком короткие тексты (например, менее 1–2 предложений);</li>
+<li>исключить слишком длинные тексты (если вы хотите именно “короткие” анекдоты);</li>
+<li>удалить дубликаты.</li>
+</ul>
+<blockquote>
+<p><strong>Важно:</strong> цель фильтрации — не идеально очистить все данные, а заметно повысить долю качественных примеров, чтобы обучение было осмысленным.</p>
+</blockquote>
+<h3 id="_15">Очистка текста анекдота</h3>
+<p>В пользовательских корпусах часто встречаются артефакты:</p>
+<ul>
+<li>невалидные символы (<code>&amp;!</code>, <code>\r\n</code>, HTML-сущности),</li>
+<li>множественные пробелы,</li>
+<li>“склейки” нескольких анекдотов в один.</li>
+</ul>
+<p>Рекомендуется привести тексты к более “чистому” виду:</p>
+<ul>
+<li>заменить <code>\r\n</code> на <code>\n</code> или пробелы,</li>
+<li>убрать лишние пробелы и неотображаемые символы,</li>
+<li>(опционально) удалить HTML-разметку, если она присутствует.</li>
+</ul>
+<p>При этом важно не “перестараться”: в анекдотах часто используются тире, кавычки и переносы строк, и их не всегда нужно полностью удалять.</p>
+<h3 id="_16">Формирование промпта</h3>
+<p>В задаче генерации анекдотов удобно задать промпт в стиле:</p>
+<ul>
+<li>“Расскажи мне анекдот про студентов!”</li>
+<li>“Расскажи короткий анекдот про математику!”</li>
+<li>“Расскажи анекдот про футбол или спорт!”</li>
+</ul>
+<p>Если в исходной таблице есть категориальный признак (<code>theme</code>), рекомендуется сопоставить каждому значению темы текстовый промпт.</p>
+<h3 id="chat-training_text">Форматирование в chat-формат (training_text)</h3>
+<p>Поскольку мы дообучаем chat-модель, каждой записи датасета следует сопоставить диалог:</p>
+<ul>
+<li><code>system</code>: задаёт стиль и правила ответа (короткие смешные анекдоты),</li>
+<li><code>user</code>: содержит промпт (тема),</li>
+<li><code>assistant</code>: содержит целевой ответ (анекдот из датасета).</li>
+</ul>
+<p>Рекомендуется хранить в датафрейме как минимум две строки:</p>
+<ul>
+<li><strong>training_text</strong> — полный диалог (включая ответ ассистента): он нужен как “пример” правильного поведения, формируется с <code>add_generation_prompt=False</code>;</li>
+<li><strong>prompt_text</strong> — только <code>system + user</code> с приглашением к генерации: он понадобится, чтобы при обучении считать лосс <strong>только на ответе ассистента</strong>, формируется с <code>add_generation_prompt=True</code>.</li>
+</ul>
+<blockquote>
+<p>Это различие важно: если не ограничивать лосс только ответом ассистента, модель может начать “учиться” продолжать также system/user часть диалога, что ухудшает поведение.</p>
+</blockquote>
+<h3 id="dataset-hugging-face">Несколько слов про Dataset в экосистеме Hugging Face</h3>
+<p>В рамках курса вы будете использовать объект <code>datasets.Dataset</code>. Важно понимать следующее:</p>
+<ul>
+<li>он концептуально похож на таблицу (набор колонок одинаковой длины);</li>
+<li>он поддерживает быстрые преобразования “над всем датасетом” (например, <code>.map()</code>), которые удобны для токенизации и форматирования;</li>
+<li>он позволяет легко делать разбиение train/val (<code>train_test_split</code>) и выбирать поднабор (<code>select</code>) для быстрых тестов.</li>
+</ul>
+<p>Рекомендуется <strong>всегда</strong> начинать с небольшого поднабора (smoke-test), чтобы проверить:</p>
+<ul>
+<li>корректность форматирования <code>training_text/prompt_text</code>,</li>
+<li>корректность токенизации,</li>
+<li>работоспособность обучения на 100–300 шагах,</li>
+</ul>
+<p>и только потом запускать обучение на полном датасете.</p>
+<h2 id="lora">LoRA дообучение</h2>
+<p>В данной работе рекомендуется использовать <strong>параметро-эффективное дообучение</strong> (Parameter-Efficient Fine-Tuning, PEFT), а именно метод <strong>LoRA</strong> (Low-Rank Adaptation).</p>
+<p>Главная идея LoRA состоит в том, что мы <strong>не изменяем все веса большой модели</strong>, а обучаем небольшие “адаптеры” (добавочные матрицы низкого ранга), которые модифицируют поведение модели. Таким образом получается, что:</p>
+<ul>
+<li>обучение становится существенно дешевле по времени и памяти;</li>
+<li>меньше риск сломать базовые языковые способности модели;</li>
+<li>результат обучения удобно сохранять в виде компактного набора параметров (LoRA-адаптера).</li>
+</ul>
+<h3 id="transformers-trl-peft">Трейнеры в экосистеме Transformers / TRL / PEFT</h3>
+<p>При обучении LLM в экосистеме Hugging Face вы встретите инструментов, находящихся на разных уровнях абстракции:</p>
+<ul>
+<li><strong>transformers</strong> — базовая библиотека, содержащая модели, токенизаторы и общий тренер <code>Trainer</code>;</li>
+<li><strong>peft</strong> — библиотека с реализациями LoRA и других PEFT-методов;</li>
+<li><strong>trl</strong> — библиотека для обучения LLM (включая supervised fine-tuning, а также обучение по предпочтениям).</li>
+</ul>
+<p>В рамках данного задания рекомендуется использовать <strong>TRL SFTTrainer + PEFT (LoRA)</strong>, так как этот вариант:</p>
+<ul>
+<li>хорошо подходит для дообучения chat-моделей на корпусе вида "prompts -&gt; ответы";</li>
+<li>позволяет подключать LoRA через конфиг (<code>peft_config</code>);</li>
+<li>даёт более компактный и понятный пайплайн обучения.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">trl</span><span class="w"> </span><span class="kn">import</span> <span class="n">SFTTrainer</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">SFTTrainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>                      
+    <span class="n">args</span><span class="o">=</span><span class="n">training_args</span><span class="p">,</span>             <span class="c1"># ниже будет код, где показана инициализация параметров</span>
+    <span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_train</span><span class="p">,</span>          
+    <span class="n">eval_dataset</span><span class="o">=</span><span class="n">tokenized_eval</span><span class="p">,</span>
+    <span class="n">processing_class</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">peft_config</span><span class="o">=</span><span class="n">peft_config</span><span class="p">,</span>        <span class="c1"># ниже будет код, где показана инициализация peft конфига   </span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Примечание:</strong> в разных версиях библиотек <code>trl</code> и <code>transformers</code> могут отличаться имена аргументов и конфигураций. Ориентируйтесь на официальную документацию вашей версии.</p>
+</blockquote>
+<h3 id="lora-sft">Основные этапы LoRA-SFT обучения</h3>
+<p>В корректно построенном пайплайне LoRA-SFT обычно есть четыре ключевых шага:</p>
+<ol>
+<li><strong>Загрузка базовой модели</strong> (decoder-only chat-модель) и токенизатора.</li>
+<li><strong>Подготовка датасета</strong> в виде текстов <code>training_text</code> + <code>prompt_text</code> и токенизация.</li>
+<li><strong>Определение LoRA-конфигурации</strong> (какие слои адаптируем и с какой “ёмкостью”).</li>
+<li><strong>Запуск обучения</strong> и последующая проверка на baseline-промптах.</li>
+</ol>
+<h3 id="_17">Важный нюанс: лосс только на ответ ассистента</h3>
+<p>Для chat-SFT важно, чтобы модель училась предсказывать именно <strong>ответ ассистента</strong>, а не повторять/продолжать подсказку пользователя и системное сообщение. Поэтому при формировании <code>labels</code> в батче рекомендуется:</p>
+<ul>
+<li>токены <code>system</code> и <code>user</code> части диалога исключать из лосса (проставлять <code>-100</code>);</li>
+<li>токены <code>assistant</code> части (сам анекдот) оставлять как целевую последовательность.</li>
+</ul>
+<p>Такой подход, как правило, приводит к более стабильному и “правдоподобному” поведению чат-модели после дообучения.</p>
+<p>Эти задачи можно реализовать с кастомном <code>DataCollator</code>, который выполняют ту же функцию, что и <code>collate_fn</code> в обычном PyTorch.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ChatSFTCollator</span><span class="p">:</span>
+    <span class="n">tokenizer</span><span class="p">:</span> <span class="nb">any</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+        <span class="n">prompt_lens</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;prompt_len&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+
+        <span class="n">feats</span> <span class="o">=</span> <span class="p">[{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s2">&quot;prompt_len&quot;</span><span class="p">}</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">]</span>
+
+        <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">feats</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">labels</span><span class="p">[</span><span class="n">batch</span><span class="p">[</span><span class="s2">&quot;attention_mask&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>  <span class="c1"># padding</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">prompt_lens</span><span class="o">.</span><span class="n">tolist</span><span class="p">()):</span>
+            <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="n">pl</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+
+        <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="k">return</span> <span class="n">batch</span>
+
+<span class="n">data_collator</span> <span class="o">=</span> <span class="n">ChatSFTCollator</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="lora_1">Рекомендации по выбору гиперпараметров LoRA</h3>
+<p>LoRA имеет несколько ключевых гиперпараметров, которые отвечают за “силу” и устойчивость адаптации:</p>
+<ul>
+<li><strong>rank (<code>r</code>)</strong> — “ёмкость” адаптера. Чем больше <code>r</code>, тем больше свободы у модели изменять поведение, но тем выше стоимость.</li>
+<li><strong>lora_alpha</strong> — масштаб вклада LoRA (часто важна пропорция <code>alpha / r</code>).</li>
+<li><strong>lora_dropout</strong> — регуляризация LoRA-ветки (полезна при шумных данных).</li>
+</ul>
+<p>Рекомендуемые стартовые значения для задачи:</p>
+<ul>
+<li><code>r = 8</code></li>
+<li><code>lora_alpha = 16</code></li>
+<li><code>lora_dropout = 0.05</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">peft</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoraConfig</span>
+
+<span class="n">peft_config</span> <span class="o">=</span> <span class="n">LoraConfig</span><span class="p">(</span>
+    <span class="n">r</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">lora_alpha</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">lora_dropout</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">bias</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+    <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;CAUSAL_LM&quot;</span><span class="p">,</span>
+    <span class="n">target_modules</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;q_proj&quot;</span><span class="p">,</span> <span class="s2">&quot;k_proj&quot;</span><span class="p">,</span> <span class="s2">&quot;v_proj&quot;</span><span class="p">,</span> <span class="s2">&quot;o_proj&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;gate_proj&quot;</span><span class="p">,</span> <span class="s2">&quot;up_proj&quot;</span><span class="p">,</span> <span class="s2">&quot;down_proj&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Если вы видите, что модель почти не меняет свое поведение после дообучения, можно увеличить <code>r</code> до 16 (при сохранении разумного learning rate). Если модель начинает генерировать странный текст или её стиль плавает, чаще помогает снизить общий learning rate и/или увеличить dropout для LoRA.</p>
+<h3 id="trainingarguments-sftconfig">Рекомендации по гиперпараметрам обучения (TrainingArguments / SFTConfig)</h3>
+<p>Ниже приведены типовые параметры, которые чаще всего требуется настраивать в учебной задаче:</p>
+<h4 id="learning-rate">Learning rate</h4>
+<p>Для LoRA-дообучения chat-модели в большинстве случаев рекомендуется начинать с умеренных значений learning rate, например порядка <code>1e-4</code>. Слишком большой learning rate может приводить к ухудшению языковой связности и появлению странного текста.</p>
+<p>Также рекомендуется использовать небольшой warmup (например, несколько процентов от общего числа шагов), чтобы обучение начиналось более стабильно.</p>
+<h4 id="gradient-accumulation">Размер батча и gradient accumulation</h4>
+<p>При обучении на GPU важно различать:</p>
+<ul>
+<li><strong>micro-batch</strong> — размер батча, который реально помещается в память видеокарты;</li>
+<li><strong>effective batch</strong> — итоговый “эффективный” батч, если используется накопление градиента (<code>gradient_accumulation_steps</code>).</li>
+</ul>
+<p>Для ускорения обучения обычно полезно увеличивать micro-batch настолько, насколько позволяет память GPU, и только затем подбирать накопление градиента.</p>
+<h4 id="eval">Частота eval / сохранений / логирования</h4>
+<p>В длительных экспериментах оценка на валидации и сохранение чекпоинтов могут заметно увеличивать время обучения. В учебной задаче рекомендуется:</p>
+<ul>
+<li>начинать со smoke-test без частых сохранений;</li>
+<li>использовать разумный интервал логирования;</li>
+<li>выполнять eval не слишком часто (например, раз в несколько сотен шагов или раз в эпоху).</li>
+</ul>
+<p>Все эти параметры обычно задаются как инстанс специаьного класса:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrainingArguments</span><span class="p">,</span> <span class="n">Trainer</span>
+
+<span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;./tinyllama-anekdots-lora&quot;</span>
+
+<span class="n">training_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
+
+    <span class="c1"># --- батчи и обучение ---</span>
+    <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  
+    <span class="n">gradient_accumulation_steps</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">num_train_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>              
+
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>             
+    <span class="n">warmup_ratio</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>               
+
+    <span class="c1"># --- логирование ---</span>
+    <span class="n">logging_steps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>                   <span class="c1"># как часто писать логи</span>
+    <span class="n">logging_strategy</span><span class="o">=</span><span class="s2">&quot;steps&quot;</span><span class="p">,</span>
+
+    <span class="c1"># --- валидация ---</span>
+    <span class="n">eval_strategy</span><span class="o">=</span><span class="s2">&quot;epoch&quot;</span><span class="p">,</span>              <span class="c1"># &quot;no&quot; | &quot;steps&quot; | &quot;epoch&quot;</span>
+    <span class="n">save_strategy</span><span class="o">=</span><span class="s1">&#39;no&#39;</span><span class="p">,</span>
+    <span class="n">eval_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>                      <span class="c1"># как часто считать eval_loss</span>
+
+    <span class="c1"># --- типы и оптимизатор ---</span>
+    <span class="n">bf16</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">optim</span><span class="o">=</span><span class="s2">&quot;paged_adamw_8bit&quot;</span><span class="p">,</span>
+    <span class="n">fp16</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+
+    <span class="c1"># --- логгеры ---</span>
+    <span class="n">report_to</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;none&quot;</span><span class="p">],</span>                 <span class="c1"># &quot;none&quot; | &quot;tensorboard&quot; | &quot;wandb&quot; | [&quot;...&quot;]</span>
+    <span class="n">run_name</span><span class="o">=</span><span class="s2">&quot;tinyllama-anekdots&quot;</span><span class="p">,</span>      <span class="c1"># имя эксперимента в логах</span>
+<span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_metrics</span><span class="p">(</span><span class="n">eval_pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    HF сюда передаёт (logits, labels), но для LM</span>
+<span class="sd">    проще использовать уже готовый eval_loss из логов.</span>
+<span class="sd">    Поэтому эту функцию можно оставить пустой или</span>
+<span class="sd">    вернуть что-то простое.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{}</span>
+</code></pre></div>
+<h3 id="_18">Рекомендуемая последовательность действий</h3>
+<p>Чтобы не тратить вычисления впустую, рекомендуется придерживаться следующего протокола:</p>
+<ol>
+<li>
+<p><strong>Smoke-test</strong>:</p>
+<ul>
+<li>взять небольшой поднабор данных;</li>
+<li>выполнить короткое обучение (например, с иограниченны числом шагов);</li>
+<li>убедиться, что loss уменьшается, а генерация меняется ожидаемым образом.</li>
+</ul>
+</li>
+<li>
+<p><strong>Основной прогон</strong>:</p>
+<ul>
+<li>обучить модель на полном датасете (или на отфильтрованном “качественном” поднаборе);</li>
+<li>сохранить LoRA-адаптер;</li>
+<li>сравнить генерации на baseline-наборе промптов.</li>
+</ul>
+</li>
+<li>
+<p><strong>Анализ и выводы</strong>:</p>
+<ul>
+<li>показать примеры “до/после”;</li>
+<li>указать, какие параметры вы меняли и почему;</li>
+<li>кратко обсудить влияние качества данных на результат.</li>
+</ul>
+</li>
+</ol>
+<h3 id="_19">Сохранение результата обучения</h3>
+<p>После завершения обучения вам необходимо сохранить результат так, чтобы его можно было воспроизвести на другой машине или после перезапуска ноутбука. В случае LoRA это обычно означает сохранение:</p>
+<ul>
+<li>LoRA-адаптера,</li>
+<li>токенизатора,</li>
+<li>конфигурации обучения (параметров эксперимента).</li>
+</ul>
+<blockquote>
+<p><strong>Важно:</strong> сохранение LoRA-адаптера отличается от сохранения полной модели: адаптер хранит только “разницу” относительно базовой модели. Для инференса требуется загрузить базовую модель и подключить к ней адаптер.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

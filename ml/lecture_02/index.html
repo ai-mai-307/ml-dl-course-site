@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
       
 
@@ -1062,6 +1062,45 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#mnar-missing-not-at-random" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пару слов о MNAR (Missing Not At Random)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Пару слов о MNAR (Missing Not At Random)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что считается “строго корректным” подходом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Практические приёмы в задачах машинного обучения
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1072,6 +1111,17 @@
     <span class="md-ellipsis">
       
         Sklearn-api
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Использованные источники
       
     </span>
   </a>
@@ -2034,6 +2084,45 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#mnar-missing-not-at-random" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пару слов о MNAR (Missing Not At Random)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Пару слов о MNAR (Missing Not At Random)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что считается “строго корректным” подходом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Практические приёмы в задачах машинного обучения
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2044,6 +2133,17 @@
     <span class="md-ellipsis">
       
         Sklearn-api
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Использованные источники
       
     </span>
   </a>
@@ -2086,13 +2186,17 @@ x_{new}= \frac{x - x_{\min}}{x_{\max} - x_{\min}}
 <p>Можно сказать, что при помощи Min-Max-масштабирования, каждое значение превращается в <strong>долю (процент) наблюдённого диапазона</strong> этого признака.</p>
 <p><strong>Когда следует применять одно или другое?</strong></p>
 <ul>
-<li>доводы в пользу стандартизации:</li>
+<li>доводы в пользу стандартизации:<ul>
 <li>уменьшение обусловленности матрицы, что положительно сказывается на обучении модели градиентным спуском</li>
 <li>более предпочтительна в случае использования L1 или L2 регуляризации</li>
 <li>более предпочтительна в случае большого количества выбросов в данных</li>
-<li>доводы в пользу масштабирования в интервал</li>
+</ul>
+</li>
+<li>доводы в пользу масштабирования в интервал<ul>
 <li>обрабатываемый признак естественно ограничен в диапазоне</li>
 <li>необходимо сохранить простую интерпретируемость признака % от максимального возможного значения)</li>
+</ul>
+</li>
 </ul>
 <h2 id="_3">Преобразование категориальных признаков</h2>
 <p>Категориальные данные необходимо переводить в числовую форму, чтобы алгоритмы машинного обучения могли с ними работать.</p>
@@ -2110,8 +2214,8 @@ x_{new}= \frac{x - x_{\min}}{x_{\max} - x_{\min}}
 <div class="arithmatex">\[
 CE (x_i) = n_{x_i}
 \]</div>
-<p><strong>Frequency Encoding</strong>
-<img alt="1760444060614" src="../image/lecture_02/1760444060614.png" /></p>
+<p><strong>Frequency Encoding</strong></p>
+<p><img alt="1760444060614" src="../image/lecture_02/1760444060614.png" /></p>
 <p>Признак числовое значение, равное доле объектов с этим признаков среди всех в выборке.</p>
 <div class="arithmatex">\[
 FE (x_i) = \frac{n_{x_i}}{N}
@@ -2159,22 +2263,26 @@ x_{\sin} = \sin\!\left(2\pi \tfrac{t}{P}\right),\qquad x_{\cos} = \cos\!\left(2\
 <p>Однако есть риск потерять потенциально важный информативный признак для подгруппы объектов в выборке.</p>
 <p><strong>Заполнение простыми статистиками</strong></p>
 <ul>
-<li><strong>Для числовых признаков</strong>:</li>
+<li><strong>Для числовых признаков</strong>:<ul>
 <li>медиана (устойчива к выбросам),</li>
 <li>среднее,</li>
 <li>константа</li>
-<li><strong>Для категориальных</strong>:</li>
+</ul>
+</li>
+<li><strong>Для категориальных</strong>:<ul>
 <li>мода (самое частое значение)</li>
 <li>константа (например "missing”), таким образом мы говорим, что отсутствие значение признака  и есть сам признак.</li>
+</ul>
+</li>
 </ul>
 <p><img alt="1760445617219" src="../image/lecture_02/1760445617219.png" /></p>
 <p>Однако у такого просто подхода есть проблема: мы можем существенно искажать реальное распределение данных, что потенциально может привести к искаженным предсказаниям модели.</p>
 <p><img alt="1760445680789" src="../image/lecture_02/1760445680789.png" /></p>
 <p>Перед рассмотрением альтернативного способа обработать пропущенные значения введем их классификацию:</p>
 <ol>
-<li>missing competely at random (MCAR): вероятность пропуска вообще не зависит от наблюдаемых данных</li>
-<li>missing at random (MAR): вероятность пропуска зависит от наблюдаемых (непропущенных) величин</li>
-<li>missing not at random (MNAR): вероятность зависит от ненаблюдаемых (пропущенных) величин</li>
+<li>Missing Competely At Random (MCAR): вероятность пропуска вообще не зависит от наблюдаемых данных, т.е. <span class="arithmatex">\(P(R | X_{obs}, X_{mis}) = P(R)\)</span>, где <span class="arithmatex">\(R\)</span> -- индикатор пропуска. Пример: при выгрузки таблицы часть строк случайным образом исказилась ввиду непредвиденной ошибки</li>
+<li>Missing At Random (MAR): вероятность пропуска зависит от наблюдаемых (непропущенных) величин, т.е. <span class="arithmatex">\(P(R | X_{obs}, X_{mis}) = P(R | X_{obs})\)</span>. Пример: поле “доход” в таблице чаще всего отсутствует у людей, кто его еще не получает, например, пенсионеров или лиц младше 18</li>
+<li>Missing Not At random (MNAR): вероятность зависит от ненаблюдаемых (пропущенных) величин, т.е. P(R | X_{obs}, X_{mis}). Пример: екоторые люди сознательно не указывают свой уровень дохода, считая его слишком маленьким или, наоборот, большим</li>
 </ol>
 <p>Первый тип легко обрабатывается методом простых импутаций, третий является сложным случаем и его обработка выходит за рамки этого лекционного курса.</p>
 <p>Со вторым типом пропусков можно эффективно работать при помощи метода модельных импутаций. Мы рассмотрим метод, применяющий kNN.</p>
@@ -2188,17 +2296,58 @@ x_{\sin} = \sin\!\left(2\pi \tfrac{t}{P}\right),\qquad x_{\cos} = \cos\!\left(2\
 <li>Повторяем для всех строк с пропущенными значениями.</li>
 </ol>
 <p><img alt="1760445875103" src="../image/lecture_02/1760445875103.png" /></p>
+<h3 id="mnar-missing-not-at-random">Пару слов о MNAR (Missing Not At Random)</h3>
+<p>Случай <strong>MNAR</strong> означает, что вероятность пропуска зависит от <strong>самого значения</strong>, которое мы не наблюдаем. Поэтому пропуск становится <strong>информативным событием</strong>: факт того, что значение отсутствует, уже несёт смысл.</p>
+<p>Простые импутации в случае MNAR часто приводит к <strong>смещению</strong>: мы систематически занижаем или завышаем распределение признака, потому что пропущенные значения <em>не похожи</em> на наблюдаемые. Например, если люди скрывают высокие доходы, то медианная импутация сделает “скрытые” доходы слишком маленькими.</p>
+<p>Кроме того, в MNAR часто возникает <strong>проблема неидентифицируемости</strong>: по одним только данным нельзя однозначно восстановить, <em>какими были</em> пропущенные значения, потому что механизм пропуска зависит от того, чего мы не видим.</p>
+<h4 id="_13">Что считается “строго корректным” подходом</h4>
+<p>В прикладной статистике для MNAR используют семейства моделей, которые <strong>явно включают механизм пропусков</strong>:</p>
+<ul>
+<li><strong>Selection models:</strong> моделируют совместно данные и вероятность наблюдения <span class="arithmatex">\(p(y\mid x)\,p(r\mid y,x)\)</span>.</li>
+<li><strong>Pattern-mixture models:</strong> моделируют распределение данных по паттернам пропусков <span class="arithmatex">\(p(r\mid x)\,p(y\mid r,x)\)</span>.</li>
+<li><strong>Shared-parameter models:</strong> вводят латентный фактор, влияющий и на <span class="arithmatex">\(y\)</span>, и на <span class="arithmatex">\(r\)</span>.</li>
+</ul>
+<p>Эти подходы применимы, но требуют <strong>сильных допущений</strong> (или внешних данных), поэтому в базовом ML-курсе обычно ограничиваются практическими эвристиками.</p>
+<h4 id="_14">Практические приёмы в задачах машинного обучения</h4>
+<p>Если наша цель — <strong>качество предсказания</strong>, а не строгая интерпретация параметров, часто используют более прагматичные стратегии:</p>
+<ol>
+<li>
+<p><strong>Индикатор пропуска</strong><br />
+   Добавляем бинарный признак <code>is_missing_*</code>, чтобы модель могла использовать сам факт пропуска как сигнал.</p>
+</li>
+<li>
+<p><strong>Импутация константой + индикатор</strong><br />
+   Заполняем пропуск специальным значением (например, <code>-1</code> или <code>0</code>), <strong>которое не встречается в корректных данных</strong> или лежит вне допустимого диапазона.<br />
+   Смысл: «значение неизвестно», а не «значение среднее».</p>
+</li>
+<li>
+<p><strong>“Отдельная категория” для категориальных признаков</strong><br />
+   Для категориальных признаков можно создать категорию <code>"MISSING"</code> — это часто лучше, чем пытаться восстановить “правильную” категорию.</p>
+</li>
+<li>
+<p><strong>Анализ чувствительности (sensitivity analysis)</strong><br />
+   Пробуем несколько сценариев: например, считаем, что пропущенные доходы “в среднем выше на 10%/20%”, и проверяем, насколько меняются метрики и выводы.<br />
+   Это честный способ показать, что модель/выводы устойчивы (или неустойчивы) к MNAR-допущениям.</p>
+</li>
+</ol>
+<blockquote>
+<p>Важно: при MNAR такие эвристики чаще подходят именно для <strong>задач прогнозирования</strong>. Если цель — выявить причины, сделать статистические оценки и интерпретировать данные, то обычно требуется явное моделирование механизма пропусков или дополнительные данные.</p>
+</blockquote>
 <h2 id="sklearn-api">Sklearn-api</h2>
 <p><code>scikit-learn</code> часто рассматривают как библиотеку готовых реализаций классический моделей машинного обучения, и это правда. При этом помимо готовых реализаций sklearn предлагает интерфейс для реализации ворклфоу обучения моделей.</p>
 <p>Можно выделить основные сущности:</p>
 <ol>
-<li><strong>Трансформер данных</strong> , который обязан реализовать</li>
+<li><strong>Трансформер данных</strong> , который обязан реализовать<ul>
 <li><code>fit(X, y=None) -&gt; None</code> : вычислить параметры преобразования;</li>
 <li><code>transform(X) -&gt; X_prepared</code>: применить преобразование к данным;</li>
 <li><code>fit_transform(X, y=None) -&gt; X_prepared</code>:удобный одновременный вызов двуз предыдущих функций.</li>
-<li><strong>Модель</strong> (<code>Estimator</code>) реализует</li>
+</ul>
+</li>
+<li><strong>Модель</strong> (<code>Estimator</code>) реализует<ul>
 <li><code>fit(X, y)</code>: осуществления обучения;</li>
 <li><code>predict(X)</code>: осуществление предсказания.</li>
+</ul>
+</li>
 <li><strong>Pipeline</strong> — это последовательность преобразований данных перед подачей их на вход модели машинного обучения. При вызове <code>fit()</code> преобразования вызываются последовательно в том порядке, при котором был инициализирован пайплайн</li>
 </ol>
 <p>Пример собственного трансформера:</p>
@@ -2268,6 +2417,11 @@ x_{\sin} = \sin\!\left(2\pi \tfrac{t}{P}\right),\qquad x_{\cos} = \cos\!\left(2\
 <span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Первые 3 предсказания:&quot;</span><span class="p">,</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
 </code></pre></div>
+<h2 id="_15">Использованные источники</h2>
+<ol>
+<li><a href="https://scikit-learn.org/stable/modules/preprocessing.html">Sklearn. 7.3. Preprocessing Data</a></li>
+<li><a href="https://github.com/PacktPublishing/Exploratory-Data-Analysis-with-Python-Cookbook">Exploratory Data Analysis with Python Cookbook, published by Packt</a></li>
+</ol>
 
 
 
@@ -2317,10 +2471,10 @@ x_{\sin} = \sin\!\left(2\pi \tfrac{t}{P}\right),\qquad x_{\cos} = \cos\!\left(2\
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../../javascripts/mathjax.js"></script>
       

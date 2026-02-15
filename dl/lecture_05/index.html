@@ -1,0 +1,3000 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ai-mai-307.github.io/ml-dl-course-site/dl/lecture_05/">
+      
+      
+        <link rel="prev" href="../lecture_04/">
+      
+      
+        <link rel="next" href="../hw_01/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Лекция №5. Большие языковые модели - Введение в машинное и глубокое обучение</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../styles/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-header__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Введение в машинное и глубокое обучение
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Лекция №5. Большие языковые модели
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-nav__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Введение в машинное и глубокое обучение
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Расписание
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инструкции
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инструкции
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/assign_course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Запись на курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/complete_course_instructionds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как успешно пройти курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/llm_rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Добросовестное использование LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GitHub Classroom
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/howtoclassroom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как принять задания в GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/work_with_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с агентом-кодревьювером
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Yandex Datasphere
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Yandex Datasphere
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/clone_repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как склонировать репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/datasphere_commint_and_push/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как сделать комит и запушить его в репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/what_is_dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с датасетами
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/manage_budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как контролировать расходы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Классическое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Классическое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Первое знакомство с машинным обучением
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обучение с учителем. Линейные модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №5. Обучение без учителя. Кластеризация и понижение размерности
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Предварительный анализ данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Обучение линейных моделей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №4. Обучение деревьев решений и ансамблей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №5. Обучение кластеризации и построение визуализации
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/exam_ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/ml_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Глубокое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Глубокое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Основные понятия глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Обработка изображений с помощью глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обработка аудиосигнала с помощью глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обработка последовательных данных и текста
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №5. Большие языковые модели
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №5. Большие языковые модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Языковая модель
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Языковая модель">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое языковая модель?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужны языковые модели?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Языковые модели на основе трансформера
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-attention-self-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Attention и self-attention
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Attention и self-attention">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Что такое attention?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое self-attention?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-head-self-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-head self-attention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Позиционное кодирование
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Трансформер
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Трансформер">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Энкодер трансформера
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Декодер трансформера
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пошаговое описание вычислений в трансформере
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Энкодерные и декодерные языковые модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Энкодерные и декодерные языковые модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#encoder-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encoder-only модели
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decoder-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decoder-only модели
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что делает большую языковую модель большой?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что делает большую языковую модель большой?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gpt-3-175b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Откуда берутся параметры на примере GPT-3 (175B)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что делает большую языковую модель такой впечатляющей?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что делает большую языковую модель такой впечатляющей?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нюансы генерации
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Нюансы генерации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#greedy-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Greedy decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#random-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Random sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temperature-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temperature sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обучение LLM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обучение LLM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pretraining-instruction-tuning-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Три этапа обучения: pretraining, instruction tuning, alignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-supervised-pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self Supervised pretraining
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instruction-fine-tuning-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instruction Fine-Tuning (SFT)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instruction Fine-Tuning (SFT)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finetuning-as-continued-pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finetuning as Continued Pretraining (дообучение как продолжение предобучения)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-efficient-fine-tuning-peft-lora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Efficient Fine-Tuning (PEFT) и LoRA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlm-masked-language-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MLM (masked language modeling)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instruction-tuning-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instruction Tuning (в узком смысле — SFT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-from-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning from Preferences
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Промптинг
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список использованных источников
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Обучение многослойного персептрона
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Семантическая сегментация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Поисх похожих композиций с помощью автоэнкодера
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №4. Машинный перевод
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №5. Дообучение LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exam_dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dl_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Языковая модель
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Языковая модель">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое языковая модель?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужны языковые модели?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Языковые модели на основе трансформера
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-attention-self-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Attention и self-attention
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Attention и self-attention">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Что такое attention?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое self-attention?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-head-self-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-head self-attention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Позиционное кодирование
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Трансформер
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Трансформер">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Энкодер трансформера
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Декодер трансформера
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пошаговое описание вычислений в трансформере
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Энкодерные и декодерные языковые модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Энкодерные и декодерные языковые модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#encoder-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encoder-only модели
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decoder-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decoder-only модели
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что делает большую языковую модель большой?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что делает большую языковую модель большой?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gpt-3-175b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Откуда берутся параметры на примере GPT-3 (175B)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что делает большую языковую модель такой впечатляющей?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что делает большую языковую модель такой впечатляющей?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нюансы генерации
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Нюансы генерации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#greedy-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Greedy decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#random-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Random sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temperature-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temperature sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обучение LLM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Обучение LLM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pretraining-instruction-tuning-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Три этапа обучения: pretraining, instruction tuning, alignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-supervised-pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self Supervised pretraining
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instruction-fine-tuning-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instruction Fine-Tuning (SFT)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instruction Fine-Tuning (SFT)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#finetuning-as-continued-pretraining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finetuning as Continued Pretraining (дообучение как продолжение предобучения)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-efficient-fine-tuning-peft-lora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Efficient Fine-Tuning (PEFT) и LoRA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mlm-masked-language-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MLM (masked language modeling)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instruction-tuning-sft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instruction Tuning (в узком смысле — SFT)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-from-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning from Preferences
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Промптинг
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список использованных источников
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Лекция №5. Большие языковые модели</h1>
+
+<h2 id="_1">Языковая модель</h2>
+<h3 id="_2">Что такое языковая модель?</h3>
+<p>Языковая модель -- это модель машинного обучения, которая предсказывает следующие слова входной текстовой последовательности.</p>
+<p>Для интутивного понимания этой идеи можно провести мысленный эксперимент и самому выступить в роли языковой модели. Попробуйте продолжить эти фразы:</p>
+<ul>
+<li>"Без труда не выловишь и рыбку ..."</li>
+<li>"Семь раз отмерь, один раз ..."</li>
+<li>"Беда никогда не приходит ..."</li>
+<li>"Береги платье смолоду, а честь ..."</li>
+<li>"Игра не стоит ..."</li>
+</ul>
+<p>Скорее всего, вы смогли особо не задумываясь подставить нужное последнее слово в представленные поговорки и крылатые фразы. При этом эти слова не являются единственно возможными и правильными (например, "без труда не выловишь и рыбку из реки"). <strong>Из всего множества подходящих слов вы выбрали те, которые подходят наилучшим образом исходя из контекста вашего жизненного, читательского и зрительского опыта.</strong></p>
+<p>Более формально, языковая модель присваивает вероятность каждому возможному следующему слову или, что эквивалентно, дает распределение вероятностей по возможным следующим словам, то есть если текст представлен как последовательность токенов <span class="arithmatex">\(x_1, x_2, \ldots, x_T\)</span>, то языковая модель задаёт вероятность появления всей последовательности <span class="arithmatex">\(p(x_{1:T})\)</span>. На практике почти всегда используют авторегресcивную факторизацию:</p>
+<div class="arithmatex">\[
+p(x_{1:T}) = \prod_{t=1}^{T} p(x_t \mid x_{&lt;t}),
+\]</div>
+<p>Таким образом модель учится на каждом шаге предсказывать следующий токен по всем предыдущим. Языковая модель не "понимает" смысл текста так, как это делает человек, но хорошо умеет предсказывать, какие продолжения текста статистически правдоподобны.</p>
+<h3 id="_3">Зачем нужны языковые модели?</h3>
+<p>Языковые модели наделяют машину способностью взаимодействовать с текстом подобно тому, как это делает человек. Если модель умеет предсказывать следующий токен, то на основе этого можно строить генерацию текста, машинный перевод, суммаризацию, ответы на вопросы, диалоги и многие другие применения. </p>
+<p>Языковые модели дают возможность взаимодействовать с машиной с помощью текста на естественном языке. В настоящее время они предоставляют возможность транслировать человеческое намерение в форму, понятную вычислительной системе: сформулировать задачу словами, уточнить требования, привести примеры, а затем получить результат в том же текстовом интерфейсе. По сути, естественный язык становится универсальным “протоколом” управления: вместо того чтобы писать код или настраивать сложные формы, мы описываем, что хотим, и модель превращает это описание в план действий, объяснение, черновик документа, программный фрагмент или структурированный ответ.</p>
+<p>Кроме того, большие языковые модели часто выступают как “прослойка” между человеком и специализированными инструментами. Они могут принимать на вход не только вопрос, но и контекст: фрагменты документов, переписку, данные, техническое задание. На выходе модель помогает сформировать запрос к базе знаний, подготовить резюме, извлечь факты, составить письмо, предложить гипотезы или набросать решение. Важно, что в таком сценарии LLM не заменяет остальные системы, а делает их доступнее: она снижает порог входа и ускоряет работу там, где раньше требовались специфические навыки или длительная “ручная” обработка текста.</p>
+<h3 id="_4">Языковые модели на основе трансформера</h3>
+<p><img alt="1771170458021" src="../image/lecture_05/1771170458021.png" /></p>
+<p>Современные языковые модели чаще всего строятся на архитектуре <strong>трансформера</strong>, потому что она эффективно обрабатывает длинные последовательности и хорошо масштабируется. В отличие от RNN, которые читают текст в одном направлении, <strong>трансформер может учитывать связи между любыми парами токенов</strong> в последовательности за счёт механизма <strong>внимания</strong> <strong>(attention)</strong>. Это делает его особенно подходящим для языка, где значение слова сильно зависит от контекста, а важные связи могут быть "на расстоянии".</p>
+<p>Когда мы говорим "языковая модель на основе трансформера", мы обычно имеем в виду модель, которая получает на вход токены, переводит их в эмбеддинги, добавляет информацию о позиции в последовательности и затем много раз применяет блоки <strong>self-attention</strong> и нелинейных преобразований. В результате модель выдаёт распределение вероятностей по словарю для следующего токена, то есть оценивает <span class="arithmatex">\(p(x_t \mid x_{&lt;t})\)</span>. Именно такой класс моделей лежит в основе современных LLM.</p>
+<h2 id="2-attention-self-attention">2. Attention и self-attention</h2>
+<h3 id="21-attention">2.1 Что такое attention?</h3>
+<p><strong>(def)</strong> Attention (механизм внимания) — это способ выделить наиболее релевантную и важную для решения задачи информацию из набора элементов, когда для текущего запроса важны разные части входа в разной степени.</p>
+<p>В классическом варианте генеративной Seq2Seq модели attention запрос формируется из текущего состояния декодера, а "память", по которой мы делаем выбор, — это состояния энкодера. Пусть энкодер обработал входную последовательность и выдал скрытые состояния <span class="arithmatex">\(h_1,\ldots,h_T\)</span>, а декодер на шаге <span class="arithmatex">\(t\)</span> имеет состояние <span class="arithmatex">\(s_t\)</span>. Тогда веса внимания вычисляются как нормализация оценок “соответствия” между <span class="arithmatex">\(s_t\)</span> и каждым <span class="arithmatex">\(h_i\)</span>:</p>
+<div class="arithmatex">\[
+e_{t,i} = \mathrm{score}(s_t, h_i), \qquad
+\alpha_{t,i} = \frac{\exp(e_{t,i})}{\sum_{j=1}^{T}\exp(e_{t,j})}.
+\]</div>
+<p>После этого строится контекстный вектор как взвешенная сумма выходов энкодера:</p>
+<div class="arithmatex">\[
+c_t = \sum_{i=1}^{T}\alpha_{t,i}\,h_i,
+\]</div>
+<p>и уже он используется для предсказания следующего токена (например, через объединение <span class="arithmatex">\([s_t; c_t]\)</span>). В additive attention (Bahdanau attention) функция score часто берётся в виде небольшой нейросети:</p>
+<div class="arithmatex">\[
+e_{t,i} = v^\top \tanh(W_s s_t + W_h h_i),
+\]</div>
+<p>что интуитивно означает: декодер "смотрит" на разные части входа и каждый раз собирает ровно тот контекст <span class="arithmatex">\(c_t\)</span>, который нужен именно на этом шаге генерации.</p>
+<p>Этот классический вариант attention в seq2seq-моделях удобно понимать как механизм поиска нужного фрагмента во внутренней памяти энкодера. Однако у такого подхода есть естественное ограничение: внимание применяется как отдельный модуль вокруг рекуррентной модели, а сами последовательности по-прежнему обрабатываются шаг за шагом, что усложняет параллелизацию и затрудняет работу с очень длинными зависимостями.</p>
+<p>В трансформере идея внимания сохраняется, но меняется её роль и организация вычислений. Вместо того чтобы иметь отдельный декодер, который обращается к памяти энкодера, трансформер делает внимание базовой операцией обработки последовательности: каждый токен может напрямую обмениваться информацией с другими токенами через <strong>self-attention</strong>. </p>
+<p>В трансформерах почти всегда используется scaled dot-product attention. Если собрать запросы, ключи и значения в матрицы <span class="arithmatex">\(Q \in \mathbb{R}^{T \times d_k}\)</span>, <span class="arithmatex">\(K \in \mathbb{R}^{T \times d_k}\)</span>, <span class="arithmatex">\(V \in \mathbb{R}^{T \times d_v}\)</span>, то вычисления записываются так:</p>
+<h3 id="self-attention">Что такое self-attention?</h3>
+<p>Идея проста: мы формируем вектор запроса <span class="arithmatex">\(q\)</span> и сравниваем его с набором ключей <span class="arithmatex">\(k_1,\ldots,k_T\)</span>, получая весовые коэффициенты, опредляющие релевантность токенов, после чего строим ответ как взвешенную сумму значений <span class="arithmatex">\(v_1,\ldots,v_T\)</span>. В результате модель не обязана сжимать весь контекст в один фиксированный вектор: она может каждый раз выбирать, на какие элементы обращать большее внимание.</p>
+<p>Формально пусть входная последовательность после эмбеддингов — это матрица <span class="arithmatex">\(X \in \mathbb{R}^{T \times d}\)</span>. Тогда запросы, ключи и значения строятся линейными преобразованиями:</p>
+<div class="arithmatex">\[
+Q = XW^Q,\quad K = XW^K,\quad V = XW^V,
+\]</div>
+<p>где <span class="arithmatex">\(W^Q, W^K \in \mathbb{R}^{d \times d_k}\)</span> и <span class="arithmatex">\(W^V \in \mathbb{R}^{d \times d_v}\)</span>. После этого вычисляется:</p>
+<div class="arithmatex">\[
+\mathrm{Attention}(Q,K,V) = \mathrm{softmax}\Big(\frac{QK^\top}{\sqrt{d_k}}\Big)V.
+\]</div>
+<p><img alt="1771170596946" src="../image/lecture_05/1771170596946.png" />
+<img alt="1771170601942" src="../image/lecture_05/1771170601942.png" /></p>
+<h3 id="multi-head-self-attention">Multi-head self-attention</h3>
+<p>Multi-head self-attention расширяет идею self-attention: вместо одного набора <span class="arithmatex">\(Q,K,V\)</span> мы строим несколько "голов", каждая из которых смотрит на последовательность по-своему. Интуитивно это похоже на то, как модель учится параллельно отслеживать разные типы зависимостей: синтаксические, семантические, дальние связи, локальные паттерны и тому подобное.</p>
+<p>Формально для головы <span class="arithmatex">\(h\)</span> считаем:</p>
+<div class="arithmatex">\[
+Q_h = XW_h^Q,\quad K_h = XW_h^K,\quad V_h = XW_h^V,
+\]</div>
+<div class="arithmatex">\[
+\mathrm{head}_h = \mathrm{Attention}(Q_h,K_h,V_h).
+\]</div>
+<p>Далее результаты всех голов конкатенируются по признаковому измерению и проецируются обратно:</p>
+<div class="arithmatex">\[
+\mathrm{MHSA}(X) = \mathrm{Concat}(\mathrm{head}_1,\ldots,\mathrm{head}_H)W^O.
+\]</div>
+<p><img alt="1771170618130" src="../image/lecture_05/1771170618130.png" /></p>
+<h3 id="_5">Позиционное кодирование</h3>
+<p>В отличие от RNN, трансформер сам по себе не "знает" порядок токенов: если просто подать набор эмбеддингов, модель увидит их как множество без временной оси. Поэтому к эмбеддингам добавляют информацию о позиции токена в последовательности — позиционное (временное) кодирование. Обычно это делается просто: к вектору токена прибавляется позиционный вектор той же размерности, чтобы на вход поступало <span class="arithmatex">\(X = E + P\)</span>, где <span class="arithmatex">\(E\)</span> — эмбеддинги токенов, а <span class="arithmatex">\(P\)</span> — позиционные эмбеддинги.</p>
+<p><img alt="1771171282240" src="../image/lecture_05/1771171282240.png" /></p>
+<p>Один из классических вариантов — синусоидальное кодирование, где для позиции <span class="arithmatex">\(t\)</span> и компоненты <span class="arithmatex">\(2i\)</span> используется:</p>
+<div class="arithmatex">\[
+P_{t,2i} = \sin\Big(\frac{t}{10000^{2i/d}}\Big),\qquad
+P_{t,2i+1} = \cos\Big(\frac{t}{10000^{2i/d}}\Big).
+\]</div>
+<p>В современных моделях часто используют и обучаемые позиционные векторы.</p>
+<h2 id="_6">Трансформер</h2>
+<p>Трансформер — это архитектура для обработки последовательностей, в которой основным механизмом определения взаимосвязей между элементами входной последовательности является self-attention. В отличие от RNN, трансформер не обрабатывает последовательность строго по шагам времени, а обновляет представления всех токенов параллельно: на каждом слое каждый токен может собрать контекст из всех остальных токенов. Это делает модель удобной для работы с длинными зависимостями и хорошо масштабируемой на больших данных.</p>
+<p><img alt="1771171320883" src="../image/lecture_05/1771171320883.png" /></p>
+<h3 id="_7">Энкодер трансформера</h3>
+<p>Энкодер трансформера — это стек одинаковых блоков, каждый из которых получает на вход матрицу представлений <span class="arithmatex">\(X \in \mathbb{R}^{T \times d}\)</span> и возвращает матрицу той же формы. Один блок энкодера состоит из двух основных подслоёв: multi-head self-attention и позиционно-независимой feed-forward сети, а также из residual-связей и нормализации.</p>
+<p><img alt="1771171519109" src="../image/lecture_05/1771171519109.png" />
+Если обозначить вход в блок как <span class="arithmatex">\(X\)</span>, то вычисления можно записать в стандартном виде:</p>
+<div class="arithmatex">\[
+\tilde X = \mathrm{LN}\big(X + \mathrm{MHSA}(X)\big),
+\]</div>
+<div class="arithmatex">\[
+Y = \mathrm{LN}\big(\tilde X + \mathrm{FFN}(\tilde X)\big),
+\]</div>
+<p>где <span class="arithmatex">\(\mathrm{LN}\)</span> — LayerNorm, <span class="arithmatex">\(\mathrm{MHSA}\)</span> — multi-head self-attention, а <span class="arithmatex">\(\mathrm{FFN}\)</span> — двухслойная MLP, применяемая независимо к каждому токену.</p>
+<h3 id="_8">Декодер трансформера</h3>
+<p>Декодер по структуре похож на энкодер, но содержит дополнительный механизм внимания, который позволяет декодеру обращаться к выходам энкодера.</p>
+<p><img alt="1771171511456" src="../image/lecture_05/1771171511456.png" /></p>
+<p>В классическом, "полном" трансформере (применимый, например, для решения задачи машинного перевода) блок декодера включает три подслоя:</p>
+<p>1) masked self-attention по уже сгенерированным токенам (чтобы не подглядывать в будущее);<br />
+2) encoder–decoder attention (cross-attention), где запросы берутся из декодера, а ключи/значения — из энкодера;<br />
+3) feed-forward сеть.</p>
+<p>Если <span class="arithmatex">\(X\)</span> — представления токенов на входе декодера, а <span class="arithmatex">\(H\)</span> — выход энкодера, то схематично:</p>
+<div class="arithmatex">\[
+\tilde X = \mathrm{LN}\big(X + \mathrm{MaskedMHSA}(X)\big),
+\]</div>
+<div class="arithmatex">\[
+\hat X = \mathrm{LN}\big(\tilde X + \mathrm{CrossAttn}(\tilde X, H)\big),
+\]</div>
+<div class="arithmatex">\[
+Y = \mathrm{LN}\big(\hat X + \mathrm{FFN}(\hat X)\big).
+\]</div>
+<h3 id="_9">Пошаговое описание вычислений в трансформере</h3>
+<p>Ниже -- описание последовательности вычислений в трансформере:</p>
+<p>1) <strong>Токены → индексы → эмбеддинги.</strong>   Текст преобразуется в последовательность индексов <span class="arithmatex">\(x_1,\ldots,x_T\)</span>, затем каждый индекс переходит в вектор эмбеддинга. Получаем матрицу <span class="arithmatex">\(E \in \mathbb{R}^{T \times d}\)</span>.</p>
+<p>2) <strong>Добавление информации о позиции.</strong>  К эмбеддингам прибавляется позиционное кодирование <span class="arithmatex">\(P\)</span>:</p>
+<div class="arithmatex">\[
+X^{(0)} = E + P.
+\]</div>
+<p>3) <strong>Прогон через <span class="arithmatex">\(L\)</span> блоков.</strong> Для слоя <span class="arithmatex">\(\ell=1,\ldots,L\)</span> выполняется:</p>
+<div class="arithmatex">\[
+\tilde X^{(\ell)} = \mathrm{LN}\big(X^{(\ell-1)} + \mathrm{MHSA}(X^{(\ell-1)})\big),
+\]</div>
+<div class="arithmatex">\[
+X^{(\ell)} = \mathrm{LN}\big(\tilde X^{(\ell)} + \mathrm{FFN}(\tilde X^{(\ell)})\big).
+\]</div>
+<p>В decoder-only моделях <span class="arithmatex">\(\mathrm{MHSA}\)</span> заменяется на masked self-attention.</p>
+<p>4) <strong>Выходной слой и распределение по словарю.</strong><br />
+Для языковой модели из финальных представлений <span class="arithmatex">\(X^{(L)}\)</span> строятся логиты по словарю:</p>
+<div class="arithmatex">\[
+\mathrm{logits}_t = X^{(L)}_t W_{\text{vocab}} + b,
+\]</div>
+<div class="arithmatex">\[
+p(x_{t+1}\mid x_{\le t}) = \mathrm{softmax}(\mathrm{logits}_t).
+\]</div>
+<p>5) <strong>Генерация.</strong>  На инференсе модель выдаёт распределение следующего токена, затем выбирается токен по выбранной стратегии декодирования (greedy, sampling и т.д.), и процесс повторяется, пока не будет получен конец последовательности или лимит длины.</p>
+<h2 id="_10">Энкодерные и декодерные языковые модели</h2>
+<p>Архитектура трансформера допускает разные режимы работы, и поэтому языковые модели часто делят на два больших класса: <strong>encoder-only</strong> и <strong>decoder-only</strong>. Разница между ними заключается в том,  какую задачу они по умолчанию решают и какой вид механизма внимания в них используется.</p>
+<h3 id="encoder-only">Encoder-only модели</h3>
+<p>Encoder-only модели строятся как стек энкодерных блоков трансформера и используют <strong>двустороннее self-attention</strong>: каждый токен может смотреть и влево, и вправо, то есть учитывать полный контекст последовательности. Это делает такие модели особенно удобными для задач понимания текста, где нам важно получить “смысловое” представление фразы целиком: классификация текста, извлечение сущностей, поиск, ранжирование, сравнение предложений.</p>
+<p><img alt="1771171572653" src="../image/lecture_05/1771171572653.png" /></p>
+<p>Обычно encoder-only модели обучают на задачах типа <strong>masked language modeling</strong>: мы скрываем часть токенов и просим модель восстановить их по окружению, то есть учим предсказывать пропущенный токен по контексту с обеих сторон. В результате модель хорошо учится строить эмбеддинги текста, но в чистом виде она не является "генератором", потому что не обучена порождать последовательность слева направо.</p>
+<h3 id="decoder-only">Decoder-only модели</h3>
+<p>Decoder-only модели строятся как стек декодерных блоков, но в режиме языковой модели они используют только <strong>masked self-attention</strong>. Маска запрещает токену обращать внимание на будущие позиции, поэтому каждый шаг предсказывает следующий токен по предыдущим:</p>
+<div class="arithmatex">\[
+p(x_{1:T}) = \prod_{t=1}^{T} p(x_t \mid x_{&lt;t}).
+\]</div>
+<p><img alt="1771171671317" src="../image/lecture_05/1771171671317.png" /></p>
+<p>Это делает decoder-only модели естественным выбором для генеративных задач: продолжение текста, диалог, написание кода, суммаризация, а также универсальные LLM, которые работают в формате генерации продолжения текстового запроса -- <strong>промпта</strong>. Важно, что такая модель по своей природе обучается именно как генератор, поэтому весь её интерфейс сводится к тому, чтобы задать начальный контекст и дальше последовательно выбирать токены из предсказанного распределения.</p>
+<p>Практический итог можно сформулировать так: encoder-only модели <em>обычно</em> сильнее в задачах понимания и извлечения информации, а decoder-only модели — в задачах порождения и универсального текстового взаимодействия.</p>
+<h2 id="_11">Что делает большую языковую модель большой?</h2>
+<p>Современные языковые модели называются ввиду огромного числа параметров: сотни миллионов, миллиарды и десятки миллиардов весов, которые задают ёмкость модели. В трансформерах число параметров растёт в основном за счёт размерности скрытых представлений <span class="arithmatex">\(d\)</span>, числа слоёв <span class="arithmatex">\(L\)</span> и размерности внутреннего слоя в MLP-блоке. В грубом приближении можно сказать, что увеличение <span class="arithmatex">\(d\)</span> и <span class="arithmatex">\(L\)</span> делает модель способной хранить и комбинировать больше закономерностей, но одновременно требует больше данных и вычислений для обучения.</p>
+<p>Вторая составляющая "большой" модели — это <strong>объём данных</strong>, на которых она обучалась. Даже идеальная архитектура не станет сильной языковой моделью без огромного текстового корпуса. Здесь важен не только огромный объем, но и разнообразие: разные жанры, стили, домены, языки, программный код и т.п. Модель учится предсказывать следующий токен, поэтому она фактически впитывает статистику того, как устроен текст в разных контекстах — от бытовых фраз до технической документации.</p>
+<h3 id="gpt-3-175b">Откуда берутся параметры на примере GPT-3 (175B)</h3>
+<p>Визуализированный подсчет количества параметров в большой языковой модели GPT-3 можно посмотреть вот <a href="https://www.youtube.com/watch?v=eMlx5fFNoYc&amp;t=1148s">здесь</a> в виде на кале 3blue1brown.</p>
+<h2 id="_12">Что делает большую языковую модель такой впечатляющей?</h2>
+<p>Впечатляющий эффект LLM возникает не из “магии”, а из сочетания трёх вещей: масштаба модели, масштаба данных и удачной архитектуры. При достаточно большом объёме обучения модель начинает не только продолжать текст грамматически правильно, но и демонстрировать свойства, которые мы воспринимаем как “понимание”: удерживать длинный контекст, следовать инструкции, пересказывать, объяснять, переводить, писать код и решать задачи, похожие на те, что встречались в данных.</p>
+<p>Ещё одна важная причина — способность работать в режиме <em>in-context learning</em>: модель может подстраиваться под задачу прямо по промпту, не меняя веса. Если в запросе задать формат, несколько примеров и критерии ответа, то модель часто начинает воспроизводить нужное поведение так, как будто “дообучилась” на этих примерах, хотя это лишь эффект работы внимания и представлений.</p>
+<h3 id="_13">Нюансы генерации</h3>
+<p>Языковая модель на каждом шаге выдаёт распределение вероятностей по словарю:</p>
+<div class="arithmatex">\[
+p(x_t \mid x_{&lt;t}) = \mathrm{softmax}(\mathrm{logits}_t).
+\]</div>
+<p>Дальше возникает практический вопрос: как именно выбрать следующий токен из этого распределения. От выбора стратегии зависит стиль текста, повторяемость, креативность и число ошибок: одна и та же модель может звучать как "мистер википелдия" или как хаотичный поток сознания — просто из-за различий в декодировании.</p>
+<h4 id="greedy-decoding">Greedy decoding</h4>
+<p>Greedy decoding — это самый прямой вариант: на каждом шаге мы выбираем токен с максимальной вероятностью:</p>
+<div class="arithmatex">\[
+x_t = \arg\max_{w \in V} p(w \mid x_{&lt;t}).
+\]</div>
+<p>Он даёт детерминированный результат и обычно подходит для коротких, простых ответов, но часто приводит к однообразным формулировкам и иногда "застревает" в повторениях, потому что всегда выбирает локально самый вероятный шаг, не думая о разнообразии продолжений.</p>
+<h4 id="random-sampling">Random sampling</h4>
+<p>Sampling выбирает токен случайно по распределению вероятностей:</p>
+<div class="arithmatex">\[
+x_t \sim p(\cdot \mid x_{&lt;t}).
+\]</div>
+<p>Такой подход даёт разнообразие и иногда находит более удачные продолжения, чем greedy, но при наивном сэмплинге может снижать качество: модель иногда “прыгает” в менее уместные слова просто потому, что они ненулевые по вероятности. Поэтому на практике sampling почти всегда комбинируют с ограничениями вроде top-k или top-p, чтобы отсекать слишком маловероятные варианты.</p>
+<h4 id="temperature-sampling">Temperature sampling</h4>
+<p>Temperature управляет “резкостью” распределения. Если разделить логиты на параметр <span class="arithmatex">\(\tau &gt; 0\)</span>, получим новое распределение:</p>
+<div class="arithmatex">\[
+p_\tau(w \mid x_{&lt;t}) = \mathrm{softmax}\Big(\frac{\mathrm{logits}_t}{\tau}\Big).
+\]</div>
+<p>При <span class="arithmatex">\(\tau &lt; 1\)</span> распределение становится более “острым” (модель чаще выбирает самые вероятные токены), при <span class="arithmatex">\(\tau &gt; 1\)</span> — более “плоским” (больше случайности и креативности, но выше риск ошибок). Это один из самых простых регуляторов баланса между качеством и разнообразием.</p>
+<h2 id="llm">Обучение LLM</h2>
+<p>Обучение большой языковой модели обычно можно представить как последовательность трех этапов. Сначала модель получает базовое "понимание языка" на огромном текстовом корпусе, затем её учат отвечать в формате инструкций, а затем — приводят поведение к человеческим предпочтениям и ожиданиям: полезность, безопасность, вежливость, отказ от нежелательных действий.</p>
+<h3 id="pretraining-instruction-tuning-alignment">Три этапа обучения: pretraining, instruction tuning, alignment</h3>
+<p>1) Во время <strong>Pretraining</strong> модель учится <em>вообще</em> предсказывать следующий токен.<br />
+2) Во время <strong>Instruction tuning</strong> учит работать в режиме "запрос -&gt; ответ": следовать формулировке задачи, соблюдать формат, быть полезной.<br />
+3) Во время <strong>Alignment</strong> (или <strong>Preference Learning</strong>) подгоняет поведение под человеческие предпочтения: устраняет грубость и токсичность, галлюцинации, нежелательные ответы, повышает аккуратность и управляемость.</p>
+<h3 id="self-supervised-pretraining">Self Supervised pretraining</h3>
+<p>Этап pretraining обычно реализуется с помощью self-supervised обучение (можно грубо перевести как "<em>самоконтролируемое обучение</em>").</p>
+<p>Идея этой подхода к обучению моделей заключается в том, чтобы реализовать предварительное обучение представлений на большом объеме неразмеченных данных, задав искусственную задачу. "Разметка" для этой задачи берется из самих данных.</p>
+<p>Для лучшего понимания стоит привести пример для изображений. Пусть мы хотим решить задачу классификации котят и щенят. Мы располагаем относительно малой размеченной вручную обучающей выборкой, но при этом у нас есть огромная коллекция неразмеченных изображений с котятами и щенятами. </p>
+<p>Желая дать нейронной сети <em>предварительное представление</em> о природе классифицируемых объектов, мы можем обучить её, например на восстановление вырезанного случайным образом кусочка из изображения. Научившись решать такую задачу, мы можем далее дообучить нашу модель на конечную задачу классификации. Результаты обучения в таком случае будут значительно лучше, используй мы только размеченные данные.</p>
+<p><img alt="1771176043843" src="../image/lecture_05/1771176043843.png" /></p>
+<p>Для decoder-only языковых моделей мы можем провести предварительное обучение схожим образом. Модель видит автоматически сформированную из большого текстового корпуса последовательность <span class="arithmatex">\(x_{&lt;t}\)</span> и должна восстановить токен <span class="arithmatex">\(x_t\)</span>. Формально оптимизируется отрицательное лог-правдоподобие (кросс-энтропия) по всем позициям формируется так:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{PT}} = -\sum_{t=1}^{T} \log p(x_t \mid x_{&lt;t}).
+\]</div>
+<p>Важно понимать, чему учится модель в рамках претреининга. После такого обучения модель обретет способность продолжать текст правдоподобным образом, но не гарантирует, что модель будет полезной для пользователя: она может отвечать расплывчато, уходить в продолжение вместо ответа, не соблюдать формат или "фантазировать", потому что модель оптимизируется на другую задачу.</p>
+<p>Наконец, на этом этапе критичны обучающие данные и их репрезентативность: они должны быть взяты из разных источников и предварительно очищены от различного рода "мусора" (HTML-код, дубликаты, и т.п.).</p>
+<h3 id="instruction-fine-tuning-sft">Instruction Fine-Tuning (SFT)</h3>
+<p>На практике под "дообучением" pretrained-модели последующее дообучение уже обученной языковой модели на работу при конкретном сценарии (чаще всего -- выполнение инструкции), меняя либо все веса, либо лишь небольшую их часть, либо только сами обучающие данные, на которых продолжаем обучение.</p>
+<p>Ниже — четыре распространённых подхода, которые удобно держать в голове как разные “режимы” постобучения.</p>
+<p><img alt="1771177511837" src="../image/lecture_05/1771177511837.png" /></p>
+<h4 id="finetuning-as-continued-pretraining">Finetuning as Continued Pretraining (дообучение как продолжение предобучения)</h4>
+<p>Это самый простой и понятный вариант: мы <strong>продолжаем предобучение</strong> на новых данных из нужного домена (например, медицина, юриспруденция) или языка, используя ту же функцию потерь, что и на этапе претреининга. По сути мы просто добавляем новый корпус в обучение, чтобы модель лучше усвоила стиль, терминологию и особенности целевой тематики текста.</p>
+<p>Для decoder-only языковой модели оптимизируется стандартный LM-лосс:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{LM}} = -\sum_{t=1}^{T}\log p_\theta(x_t \mid x_{&lt;t}).
+\]</div>
+<p>Обычно в этом режиме обновляются все (или почти все) параметры модели.</p>
+<h4 id="parameter-efficient-fine-tuning-peft-lora">Parameter Efficient Fine-Tuning (PEFT) и LoRA</h4>
+<p>PEFT — это подход, в котором основная часть параметров модели <strong>замораживается</strong>, а обучается лишь небольшой набор добавочных параметров. Это позволяет адаптировать большие модели, резко снижая требования к памяти и вычислениям.</p>
+<p>Один из самых популярных методов — <strong>LoRA</strong>. Его идея: вместо полного обновления матрицы весов обучается низкоранговая поправка. Если <span class="arithmatex">\(W\)</span> — исходная матрица, то после адаптации получаем</p>
+<div class="arithmatex">\[
+W' = W + \Delta W,\qquad \Delta W = BA,
+\]</div>
+<p>где <span class="arithmatex">\(A\)</span> и <span class="arithmatex">\(B\)</span> — обучаемые матрицы малой размерности, а ранг <span class="arithmatex">\(r\)</span> выбирается маленьким:</p>
+<div class="arithmatex">\[
+\mathrm{rank}(\Delta W)=r\ll \min(m,n).
+\]</div>
+<p>Интуитивно LoRA “встраивает” в модель компактную настройку под задачу, не переписывая все веса.</p>
+<h4 id="mlm-masked-language-modeling">MLM (masked language modeling)</h4>
+<p>Для encoder-only моделей (семейства BERT) базовая логика обучения отличается от next-token prediction. Вместо предсказания следующего токена модель учится <strong>восстанавливать замаскированные токены</strong> по контексту слева и справа. Это удобно как для предобучения, так и для доменной адаптации: модель “впитывает” статистику текстов, улучшая качество представлений для задач понимания (классификация, ранжирование, извлечение сущностей).</p>
+<p>Типичный лосс MLM:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{MLM}} = -\sum_{t\in M}\log p_\theta(x_t \mid x_{\setminus M}),
+\]</div>
+<p>где <span class="arithmatex">\(M\)</span> — множество позиций, которые были замаскированы, а <span class="arithmatex">\(x_{\setminus M}\)</span> — наблюдаемые токены.</p>
+<h4 id="instruction-tuning-sft">Instruction Tuning (в узком смысле — SFT)</h4>
+<p>В контексте современных LLM чаще всего под SFT подразумевают именно <strong>instruction tuning</strong>: дообучение на парах вида "инструкция/вопрос -&gt; корректный ответ". Технически это всё ещё обучение языковой модели, но данные имеют структуру диалога или запроса, и модель учится <strong>следовать инструкциям</strong> и выдавать ответы в нужном формате.</p>
+<p>Если склеить промпт и ответ в одну последовательность <span class="arithmatex">\(z=[\text{prompt};\text{response}]\)</span>, то лосс удобно записать так:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{SFT}} = -\sum_{t\in \text{response}}\log p_\theta(z_t \mid z_{&lt;t}),
+\]</div>
+<p>то есть мы "штрафуем" модель именно за ошибки в токенах ответа, а не за токены самого промпта.</p>
+<h3 id="learning-from-preferences">Learning from Preferences</h3>
+<p>На этапе <em>learning from preferences</em> модель обучают не по правильным ответам на задачи, а по <strong>человеческим предпочтениям</strong>. Для одного и того же промпта <span class="arithmatex">\(x\)</span> собирают несколько кандидатных ответов и фиксируют, какой из них лучше. Вместо парных сравнений иногда используют и скалярные оценки по аспектам (helpfulness, correctness и т.д.), которые затем можно агрегировать или преобразовать в пары предпочтений.  </p>
+<p>Чтобы превратить такие предпочтения в обучающие данные, удобно ввести скрытую "оценку качества" ответа: пусть каждому промпту <span class="arithmatex">\(x\)</span> и ответу <span class="arithmatex">\(o\)</span> соответствует скалярный скор <span class="arithmatex">\(z=r(x,o)\)</span>. Тогда вероятность того, что ответ <span class="arithmatex">\(o_i\)</span> предпочтительнее <span class="arithmatex">\(o_j\)</span>, можно моделировать логистической формой (Bradley–Terry):</p>
+<div class="arithmatex">\[
+P(o_i \succ o_j \mid x) = \sigma(z_i - z_j) = \sigma(r(x,o_i)-r(x,o_j)).
+\]</div>
+<p>Идея здесь практичная: нам не нужно абсолютное “качество” по шкале, достаточно научиться воспроизводить <strong>сравнения</strong>.</p>
+<p>Дальше обучают <strong>reward model</strong> <span class="arithmatex">\(r(x,o)\)</span> по данным предпочтений. Если <span class="arithmatex">\(o_w\)</span> — победитель (preferred), а <span class="arithmatex">\(o_l\)</span> — проигравший (dispreferred), то reward model можно обучать, минимизируя бинарную кросс-энтропию:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\mathrm{CE}}(x,o_w,o_l)
+= -\log P(o_w \succ o_l \mid x)
+= -\log \sigma\!\big(r(x,o_w)-r(x,o_l)\big).
+\]</div>
+<p>Интуитивно это "подталкивает" модель присваивать больший reward тем ответам, которые люди выбирают чаще.</p>
+<p>Когда reward model обучена, ею можно донастраивать саму языковую модель, но тут важна тонкость: preference-данных обычно намного меньше, чем данных предобучения, и если оптимизировать только reward, модель может начать “забывать” полезные свойства базовой модели. Поэтому добавляют KL-регуляризацию: мы максимизируем ожидаемую награду, но штрафуем отклонение политики <span class="arithmatex">\(\pi_\theta\)</span> от референсной <span class="arithmatex">\(\pi_{\text{ref}}\)</span> (обычно это instruction-tuned модель):</p>
+<div class="arithmatex">\[
+\pi^*=\arg\max_{\pi_\theta}\ \mathbb{E}\big[r(x,o)\big] - \beta\, D_{\mathrm{KL}}\!\left[\pi_\theta(\cdot|x)\ \|\ \pi_{\text{ref}}(\cdot|x)\right].
+\]</div>
+<p>Эта KL-склейка отражает общий смысл preference alignment: не переписать модель заново, а **аккуратно "подтолкнут" ** её к более предпочтительному поведению.</p>
+<p>Наконец, у preference alignment есть два типовых пути оптимизации. Первый — классический RLHF-пайплайн: preference data → reward model → RL-оптимизация политики (часто PPO). Второй — <strong>Direct Preference Optimization (DPO)</strong>: он избегает явной reward model и переписывает задачу так, чтобы учить саму политику напрямую из пар предпочтений. Для DPO получается loss, который увеличивает вероятность победителя и уменьшает вероятность проигравшего, одновременно удерживая модель рядом с <span class="arithmatex">\(\pi_{\text{ref}}\)</span>:</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\mathrm{DPO}}(x,o_w,o_l)= -\log \sigma\!\left(
+\beta \log \frac{\pi_\theta(o_w|x)}{\pi_{\text{ref}}(o_w|x)} -
+\beta \log \frac{\pi_\theta(o_l|x)}{\pi_{\text{ref}}(o_l|x)}
+\right).
+\]</div>
+<p>С инженерной точки зрения оба подхода делают одно и то же: учат модель чаще выбирать ответы, которые людям кажутся лучше, и реже — те, которые кажутся хуже.</p>
+<h2 id="_14">Промптинг</h2>
+<p>Промптинг — это способ формулировать задачу так, чтобы языковая модель выдала продолжение, совпадающее с нужным вам ответом. Поскольку LLM по сути предсказывает следующий токен, промпт играет роль контекста, который задаёт “рамку”: что именно вы хотите получить, в каком стиле, с какими ограничениями и на каком уровне детализации. Хороший промпт снижает неопределённость: он явно задаёт цель, даёт входные данные и описывает формат результата, поэтому модель реже уходит в сторону и чаще попадает в ожидания пользователя.</p>
+<p>При работе с промптами полезно держать в голове несколько простых техник. <strong>Zero-shot</strong> — вы просто формулируете задачу словами без примеров (например, “суммируй текст в 5 пунктов”); это быстро, но иногда неоднозначно. <strong>One-shot</strong> и <strong>few-shot</strong> — вы добавляете один или несколько примеров “вход → правильный выход”, тем самым задавая не только смысл задачи, но и формат ответа; модель часто начинает воспроизводить этот шаблон очень точно. Отдельно стоит техника <strong>role prompting</strong>: вы задаёте роль и критерии (например, “объясняй как преподаватель, аккуратно, без лишних списков”), что помогает стабилизировать стиль и структуру.</p>
+<p>Ещё один важный класс техник связан с тем, <em>как</em> просить модель рассуждать. В задачах, где есть несколько шагов логики, помогает <strong>chain-of-thought prompting</strong>: вы явно просите модель рассуждать пошагово или показываете пример рассуждения. Это часто повышает качество на задачах с вычислениями и логическими переходами, потому что модель “разворачивает” промежуточные шаги вместо того, чтобы угадывать финальный ответ напрямую. Практический компромисс — просить модель сначала сделать черновое рассуждение, а затем выдать короткий итог: так вы получаете и качество, и читаемость. Иногда используют и более “инженерный” подход: попросить сначала составить план решения, затем выполнить его и в конце проверить себя — это снижает число грубых ошибок.</p>
+<p>Наконец, промптинг — это способ управлять рисками и качеством. Если важна точность, полезно просить модель отделять факты от предположений, перечислять допущения и указывать, чего не хватает для правильного ответа. Если задача сложная, помогает декомпозиция: разбить запрос на подзадачи или попросить модель сначала задать уточняющие вопросы. Если нужен строгий формат, стоит явно задать шаблон вывода (например, заголовки в Markdown или JSON-схему). В итоге промптинг становится практическим навыком: вы учитесь превращать намерение в понятную задачу, а модель — в инструмент, который эту задачу исполняет.</p>
+<h2 id="_15">Список использованных источников</h2>
+<ol>
+<li>Учебник Яндекс ШАД. <a href="https://education.yandex.ru/handbook/ml/article/yazykovye-modeli">Языковые модели.</a></li>
+<li><a href="https://web.stanford.edu/~jurafsky/slp3/">Speech and Language Processing.</a> Главы 7, 8, 9.</li>
+<li><a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a></li>
+<li><a href="https://www.promptingguide.ai/ru">Руководство по промпт-инжинирингу</a></li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

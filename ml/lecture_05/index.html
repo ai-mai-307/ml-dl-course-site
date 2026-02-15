@@ -1,0 +1,3081 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ai-mai-307.github.io/ml-dl-course-site/ml/lecture_05/">
+      
+      
+        <link rel="prev" href="../lecture_04/">
+      
+      
+        <link rel="next" href="../hw_01/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Лекция №5. Обучение без учителя. Кластеризация и понижение размерности - Введение в машинное и глубокое обучение</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../styles/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-header__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Введение в машинное и глубокое обучение
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Лекция №5. Обучение без учителя. Кластеризация и понижение размерности
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-nav__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Введение в машинное и глубокое обучение
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Расписание
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инструкции
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инструкции
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/assign_course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Запись на курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/complete_course_instructionds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как успешно пройти курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/llm_rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Добросовестное использование LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GitHub Classroom
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/howtoclassroom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как принять задания в GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/work_with_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с агентом-кодревьювером
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Yandex Datasphere
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Yandex Datasphere
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/clone_repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как склонировать репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/datasphere_commint_and_push/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как сделать комит и запушить его в репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/what_is_dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с датасетами
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/manage_budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как контролировать расходы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Классическое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Классическое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Первое знакомство с машинным обучением
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обучение с учителем. Линейные модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №5. Обучение без учителя. Кластеризация и понижение размерности
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №5. Обучение без учителя. Кластеризация и понижение размерности
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое машинное обучение без учителя?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что такое машинное обучение без учителя?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Метафорическое объяснение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное объяснение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нам в это ввязываться?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи обучения без учителя
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кластеризация
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Кластеризация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как определить сходство
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгоритмы кластеризации
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Алгоритмы кластеризации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#k-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        K-Means
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="K-Means">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Идея
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаги алгоритма
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что мы оптимизируем?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Выбор метрики и масштабирование признаков
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Выбор начального приближения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mini-batch-k-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mini-batch k-means
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Иерархическая агломеративная кластеризация
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Иерархическая агломеративная кластеризация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгомеративный и дивизионный подход
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Алгомеративный и дивизионный подход">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Построение иерархии
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаги алгоритма
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаги алгоритма (агломеративная версия)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Расстояния между кластерами и критерии остановки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дендрограмма
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dbscan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DBSCAN
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DBSCAN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#varepsilon-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Плотность объектов и \(\varepsilon\)-окрестность
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типы точек: ядерная, граничная и шумовая
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Идея выделения связных компонент
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dbscan_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаги алгоритма DBSCAN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Практические замечания про выбор параметров
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Понижение размерности
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Понижение размерности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем вообще понижать размерность?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проклятие размерности
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проклятие размерности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное описание задачи
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svd-pca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SVD - PCA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t-sne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        t-SNE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#umap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UMAP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Если хочется лучше разобраться
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Предварительный анализ данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Обучение линейных моделей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №4. Обучение деревьев решений и ансамблей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №5. Обучение кластеризации и построение визуализации
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exam_ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Глубокое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Глубокое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Основные понятия глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Обработка изображений с помощью глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обработка аудиосигнала с помощью глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обработка последовательных данных и текста
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/lecture_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №5. Большие языковые модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Обучение многослойного персептрона
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Семантическая сегментация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Поисх похожих композиций с помощью автоэнкодера
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №4. Машинный перевод
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/hw_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №5. Дообучение LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/exam_dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dl/dl_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое машинное обучение без учителя?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что такое машинное обучение без учителя?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Метафорическое объяснение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное объяснение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нам в это ввязываться?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи обучения без учителя
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кластеризация
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Кластеризация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как определить сходство
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгоритмы кластеризации
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Алгоритмы кластеризации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#k-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        K-Means
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="K-Means">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Идея
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаги алгоритма
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что мы оптимизируем?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Выбор метрики и масштабирование признаков
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Выбор начального приближения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mini-batch-k-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mini-batch k-means
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Иерархическая агломеративная кластеризация
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Иерархическая агломеративная кластеризация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгомеративный и дивизионный подход
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Алгомеративный и дивизионный подход">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Построение иерархии
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаги алгоритма
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаги алгоритма (агломеративная версия)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Расстояния между кластерами и критерии остановки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дендрограмма
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dbscan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DBSCAN
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DBSCAN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#varepsilon-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Плотность объектов и \(\varepsilon\)-окрестность
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типы точек: ядерная, граничная и шумовая
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Идея выделения связных компонент
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dbscan_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаги алгоритма DBSCAN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Практические замечания про выбор параметров
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Понижение размерности
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Понижение размерности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем вообще понижать размерность?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проклятие размерности
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Проклятие размерности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное описание задачи
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svd-pca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SVD - PCA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t-sne" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        t-SNE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#umap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UMAP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Если хочется лучше разобраться
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Лекция №5. Обучение без учителя. Кластеризация и понижение размерности</h1>
+
+<h2 id="_1">Что такое машинное обучение без учителя?</h2>
+<p><strong>Машинное обучение без учителя (Unsupervised Learning, UL)</strong> — это одна из трёх основных парадигм машинного обучения наряду с обучением с учителем (supervised learning) и обучением с подкреплением (reinforcement learning). Его ключевая особенность заключается в том, что алгоритм обучается на неразмеченных данных: нам даны только объекты <span class="arithmatex">\(x\)</span> (их описания в виде признаков), но не даны правильные ответы  <span class="arithmatex">\(y\)</span>, метки классов или целевые значения.</p>
+<p>Иными словами, если в обучении с учителем мы заранее знаем, что считать правильным ответом, то в обучении без учителя мы пытаемся найти структуру в данных, не имея внешнего “учителя”. Алгоритм должен сам обнаружить закономерности: группы похожих объектов, скрытые факторы, “типичное поведение” и отклонения от него, повторяющиеся сочетания признаков и т.д.</p>
+<h3 id="_2">Метафорическое объяснение</h3>
+<p>Представьте, что у вас есть сотни тысяч книг без названий и обложек. Вы читаете их,не имея никакого представления о том, к какому жанру они относятся. Ваша задача — по содержанию выделить набор жанров (или тематических групп) и отнести каждую книгу к одной из них.</p>
+<p>Важно: в этой постановке никто не говорит заранее,</p>
+<ul>
+<li>сколько жанров должно получиться;</li>
+<li>какие именно жанры существуют;</li>
+<li>как отделить один жанр от другого.</li>
+</ul>
+<p>Именно так часто выглядит обучение без учителя: мы не знаем правильного решения вообще, но надеемся, что в данных есть внутренняя структура, которую можно обнаружить вычислительным методом.</p>
+<h3 id="_3">Формальное объяснение</h3>
+<p>В обучении с учителем в нашем распоряжении есть обучающие данные, где каждый элемент это <span class="arithmatex">\((x_i, y_i)\)</span>, в обучении без учителя мы располагаем данные, в которых есть только <span class="arithmatex">\({x_i}\)</span></p>
+<p>Поэтому мы не занимаемся поиском вида предполагаемой функциональной зависимости <span class="arithmatex">\(y=f(x)\)</span>, а строим внутреннее представление данных:</p>
+<ul>
+<li>группируем похожие объекты (кластеризация);</li>
+<li>сжимаем данные в более компактное пространство (понижение размерности);</li>
+<li>ищем редкие, нетипичные наблюдения (аномалии).</li>
+</ul>
+<h3 id="_4">Зачем нам в это ввязываться?</h3>
+<p>На первый взгляд может показаться, что обучение без учителя -- неблагодарная затея и следует избегать эти задачи. Однако очень часто возникают задачи, которые характерны:</p>
+<ul>
+<li>большим объем данных, для которых не зафиксировано никакого "результата", который можно принять за таргет</li>
+<li>большим объемом данных, для которых можно осуществить разметку, но на это нет времени и/или ресурсов</li>
+<li>для большего качества решения задачи обучения с учителем следует особым образом подготовить, преобразовать обучающие данные.</li>
+</ul>
+<p>В таком случае нам некуда бежать, приходится разбираться.</p>
+<h3 id="_5">Задачи обучения без учителя</h3>
+<p>Мы понимаем, чем характерны задачи обучения без учителя, но одного этого понимания пока недостаточно для того, чтобы начать их решать.</p>
+<p>Выделим для себя несколько наиболее распространенных типов практических задач обучения без учителя:</p>
+<ol>
+<li>кластеризация;</li>
+<li>понижение размерностей;</li>
+<li>обнаружение аномалий.</li>
+</ol>
+<p>В рамках этого курса мы подробно остановимся и рассмотрим первые две их них.</p>
+<h2 id="_6">Кластеризация</h2>
+<p><strong>(def)</strong> Кластеризация -- это задача разбиения объектов на группы (кластеры) так, чтобы внутри кластера объекта были похожи, а объекты из разных кластеров -- заметно различались.</p>
+<p>В отличие от классификации, в кластеризации мы заранее не знаем:</p>
+<ul>
+<li>сколько кластеров присутствуют в данных;</li>
+<li>какие типы объектов вообще существуют;</li>
+<li>каким образом различать одни типы от других.</li>
+</ul>
+<p>Результатов решением задачи кластеризации выглядит как функция вида:</p>
+<div class="arithmatex">\[
+c(x_i) \in \{1, \dots, k\},
+\]</div>
+<p>которая сопоставляет каждый точке данных <span class="arithmatex">\(x_i\)</span> номер кластера.</p>
+<h3 id="_7">Как определить сходство</h3>
+<p>Кластеризация всегда опирается на некоторое понятие близости между объектами. Это может быть:</p>
+<ul>
+<li>метрика расстояния, т.е. <span class="arithmatex">\(d: \mathcal{X} \times \mathcal{X} \rightarrow  \mathbb{R}_{\geq 0}\)</span>; схожие объекты, таким образом, определяются по малому значению функции <span class="arithmatex">\(d(x_i, x_y)\)</span>;</li>
+<li>функцией сходства <span class="arithmatex">\(s: \mathcal{X} \times \mathcal{X} \rightarrow  \mathbb{R}\)</span> (например, корреляция), которая принимает высокие значения на схожих объектах; например, функция <span class="arithmatex">\(s_{\text{cos}}(x, y) = \frac{\langle x, y \rangle }{\|x\|_2 + \|y\|_2}\)</span> обладает таким свойством;</li>
+<li>оценкой плотности, которая работает не с парой точек, а с окрестностью одной: "хорошая" точка, относящася к какому-то кластеру, будет считаться такой, если в её окрестности будет находиться даостаточно большое количество; формально это выражается так: число точек в плоскости <span class="arithmatex">\(N_{\epsilon} = \{x_j: d(x, x_j) \leq \epsilon\}\)</span> должно быть больше или равно заданного порога, <span class="arithmatex">\(|\N_{epsilon}| \leq \text{minPts}\)</span>;</li>
+<li>или графом <span class="arithmatex">\(G = (V, E)\)</span>, где вершины <span class="arithmatex">\(V = \{1, \dots, n\}\)</span> соответствует объектам, а ребра задают отнощения сходства.</li>
+</ul>
+<p>Каждый из расмотренных далее алгоритмов кластеризации оперирует тем или иным подходом к определению схожести объектов</p>
+<h2 id="_8">Алгоритмы кластеризации</h2>
+<h3 id="k-means">K-Means</h3>
+<p>Алгоритм k-means — один из самых популярных методов кластеризации. Его сила в том, что он очень простой, быстрый и хорошо работает во многих задачах. </p>
+<h4 id="_9">Идея</h4>
+<p>Мы хотим разбить объекты на <span class="arithmatex">\(k\)</span> кластеров так, чтобы каждый кластер можно было описать одной точкой — его центроидом.</p>
+<p>Его идею можно выразить так:  каждая точка рассматриваемого множества данных относится к тому кластеру, центр которого ближе всего.</p>
+<h4 id="_10">Шаги алгоритма</h4>
+<p>Предварительно заранее "из головы" выбирается количество предполагаемых кластеров <span class="arithmatex">\(k\)</span>. Затем выполняется следующий алгоритм:</p>
+<ol>
+<li><strong>Инициализация.</strong> Из всего множества точек данных выбираются <span class="arithmatex">\(k\)</span> начальных центроидов: <span class="arithmatex">\(\mu_1, \mu_2, \dots, \mu_k\)</span>$;</li>
+<li><strong>Присванивание всех точек данных к кластерам.</strong>  Для каждой точки x_i, не явлюящейся выбранным центроидом, выбирается ближайший центроид: </li>
+</ol>
+<div class="arithmatex">\[
+c_i \arg \min_j \in \{1, \dots, k\} \|x_i - \mu_j\|_2
+\]</div>
+<ol>
+<li><strong>Перерасчет центроидов.</strong> Для каждого кластера пересчитываем центроид как среднее всех точек в кластере:</li>
+</ol>
+<div class="arithmatex">\[
+\mu_j = \frac{1}{|C_j|} \sum_{x_i \in C_j} x_i
+\]</div>
+<p>Шаги 1-2 повторяются до достижения сходимости, то есть пор, когда после переприсвоения кластеры не изменяются или когда не меняется значение целевой функции</p>
+<p>Кстати про нее.</p>
+<h4 id="_11">Что мы оптимизируем?</h4>
+<p>В отличие от уже привычной оптимизации функции потерь в обучении с учителем, здесь у нас нет итеративного улучшения параметров в ходе алгоритма. Однако мы можем ориентироваться на значение суммы квадратом расстояний от точек до центров свомих кластеров:</p>
+<div class="arithmatex">\[
+\sum_{j=1}^{k} \sum_{x_i \in C_j} \|x_i -mu_j\|^2_2,
+\]</div>
+<p>где <span class="arithmatex">\(\mu_j\)</span> -- центроид <span class="arithmatex">\(j\)</span>-го кластера:</p>
+<div class="arithmatex">\[
+\mu_j = \frac{1}{C_j} \sum_{x_i}
+\]</div>
+<p>Чем меньше её значение, тем лучше мы смогли кластеризовать точки данных. </p>
+<p>За внешней простотой алгоритма кроется несколько важных нюансов, на которые следует обратить наше внимание.</p>
+<h4 id="_12">Выбор метрики и масштабирование признаков</h4>
+<p>В классическом k-means используется евклидово расстояние, и это не случайно: именно при <span class="arithmatex">\(\|\cdot\|_2^2\)</span> оптимальным центром является среднее всех точек в кластере.</p>
+<p>Отсюда важное следствие: перед k-means почти всегда нужно масштабировать признаки, например <code>StandardScaler</code> или <code>MinMaxScaler</code>, иначе признаки с большим разбросом будут доминировать.</p>
+<p>При использовании других метрик близости алгоритм перестанет быть классическим k-means, а станет его модификацией. Так при выборе манхэттенского расстояния в качестве функции расстояния мы получим k-medians, и центр кластера будет считаться как медиана всех его точек.</p>
+<h4 id="_13">Выбор начального приближения</h4>
+<p>От выбора начального расположения центроидов очень сильно зависит итоговое качество кластеризации. Например, если мы выберем близкие друг к другу точки, результаты кластеризации будут некорректны.</p>
+<p>Для того, чтобы избежать такой ситуации можно выбирать точки случайно (при этом их близость все еще возможно), но предпочтительнее использовать алгоритм k-means++, который добивается достаточного отдаления начальных центроидов друг от друга путем применяния вероятностной эфристики: первый центр берётся случайно, а каждый следующий — с вероятностью, пропорциональной <span class="arithmatex">\(D(x)^2\)</span>, где <span class="arithmatex">\(D(x)\)</span> — расстояние от точки до ближайшего уже выбранного центроида</p>
+<h4 id="mini-batch-k-means">Mini-batch k-means</h4>
+<p>Если данных очень много, то полный пересчёт по всему датасету может быть вычислительно дорогой процедурой. В таком случаее следует использовать Mini-batch k-means, который работает так:</p>
+<ul>
+<li>на каждой итерации берём небольшой случайный батч точек;</li>
+<li>обновляем центры только по этому батчу.</li>
+</ul>
+<p>Данная модификация существенно быстрее и дешевле по памяти, но при этом появляется дополнительная стохастичность итоговые центры могут быть чуть менее точными.</p>
+<h2 id="_14">Иерархическая агломеративная кластеризация</h2>
+<p>Иерархическая кластеризация — это подход, в котором мы не пытаемся сразу получить единственное и однозначное разбиение на 
+<span class="arithmatex">\(k\)</span> кластеров. Вместо этого мы строим иерархию вложенных групп, то есть дерево разбиений: на одном уровне кластеры крупные, на другом — более мелкие и детализированные.</p>
+<p>Главная идея: кластеризация становится монолитной, а иерархической, вложенной структурой, из которой потом можно выбрать нужный уровень детализации.</p>
+<h3 id="_15">Алгомеративный и дивизионный подход</h3>
+<p>Существуют два базовых варианта построения иерархии:</p>
+<ul>
+<li>
+<p><strong>Агломеративный (bottom-up)</strong>:
+начинаем с того, что каждый объект — отдельный кластер, и далее постепенно объединяем ближайшие кластеры, пока не останется один общий кластер.</p>
+</li>
+<li>
+<p><strong>Дивизионный (top-down)</strong>:
+начинаем с одного большого кластера, содержащего все точки, и далее постепенно делим его на более мелкие группы.</p>
+</li>
+</ul>
+<p>В рамках классического машинного обучения чаще всего рассматривают именно агломеративный подход: он проще в реализации, хорошо изучен и лежит в основе большинства практических библиотечных реализаций.</p>
+<h4 id="_16">Построение иерархии</h4>
+<p>В алгомеративной кластеризации мы строим последовательность разбиений: </p>
+<div class="arithmatex">\[
+\mathcal{C}^{(n)} \rightarrow \mathcal{C}^{n-1} \rightarrow \dots \rightarrow \mathcal{C}^{(1)},
+\]</div>
+<p>где <span class="arithmatex">\(\mathcal{C}^{(t)}\)</span> -- разбиение на <span class="arithmatex">\(t\)</span> кластеров.</p>
+<p>На каждом шаге мы объединяем две группы, которые считаем "ближайшими". В результате получается дерево, где листья — это отдельные объекты внутренние узлы — объединённые кластеры, авысота объединения отражает "насколько далеко" были друг от друга объединяемые кластеры.</p>
+<h4 id="_17">Шаги алгоритма</h4>
+<p>Пусть дано множество объектов <span class="arithmatex">\(X=\{x_1,\dots,x_n\}\)</span>.</p>
+<p>1) <strong>Инициализация:</strong><br />
+каждый объект — отдельный кластер:</p>
+<div class="arithmatex">\[
+C_i^{(0)}=\{x_i\}, \quad i=1,\dots,n.
+\]</div>
+<p>2) <strong>Вычисление расстояний между кластерами:</strong>
+определяем правило, как измерять расстояние между двумя кластерами <span class="arithmatex">\(A\)</span> и <span class="arithmatex">\(B\)</span>: <span class="arithmatex">\(D(A,B)\)</span>.</p>
+<p>3) <strong>Слияние ближайших:</strong><br />
+находим пару кластеров с минимальным расстоянием:</p>
+<div class="arithmatex">\[
+(A^\*,B^\*)=\arg\min_{A\neq B} D(A,B),
+\]</div>
+<p>и объединяем их:</p>
+<div class="arithmatex">\[
+C_{\text{new}} = A^\*\cup B^\*.
+\]</div>
+<p>4) <strong>Обновление расстояний:</strong><br />
+   пересчитываем расстояния от нового кластера до остальных.</p>
+<p>5) <strong>Остановка:</strong><br />
+   продолжаем, пока не достигнем критерия остановки (например, нужного числа кластеров <span class="arithmatex">\(k\)</span> или порога расстояния).</p>
+<h4 id="_18">Шаги алгоритма (агломеративная версия)</h4>
+<p>Пусть дано множество объектов <span class="arithmatex">\(X=\{x_1,\dots,x_n\}\)</span>.</p>
+<p>1) <strong>Инициализация:</strong><br />
+   каждый объект — отдельный кластер:</p>
+<div class="arithmatex">\[
+C_i^{(0)}=\{x_i\}, \quad i=1,\dots,n.
+\]</div>
+<p>2) <strong>Вычисление расстояний между кластерами:</strong><br />
+   определяем правило, как измерять расстояние между двумя кластерами <span class="arithmatex">\(A\)</span> и <span class="arithmatex">\(B\)</span>: <span class="arithmatex">\(D(A,B)\)</span>.</p>
+<p>3) <strong>Слияние ближайших:</strong><br />
+   находим пару кластеров с минимальным расстоянием:</p>
+<div class="arithmatex">\[
+(A^\*,B^\*)=\arg\min_{A\neq B} D(A,B),
+\]</div>
+<p>и объединяем их:</p>
+<div class="arithmatex">\[
+C_{\text{new}} = A^\*\cup B^\*.
+\]</div>
+<p>4) <strong>Обновление расстояний:</strong><br />
+   пересчитываем расстояния от нового кластера до остальных.</p>
+<p>5) <strong>Остановка:</strong><br />
+   продолжаем, пока не достигнем критерия остановки (например, нужного числа кластеров <span class="arithmatex">\(k\)</span> или порога расстояния).</p>
+<h4 id="_19">Расстояния между кластерами и критерии остановки</h4>
+<p>Чтобы алгоритм работал, нужно выбрать:</p>
+<p>1) метрику между точками <span class="arithmatex">\(d(x_i,x_j)\)</span>;
+2) linkage-функцию, определяющее расстояние между кластерами <span class="arithmatex">\(D(A,B)\)</span>.</p>
+<p>Наиболее распространённые варианты linkage функции:</p>
+<ul>
+<li><strong>Расстояние ближнего соседа:</strong> <span class="arithmatex">\(D(A,B)=\min_{x\in A,\ y\in B} d(x,y).\)</span></li>
+<li><strong>Расстояние дальнего соседа:</strong> <span class="arithmatex">\(D(A,B)=\max_{x\in A,\ y\in B} d(x,y).\)</span></li>
+<li><strong>Групповое среднее расстояние:</strong> <span class="arithmatex">\(D(A,B)=\frac{1}{|A||B|}\sum_{x\in A}\sum_{y\in B} d(x,y).\)</span></li>
+</ul>
+<p><strong>Критериями остановки</strong> могут быть такие:</p>
+<ul>
+<li>остановиться, когда осталось ровно <span class="arithmatex">\(k\)</span> кластеров;</li>
+<li>остановиться, когда минимальное расстояние между кластерами стало больше порога;</li>
+<li>"отрезать" дерево на нужной высоте (см. про дендрограмму ниже).</li>
+</ul>
+<h4 id="_20">Дендрограмма</h4>
+<p><strong>Дендрограмма</strong> — это визуализация иерархической кластеризации в виде дерева:</p>
+<ul>
+<li>по горизонтали обычно располагаются объекты (или их порядок);</li>
+<li>по вертикали — "высота слияния", то есть расстояние <span class="arithmatex">\(D(A,B)\)</span> в момент объединения.</li>
+</ul>
+<p>Если два объекта на дендограмме объединяются низко — они очень похожи, если же слияние происходит высоко — кластеры далеко друг от друга.</p>
+<p>Чтобы получить конечную кластеризацию из дендрограммы, мы делаем "срез" на некоторой высоте: всё, что ниже — считается отдельными кластерами.</p>
+<h3 id="dbscan">DBSCAN</h3>
+<p><strong>DBSCAN (Density-Based Spatial Clustering of Applications with Noise)</strong> — это алгоритм кластеризации, основанный на понятии плотности объектов. В отличие от k-means, он не предполагает, что кластеры имеют "сферическую" форму, и умеет находить кластеры сложной формы, отделять шум от "полезных" данных и не требует заранее фиксировать число кластеров <span class="arithmatex">\(k\)</span>.</p>
+<p>Главная идея этого алгоритма заключается в следующем: <strong>кластер — это связная область повышенной плотности</strong>.</p>
+<h4 id="varepsilon-">Плотность объектов и <span class="arithmatex">\(\varepsilon\)</span>-окрестность</h4>
+<p>Пусть задана метрика расстояния <span class="arithmatex">\(d(x_i, x_j)\)</span>. Введём <span class="arithmatex">\(\varepsilon\)</span>-окрестность точки <span class="arithmatex">\(x\)</span>:</p>
+<div class="arithmatex">\[
+N_\varepsilon(x) = \{x_j \in X \;:\; d(x, x_j) \le \varepsilon\}.
+\]</div>
+<p>Здесь <span class="arithmatex">\(\varepsilon\)</span> — радиус локальной окрестности, внутри которой мы “считаем соседей”.</p>
+<h4 id="_21">Типы точек: ядерная, граничная и шумовая</h4>
+<p>DBSCAN вводит параметр $<span class="arithmatex">\(\mathrm{minPts}\)</span>$ — минимальное число точек, чтобы считать окрестность "плотной".</p>
+<p>1) <strong>Ядерная, плотная точка:</strong> точка <span class="arithmatex">\(x\)</span> называется core-точкой, если в её <span class="arithmatex">\(\varepsilon\)</span>-окрестности достаточно много соседей:</p>
+<div class="arithmatex">\[
+|N_\varepsilon(x)| \ge \mathrm{minPts}.
+\]</div>
+<p>2) <strong>Граничная точка:</strong> точка <span class="arithmatex">\(x\)</span> не является ядерной, но лежит в <span class="arithmatex">\(\varepsilon\)</span>-окрестности некоторой ядерной точки <span class="arithmatex">\(x_c\)</span>:</p>
+<div class="arithmatex">\[
+|N_\varepsilon(x)| &lt; \mathrm{minPts}
+\quad \text{и} \quad
+\exists x_c:\ |N_\varepsilon(x_c)| \ge \mathrm{minPts},\ \ x \in N_\varepsilon(x_c).
+\]</div>
+<p>3) <strong>Шум, шумовая точка</strong><br />
+Точка <span class="arithmatex">\(x\)</span> — шум, если она не яджерная и не граничная, то есть она не достижима из ядерных точек по правилу DBSCAN.</p>
+<p>Говоря простыми словами:
+- ядерные точки лежат "внутри" плотных областей,
+- граничные точки прилегают к границе кластера,
+- шумовые точки — одиночные или слишком разреженные.</p>
+<h4 id="_22">Идея выделения связных компонент</h4>
+<p>DBSCAN формирует кластеры как <strong>связные компоненты</strong> графа достижимости по плотности.</p>
+<p>Определим два ключевых понятия.</p>
+<p>1) <strong>Прямая достижимость по плотности</strong><br />
+Точка <span class="arithmatex">\(y\)</span> <strong>непосредственно достижима</strong> из <span class="arithmatex">\(x\)</span>, если <span class="arithmatex">\(y\)</span> лежит в <span class="arithmatex">\(\varepsilon\)</span>-окрестности <span class="arithmatex">\(x\)</span>, и <span class="arithmatex">\(x\)</span> — ядерная точка:</p>
+<div class="arithmatex">\[
+y \in N_\varepsilon(x) \quad \text{и} \quad |N_\varepsilon(x)| \ge \mathrm{minPts}.
+\]</div>
+<p>2) <strong>Достижимость по плотности</strong><br />
+Точка <span class="arithmatex">\(y\)</span> достижима из <span class="arithmatex">\(x\)</span>, если существует цепочка точек:</p>
+<div class="arithmatex">\[
+x = x_0 \to x_1 \to \dots \to x_m = y,
+\]</div>
+<p>такая, что каждый шаг <span class="arithmatex">\(x_{t+1}\)</span> непосредственно достижим из <span class="arithmatex">\(x_t\)</span>.</p>
+<p>Тогда <strong>кластер</strong> — это максимальное множество точек, которые достижимы из некоторой core-точки и "сцеплены" между собой по этой достижимости.</p>
+<h4 id="dbscan_1">Шаги алгоритма DBSCAN</h4>
+<p>Пусть даны параметры <span class="arithmatex">\(\varepsilon\)</span> и <span class="arithmatex">\(\mathrm{minPts}\)</span>.</p>
+<p>1) Инициализируем все точки как "не посещённые".</p>
+<p>2) Берём очередную непосещённую точку <span class="arithmatex">\(x\)</span> и строим её окрестность <span class="arithmatex">\(N_\varepsilon(x)\)</span>.</p>
+<p>3) Если <span class="arithmatex">\(|N_\varepsilon(x)| &lt; \mathrm{minPts}\)</span>, то помечаем <span class="arithmatex">\(x\)</span> как <strong>шумовые</strong> (временно: позже она может граничной точкой).</p>
+<p>4) Если <span class="arithmatex">\(|N_\varepsilon(x)| \ge \mathrm{minPts}\)</span>, то создаём новый кластер и начинаем его <strong>расширять</strong>:
+        - добавляем в кластер все точки из <span class="arithmatex">\(N_\varepsilon(x)\)</span>;
+        - если среди этих точек встречаются ядерные точки, то добавляем и их окрестности (то есть "разрастаемся" по плотности);
+        - продолжаем, пока кластер не перестанет расширяться.</p>
+<p>5) Повторяем до тех пор, пока не обработаем все точки.</p>
+<h4 id="_23">Практические замечания про выбор параметров</h4>
+<ul>
+<li><span class="arithmatex">\(\mathrm{minPts}\)</span> часто выбирают как небольшое число (например, 5–10), либо по эвристике <span class="arithmatex">\(\mathrm{minPts} \approx d+1\)</span>, где <span class="arithmatex">\(d\)</span> — размерность.</li>
+<li><span class="arithmatex">\(\varepsilon\)</span> часто подбирают по <strong>k-distance графику</strong>: берут расстояния до <span class="arithmatex">\(k=\mathrm{minPts}\)</span>-го соседа для каждой точки и ищут "излом" на графике.</li>
+<li>Перед DBSCAN обычно полезно <strong>масштабировать</strong> признаки, иначе метрика будет доминироваться отдельными координатами.</li>
+</ul>
+<h2 id="_24">Понижение размерности</h2>
+<p>Теперь рассмотрим вторую задачу из упомянутых в самом начале -- понижение размерности</p>
+<p><strong>(def)</strong> Понижение размерности — это группа методов обучения без учителя, цель которых заключается в том, чтобы перейти от исходного пространства признаков большой размерности к пространству меньшей размерности, сохранив при этом как можно больше полезной информации из данных.</p>
+<p>Интуитивно можно сказать так: у нас есть объекты, описанные большим числом признаков (иногда десятками, сотнями и даже тысячами), но мы подозреваем, что эта “большая размерность” во многом избыточна. Часто признаки частично дублируют друг друга, содержат шум или просто описывают один и то же свойства объекта разными способами. В таком случае можно попытаться заменить исходное описание более компактным представлением.</p>
+<h3 id="_25">Зачем вообще понижать размерность?</h3>
+<p>На практике понижение размерности используется для решения нескольких конкретных задач:</p>
+<ul>
+<li><strong>Сжатие данных.</strong> Мы получаем компактное представление объектов в виде векторов меньшей размерности, что упрощает их хранение и вычисления с ними.</li>
+<li><strong>Визуализация.</strong> Многие алгоритмы позволяют отобразить объекты из <span class="arithmatex">\(\mathbb{R}^d\)</span> в <span class="arithmatex">\(\mathbb{R}^2\)</span> или <span class="arithmatex">\(\mathbb{R}^3\)</span> так, чтобы каждый объект можно представить в виде точке в двумерном или трехмерном пространстве;</li>
+<li><strong>Подготовка к обучению с учителем.</strong> Уменьшение числа признаков часто делает модели обучения с учителее более устойчивыми, быстрее и проще в настройке, особенно когда объектов в обучающей выборке относительно мало.</li>
+</ul>
+<p>Помимо решения этих задач с помощью понижения размерности мы хотим нивелировать эффект так называемого <strong>проклятия размерности</strong>.</p>
+<h2 id="_26">Проклятие размерности</h2>
+<p>Проклятие размерности — это совокупность эффектов, которые возникают при росте числа признаков <span class="arithmatex">\(d\)</span> и делают работу с данными существенно сложнее. Интуитивно проблема выглядит так: чем больше измерений у пространства, тем "больше" становится это пространство, и тем более разреженными оказываются данные. Даже если объектов много, в высоких размерностях они занимают ничтожную долю возможных конфигураций, и привычные идеи вроде "похожести", "близких соседей" и "локальной окрестности" начинают работать хуже.</p>
+<p>Один из главных практических выводов здесь такой: при фиксированном объёме данных рост размерности приводит к тому, что алгоритму требуется всё больше наблюдений, чтобы надёжно отличать закономерность от шума. Поэтому решение задач в пространстве высокой размерности почти всегда требуют либо очень больших датасетов, либо сильной регуляризации, либо предварительного сжатия признакового пространства.</p>
+<p>Рассмотрим простую мысленную модель: данные лежат внутри <span class="arithmatex">\(d\)</span>-мерного гиперкуба <span class="arithmatex">\([-1, 1]^d\)</span>. Его объём равен <span class="arithmatex">\(2^d\)</span>. Теперь возьмём "внутреннюю часть" куба <span class="arithmatex">\([-\alpha, \alpha]^d\)</span>, где <span class="arithmatex">\(\alpha \in (0, 1)\)</span>, то есть мы отступили от границы куба совсем немного. Объём внутреннего куба равен <span class="arithmatex">\((2\alpha)^d\)</span>, и доля объёма, которая приходится на внутреннюю область, равна</p>
+<div class="arithmatex">\[
+\frac{(2\alpha)^d}{2^d} = \alpha^d.
+\]</div>
+<p>Это означает, что при росте <span class="arithmatex">\(d\)</span> величина <span class="arithmatex">\(\alpha^d\)</span> быстро стремится к нулю. Например, если <span class="arithmatex">\(\alpha = 0.9\)</span>, то уже при <span class="arithmatex">\(d=50\)</span> получаем <span class="arithmatex">\(\alpha^d \approx 0.005\)</span>, то есть внутри “сердцевины” остаётся около 0.5% объёма, а остальной объём находится в тонком слое у границы. На языке данных это интерпретируется так: случайная точка почти всегда имеет хотя бы одну координату, находящуюся близко к границе диапазона, и “типичный объект” оказывается не в центре, а возле краёв пространства.</p>
+<h3 id="_27">Формальное описание задачи</h3>
+<p>Пусть каждый объект <span class="arithmatex">\(x_i\)</span> живёт в исходном пространстве признаков <span class="arithmatex">\(\mathbb{R}^d\)</span>. Метод понижения размерности строит отображение</p>
+<div class="arithmatex">\[
+f:\mathbb{R}^d \to \mathbb{R}^k, \quad k \ll d,
+\]</div>
+<p>и сопоставляет каждому объекту его новое представление</p>
+<div class="arithmatex">\[
+z_i = f(x_i), \quad z_i \in \mathbb{R}^k.
+\]</div>
+<p>Вектор <span class="arithmatex">\(z_i\)</span> часто называют <strong>латентным представлением</strong> или <strong>эмбеддингом</strong> объекта. Его смысл — "сжать" исходную информацию так, чтобы в новой системе координат было проще различать похожие и отличающиеся объекты, выделять их группы и т.д.</p>
+<p>Рассмотрим теперь подробнее несколько методов, решающих эту задачу</p>
+<h3 id="svd-pca">SVD - PCA</h3>
+<p>Самый классический и часто встречающийся способ понижения размерности — это <strong>PCA (Principal Component Analysis, Метод главных компонент)</strong>.</p>
+<p>Его идея состоит в том, чтобы заменить исходные признаки новой системой координат, в которой первые оси объясняют максимальную долю вариативности данных. Формально мы берём центрированную матрицу данных <span class="arithmatex">\(X \in \mathbb{R}^{n \times d}\)</span> (из каждого признака вычитаем среднее) и представляем её в виде SVD-разложения</p>
+<div class="arithmatex">\[
+X = U \Sigma V^\top.
+\]</div>
+<p>В этом разложении столбцы матрицы <span class="arithmatex">\(V\)</span> задают ортонормированный базис в пространстве признаков, а диагональные элементы <span class="arithmatex">\(\Sigma\)</span> показывают "силу" соответствующих направлений: чем больше <span class="arithmatex">\(\sigma_i\)</span>, тем больше дисперсия данных вдоль <span class="arithmatex">\(i\)</span>-й компоненты.</p>
+<p>Чтобы понизить размерность до <span class="arithmatex">\(k \ll d\)</span>, мы просто оставляем первые <span class="arithmatex">\(k\)</span> столбцов <span class="arithmatex">\(V_k\)</span> и проецируем данные: <span class="arithmatex">\(Z = X V_k\)</span>, получая новое представление объектов <span class="arithmatex">\(z_i \in \mathbb{R}^k\)</span>. Такой подход удобен тем, что он одновременно даёт и способ сжать данные, и понятный критерий выбора <span class="arithmatex">\(k\)</span> через долю объяснённой дисперсии: сумма <span class="arithmatex">\(\sigma_i^2\)</span> по выбранным компонентам показывает, какую часть исходной вариативности мы сохранили.</p>
+<h3 id="t-sne">t-SNE</h3>
+<p>t-SNE — это метод нелинейного понижения размерности, который чаще всего используют не для непосредственного сжатия признаков для модели, а для визуализации точек данных в двумерном или трезмерном пространстве. Его ключевая цель — сохранить <strong>локальную структуру</strong>: если две точки были близки в исходном пространстве признаков, то после отображения они должны оказаться близко и на визуальном отображении. Поэтому t-SNE особенно хорошо подходит для того, чтобы увидеть кластеры, островки и локальные группы объектов, которые трудно заметить в исходном высокоразмерном пространстве.</p>
+<p>Формально t-SNE переводит понятие близости в язык вероятностей. Для каждой точки <span class="arithmatex">\(x_i\)</span> он строит распределение вероятностей по соседям <span class="arithmatex">\(p_{j|i}\)</span>, которое отражает, насколько точка <span class="arithmatex">\(x_j\)</span> является "соседом" <span class="arithmatex">\(x_i\)</span> (обычно через гауссово затухание по расстоянию). Параметр perplexity (эффективный размер локальной окрестности) в этом месте задаёт, насколько "локальной" должна быть эта идея соседства, то есть примерно сколько эффективных соседей мы хотим учитывать. Затем в низкой размерности для точек <span class="arithmatex">\(y_i\)</span> строится аналогичное распределение <span class="arithmatex">\(q_{ij}\)</span>, но уже с использованием распределения с тяжёлыми хвостами (поэтому t-SNE реже "сваливает" разные кластеры в одну точку). Алгоритм подбирает расположение точек <span class="arithmatex">\(y_i\)</span>, минимизируя расхождение между распределениями <span class="arithmatex">\(P\)</span> и <span class="arithmatex">\(Q\)</span>, то есть старается сделать так, чтобы локальные соседства в исходном и в новом пространстве совпадали.</p>
+<p>Важно понимать ограничения t-SNE. Он хорошо сохраняет <strong>локальные отношения</strong>, но глобальная геометрия на картинке может быть обманчива: расстояние между кластерами, их относительные размеры и плотности не обязательно отражают реальность в исходных данных. Поэтому t-SNE-отображение нельзя читать как "точное отображение метрического пространства", это скорее инструмент для качественного анализа: увидеть структуру, выбросы, потенциальные подгруппы, проверить гипотезу о разделимости. На практике t-SNE часто применяют после предварительного PCA до 30–50 измерений: это ускоряет вычисления и делает результат более стабильным.</p>
+<h3 id="umap">UMAP</h3>
+<p>UMAP (Uniform Manifold Approximation and Projection) — это метод нелинейного понижения размерности, который, как и t-SNE, чаще всего используют для <strong>визуализации</strong> и анализа структуры данных. Его основная цель — сохранить отношения соседства между объектами при переходе из пространства высокой размерности в 2D/3D, но при этом UMAP обычно лучше масштабируется на большие датасеты и часто даёт более "связную" картину глобальной структуры. Практически это означает, что UMAP нередко удобнее для регулярного применения в разведочном анализе данных, когда нужно быстро получить понятную карту объектов.</p>
+<p>Работа UMAP обычно описывается через построение графа соседей. Сначала для каждой точки <span class="arithmatex">\(x_i\)</span> находится набор ближайших соседей (kNN-граф), после чего для рёбер этого графа вычисляются веса, отражающие “силу” связи, то есть насколько уверенно две точки являются соседями. Дальше алгоритм ищет такое расположение точек <span class="arithmatex">\(y_i\)</span> в низкой размерности, чтобы получившийся там граф соседств был максимально похож на исходный: проще говоря, чтобы близкие точки остались близкими, а далекие — не стали случайно соседями. Оптимизация при этом нацелена на согласование двух "нечётких" графов — в исходном и в новом пространстве.</p>
+<p>UMAP имеет несколько параметров, которые важно понимать на интуитивном уровне. Параметр <span class="arithmatex">\(n_{\text{neighbors}}\)</span> задаёт, насколько "локальной" считается структура данных: малые значения подчёркивают мелкие группы, большие — дают более гладкую и глобально связную картину. Параметр <span class="arithmatex">\(min_{\text{dist}}\)</span> управляет тем, насколько плотно UMAP позволяет сжимать точки в кластерах: чем меньше значение, тем плотнее и компактнее получаются группы на визуализации. Как и в других методах, выбор метрики расстояния (евклидовой, косинусной и т.д.) критичен, потому что именно она определяет, что значит “похожесть” объектов. При интерпретации результата важно помнить: UMAP отлично подходит для качественного анализа и поиска структуры, но расстояния на карте не следует воспринимать как точные численные расстояния в исходном пространстве признаков.</p>
+<h3 id="_28">Если хочется лучше разобраться</h3>
+<p>рекомендую следующие видео для более детального ознакомления с вышеперечисленными алгоритмами</p>
+<ol>
+<li><a href="youtube.com/watch?v=FgakZw6K1QQ&amp;pp=ugUEEgJlbg%3D%3D">PCA</a></li>
+<li><a href="https://www.youtube.com/watch?v=NEaUSP4YerM">t-SNE</a></li>
+<li><a href="https://www.youtube.com/watch?v=eN0wFzBA4Sc">UMAP</a></li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

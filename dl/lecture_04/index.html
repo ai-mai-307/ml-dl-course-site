@@ -1,0 +1,3046 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ai-mai-307.github.io/ml-dl-course-site/dl/lecture_04/">
+      
+      
+        <link rel="prev" href="../lecture_03/">
+      
+      
+        <link rel="next" href="../lecture_05/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Лекция №4. Обработка последовательных данных и текста - Введение в машинное и глубокое обучение</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../styles/brand.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-header__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Введение в машинное и глубокое обучение
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Лекция №4. Обработка последовательных данных и текста
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Введение в машинное и глубокое обучение" class="md-nav__button md-logo" aria-label="Введение в машинное и глубокое обучение" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Введение в машинное и глубокое обучение
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Расписание
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инструкции
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инструкции
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/assign_course/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Запись на курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/complete_course_instructionds/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как успешно пройти курс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/llm_rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Добросовестное использование LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GitHub Classroom
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/howtoclassroom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как принять задания в GitHub Classroom
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/work_with_agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с агентом-кодревьювером
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Yandex Datasphere
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Yandex Datasphere
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/clone_repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как склонировать репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/datasphere_commint_and_push/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как сделать комит и запушить его в репозиторий
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/what_is_dataset/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как работать с датасетами
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/manage_budget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Как контролировать расходы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Классическое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Классическое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Первое знакомство с машинным обучением
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обучение с учителем. Линейные модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обучение с учителем. Решающие деревья и ансамблевые модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/lecture_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №5. Обучение без учителя. Кластеризация и понижение размерности
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Предварительный анализ данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Предварительная обработка данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Обучение линейных моделей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №4. Обучение деревьев решений и ансамблей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/hw_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №5. Обучение кластеризации и построение визуализации
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/exam_ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ml/ml_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Глубокое машинное обучение
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Глубокое машинное обучение
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О курсе
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Конспекты
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Конспекты
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №1. Основные понятия глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №2. Обработка изображений с помощью глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №3. Обработка аудиосигнала с помощью глубокого обучения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обработка последовательных данных и текста
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №4. Обработка последовательных данных и текста
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое последовательные данные и какие они бывают?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что такое последовательные данные и какие они бывают?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Неформальное определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Временные ряды
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Временные ряды">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры временных рядов
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сигналы и их связь с временными рядами
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Сигналы и их связь с временными рядами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры сигналов
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Текст как последовательность
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи обработки последовательностей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Задачи обработки последовательностей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи обработки сигналов и временных рядов
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Задачи обработки сигналов и временных рядов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи обработки текста
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типы отображений между входом и выходом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Векторизация последовательных данных
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Векторизация последовательных данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Векторизация временных рядов и сигналов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Текстовые эмбеддинги
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Разбиение текста на токены
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разбиение текста на токены">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое токенизация?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Уровни токенизации: слова, морфемы, символы
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Искомый алгоритм токенизации
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        От морфем к субсловам
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bpe-encoding-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE: идея, encoding и decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Текстовые эмбеддинги
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Текстовые эмбеддинги">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Эмбеддинг как числовое представление токена
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-hot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-hot и его ограничения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        В поисках смысла: дистрибутивная гипотеза
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Частотные методы получения эмбеддингов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ppmi-lsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PPMI и LSA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Косинусная близость векторов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#word2vec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Word2Vec
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекуррентные нейронные сети
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекуррентные нейронные сети">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основная идея и формальное определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обучение и инференс
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Многослойная и двунаправленная RNN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проблемы обучения рекуррентных нейронных сетей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lstm-gru" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LSTM и GRU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq2seq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seq2Seq модели и генерация последовательностей произвольной длины
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список использованных источников
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лекция №5. Большие языковые модели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Домашние задания
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Домашние задания
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №1. Обучение многослойного персептрона
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №2. Семантическая сегментация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №3. Поисх похожих композиций с помощью автоэнкодера
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №4. Машинный перевод
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    №5. Дообучение LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exam_dl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы и задачи на экзамен
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dl_competition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Соревнование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое последовательные данные и какие они бывают?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Что такое последовательные данные и какие они бывают?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Неформальное определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Формальное определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Временные ряды
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Временные ряды">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры временных рядов
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сигналы и их связь с временными рядами
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Сигналы и их связь с временными рядами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примеры сигналов
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Текст как последовательность
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи обработки последовательностей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Задачи обработки последовательностей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи обработки сигналов и временных рядов
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Задачи обработки сигналов и временных рядов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи обработки текста
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типы отображений между входом и выходом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Векторизация последовательных данных
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Векторизация последовательных данных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Векторизация временных рядов и сигналов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Текстовые эмбеддинги
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Разбиение текста на токены
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разбиение текста на токены">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое токенизация?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Уровни токенизации: слова, морфемы, символы
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Искомый алгоритм токенизации
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        От морфем к субсловам
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bpe-encoding-decoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BPE: идея, encoding и decoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Текстовые эмбеддинги
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Текстовые эмбеддинги">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Эмбеддинг как числовое представление токена
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-hot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-hot и его ограничения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        В поисках смысла: дистрибутивная гипотеза
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Частотные методы получения эмбеддингов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ppmi-lsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PPMI и LSA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Косинусная близость векторов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#word2vec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Word2Vec
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Рекуррентные нейронные сети
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Рекуррентные нейронные сети">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основная идея и формальное определение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Обучение и инференс
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Многослойная и двунаправленная RNN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проблемы обучения рекуррентных нейронных сетей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lstm-gru" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LSTM и GRU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq2seq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seq2Seq модели и генерация последовательностей произвольной длины
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список использованных источников
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Лекция №4. Обработка последовательных данных и текста</h1>
+
+<h2 id="_1">Что такое последовательные данные и какие они бывают?</h2>
+<h3 id="_2">Неформальное определение</h3>
+<p>Представьте себе данные, где важен не только сам факт наличия информации, но и порядок её поступления. Это и есть последовательные данные. В отличие от статичного изображения, где все значения пикселей можно получить "одномоментно", здесь мы имеем дело с цепочкой элементов, которые появляются один за другим. Смысл часто проявляется не в одном элементе, а в том, как элементы связаны между собой: предыдущие значения создают контекст, который помогает интерпретировать последующие.</p>
+<p>Ключевая особенность таких данных — переменная длина. Один текст может состоять из 5 слов, другой — из 500; один аудиофрагмент длится 1 секунду, другой — минуту. Поэтому задача глубокого обучения в этом контексте — научиться извлекать закономерности из упорядоченных последовательностей, учитывая их контекст и то, что длина последовательности заранее не фиксирована.</p>
+<h3 id="_3">Формальное определение</h3>
+<p>Последовательность длины <span class="arithmatex">\(T\)</span> можно определить как упорядоченный набор векторов признаков, обычно зависящих от времени. Пусть каждый элемент последовательности представляет собой вектор <span class="arithmatex">\(x_t \in \mathbb{R}^n\)</span>, где <span class="arithmatex">\(n\)</span> — размерность признакового пространства, а <span class="arithmatex">\(t\)</span> — индекс позиции (времени). Тогда вся последовательность записывается как</p>
+<div class="arithmatex">\[
+X = (x_1, x_2, \ldots, x_T).
+\]</div>
+<p>В наборе данных мы обычно имеем дело с множеством таких последовательностей <span class="arithmatex">\(\{X^{(1)}, X^{(2)}, \ldots, X^{(N)}\}\)</span>, где <span class="arithmatex">\(N\)</span> — число примеров. При этом длина каждой последовательности может быть своей: <span class="arithmatex">\(T^{(i)}\)</span> не обязана совпадать для разных объектов.</p>
+<h3 id="_4">Временные ряды</h3>
+<p><strong>(def)</strong> Временной ряд — это значения некоторого признака (или набора признаков), изменяющегося во времени, измеренные в дискретные моменты. Формально можно сказать так: пусть <span class="arithmatex">\((y_t,\, t \in \mathbb{N})\)</span> — временной ряд, и нам известны значения <span class="arithmatex">\(y_1, \ldots, y_T\)</span>. Во многих задачах цель заключается в том, чтобы предсказать значение ряда в некоторый будущий момент времени, например <span class="arithmatex">\(y_{T+1}\)</span> или вообще <span class="arithmatex">\(y_{t_j}\)</span> для заданного <span class="arithmatex">\(t_j\)</span>.</p>
+<p>Основное интуитивное предположение последовательных данных заключается в том, что по будущее состояние определяется его прошлым: в данных могут быть тренды, сезонности, циклы и шум, и модель должна научиться использовать прошлый контекст, чтобы прогнозировать будущее.</p>
+<h4 id="_5">Примеры временных рядов</h4>
+<p>Классические примеры временных рядов — это цены и объёмы торгов на бирже, потребление электроэнергии по часам, температура воздуха по дням, число обращений в поддержку по неделям, число поездок в такси по минутам и т.п. Во всех этих случаях данные устроены как последовательность измерений, и порядок наблюдений принципиально важен: перемешивание элементы местами влечет за собой нарушения внутренней закономерности.</p>
+<h3 id="_6">Сигналы и их связь с временными рядами</h3>
+<p>В контексте анализа данных термины "сигнал" и "временной ряд" иногда используют как взаимозаменяемые, но между ними есть важное различие. Сигнал — более общее понятие: это физическая величина, изменяющаяся во времени (или в пространстве). Изначально сигнал обычно непрерывен по своей природе, например звуковая волна или электромагнитные колебания.</p>
+<p>Временной ряд, напротив, чаще понимают как дискретную запись сигнала: мы измеряем сигнал через равные промежутки времени и получаем набор чисел. Поэтому можно сказать, что временной ряд — это "оцифрованное" представление непрерывного сигнала.</p>
+<h4 id="_7">Примеры сигналов</h4>
+<p>Типичные примеры сигналов — аудиосигнал (речь, музыка), ЭКГ и другие медицинские измерения, данные с акселерометра и гироскопа в смартфоне, радиосигналы, показания датчиков в IoT. Эти данные могут быть одномерными или многоканальными, но в любом случае это последовательности, в которых важна динамика и форма изменения во времени.</p>
+<h3 id="_8">Текст как последовательность</h3>
+<p>Текст — это тоже последовательные данные, но особого типа. Он представляет собой упорядоченную последовательность символов. В отличие от сигналов и временных рядов, элементы текстовой последовательности дискретны: это не числовое значение измеряемой величины или характеристики объекта, а условные символы, которым мы должны научиться приписывать смысл.</p>
+<p>Ключевое отличие текста от других последовательностей в том, что здесь смысл кодируется не физическими измерениями, а абстрактными знаками, организованными по правилам языка, естественного или формального (например, программный код). Поэтому главная сложность обработки текста — научиться переводить дискретные токены в численное представление так, чтобы оно отражало семантику и контекст.</p>
+<h2 id="_9">Задачи обработки последовательностей</h2>
+<p>Последовательные данные встречаются в очень разных областях, но типовые задачи можно сгруппировать по двум большим направлениям: обработка сигналов/временных рядов и обработка текста. В обоих случаях модель должна научиться использовать контекст: то, что было раньше, влияет на то, как интерпретировать то, что происходит сейчас.</p>
+<h3 id="_10">Задачи обработки сигналов и временных рядов</h3>
+<p>Для временных рядов и сигналов чаще всего решают задачи прогноза и распознавания. Например, мы можем предсказывать будущие значения ряда, классифицировать целый сигнал (что это за звук или состояние пациента), либо детектировать события внутри сигнала — моменты, когда произошло что-то важное. Сюда же относятся задачи фильтрации и восстановления: убрать шум, заполнить пропуски, восстановить “чистый” сигнал по наблюдениям.</p>
+<p>Важно, что в этих задачах последовательность обычно числовая, и модель должна уметь работать с длительными зависимостями: события на далёком прошлом могут влиять на то, что происходит сейчас.</p>
+<h4 id="_11">Задачи обработки текста</h4>
+<p>В тексте задачи обычно формулируются как понимание или порождение. К "пониманию" относятся:</p>
+<ul>
+<li>классификация текста (тональность, тема);</li>
+<li>извлечение сущностей;</li>
+<li>разметка последовательности;</li>
+<li>поиск ответов в тексте. </li>
+</ul>
+<p>К "порождению" относятся:</p>
+<ul>
+<li>машинный перевод;</li>
+<li>суммаризация;</li>
+<li>генерация текста и диалоговые системы.</li>
+</ul>
+<p>Особенность текста в том, что смысл часто определяется не отдельными словами, а их взаимным расположением и контекстом. Поэтому в текстовых задачах модели нужно научиться представлять значение токенов с учётом окружения.</p>
+<h3 id="_12">Типы отображений между входом и выходом</h3>
+<p>Многие задачи обработки последовательностей удобно описывать через определение вида входных и выходных данных:</p>
+<ul>
+<li><strong>Many-to-One</strong>: на вход подаётся последовательность, на выходе одно значение. Пример: классификация текста или целого аудиофрагмента.</li>
+<li><strong>One-to-Many</strong>: на вход один объект, на выходе последовательность. Пример: генерация текста по теме или описанию.</li>
+<li><strong>Синхронизированный Many-to-Many</strong>: вход и выход — последовательности одинаковой длины, и каждому элементу входа соответствует элемент выхода. Пример: разметка каждого слова в предложении или классификация каждого кадра сигнала.</li>
+<li><strong>Несинхронизированный Many-to-Many</strong>: вход и выход — последовательности разной длины, и явного соответствия по позициям нет. Пример: машинный перевод, где число слов в предложениях разных языков отличается.</li>
+</ul>
+<p><img alt="1771166267511" src="../image/lecture_04/1771166267511.png" /></p>
+<p>Эта классификация задач полезна тем, что позволяют заранее понимать, какой тип архитектуры нам потребуется и как будет выглядеть обучение модели.</p>
+<h3 id="_13">Векторизация последовательных данных</h3>
+<h4 id="_14">Векторизация временных рядов и сигналов</h4>
+<p>Векторизация временных рядов и сигналов обычно не вызывает фундаментальных сложностей, потому что эти данные изначально являются числовыми. На вход модели можно подавать последовательность значений напрямую: например, окно сигнала длины <span class="arithmatex">\(T\)</span> как матрицу <span class="arithmatex">\(X \in \mathbb{R}^{T \times n}\)</span>, где <span class="arithmatex">\(n\)</span> — число каналов (для моно-аудио <span class="arithmatex">\(n=1\)</span>, для многоканальных датчиков — больше).</p>
+<p>Благодаря непрерывной природе таких данных мы можем использовать линейные слои, сверточные слои и рекуррентные архитектуры без предварительной обработки: смысл уже зашит в самих измерениях. Основная инженерная задача здесь обычно связана не с векторизацией как таковой, а с выбором масштаба (нормализация), длины окна и способа разбиения на фрагменты.</p>
+<h4 id="_15">Текстовые эмбеддинги</h4>
+<p>С текстом ситуация принципиально иная: текст состоит из дискретных символов и слов, поэтому его нельзя подать в нейросеть напрямую в исходном виде. Нам нужно построить его численное представление, которое одновременно выполняет две функции: идентифицирует каждый элемент текстовой последовательности и отражает его смысл так, чтобы семантически близкие элементы текста располагались близко в векторном пространстве. Эту идею можно визуализировать следующим образом:</p>
+<p><img alt="1771166388304" src="../image/lecture_04/1771166388304.png" /></p>
+<p>Поэтому в NLP почти всегда появляется стандартная цепочка преобразований: текст разбивается на <strong>токены</strong>, затем каждый токен превращается в целое число (индекс словаря), а после этого индексы преобразуются в <strong>векторы-эмбеддинги</strong>. На выходе получается последовательность векторов <span class="arithmatex">\(X = (x_1, x_2, \ldots, x_T)\)</span>, где каждый <span class="arithmatex">\(x_t \in \mathbb{R}^d\)</span> — уже "понятный" для модели носитель смысла.</p>
+<h3 id="_16">Разбиение текста на токены</h3>
+<h4 id="_17">Что такое токенизация?</h4>
+<p><strong>(def)</strong> Токенизация — это процесс разбиения исходного текста на элементы, с которыми дальше работает модель. Эти элементы называются токенами: ими могут быть слова, части слов или даже отдельные символы. После токенизации каждому уникальному токену сопоставляется номер в словаре, и именно этот номер затем используется для получения эмбеддинга.</p>
+<p>Важно понимать, что токенизация — это не просто техническая деталь. То, как именно мы режем текст на токены, напрямую влияет на размер словаря, устойчивость к ошибкам и способность модели работать с редкими словами.</p>
+<h4 id="_18">Уровни токенизации: слова, морфемы, символы</h4>
+<p>Если токенизировать по словам, всё выглядит интуитивно, но появляется проблема редких и новых слов: словарь быстро разрастается, а незнакомые слова не могут быть обработаны и превращаются в так называее out-of-vocabulary (OOV) и обозначаются одним общим токеном. Символьная токенизация решает проблему неизвестных слов, но сильно увеличивает длину последовательности и усложняет обучение, потому что модели приходится выделять смысл из слишком мелких единиц.</p>
+<h3 id="_19">Искомый алгоритм токенизации</h3>
+<p>В идеале хочется получить токенизацию, которая даёт небольшой словарь, но при этом оставляет токены достаточно "осмысленными". Ещё одно важное требование — универсальность: токенизация должна работать не только для одного языка и одного домена. Наконец, желательно нивелировать проблему out-of-vocabulary, чтобы модель не ломалась на новых словах.</p>
+<p>Эти требования конфликтуют между собой, поэтому в реальных системах токенизация — это компромисс между компактностью словаря, длиной последовательностей и качеством представления текста.</p>
+<h3 id="_20">От морфем к субсловам</h3>
+<p>Идея субсловной токенизации близка к морфемному анализу, но не требует полноценного лингвистического анализа. Вместо достоверных и заранее определенных морфем используются частотные фрагменты текста, из которых можно собирать слова. Такие фрагменты называются <strong>субсловами</strong>. Это особенно важно для языков со сложной морфологией: модель получает возможность переиспользовать общие части слов и лучше обобщаться на новые формы слов.</p>
+<h3 id="bpe-encoding-decoding">BPE: идея, encoding и decoding</h3>
+<p><strong>BPE (Byte Pair Encoding)</strong> — один из самых популярных алгоритмов субсловной токенизации. Его основная идея проста: мы начинаем с элементарных единиц (часто это символы или байты, кодирующие эти символы), а затем итеративно объединяем самые частые пары, постепенно формируя устойчивые субслова. В результате получается словарь, который хорошо покрывает наиболее частые паттерны языка и при этом остаётся относительно компактным.</p>
+<p><strong>Encoding</strong> в BPE — это разбиение нового текста на токены из полученного словаря, обычно жадным образом: мы стараемся покрыть строку максимально длинными известными фрагментами. </p>
+<p><img alt="1771166754314" src="../image/lecture_04/1771166754314.png" />
+<img alt="1771166763634" src="../image/lecture_04/1771166763634.png" />
+<img alt="1771166772077" src="../image/lecture_04/1771166772077.png" />
+<img alt="1771166794245" src="../image/lecture_04/1771166794245.png" />
+<img alt="1771166803231" src="../image/lecture_04/1771166803231.png" /></p>
+<p><strong>Decoding</strong> — обратная операция: склейка токенов обратно в исходную строку. Эта обратимость важна: токены должны быть удобны для модели, но при этом мы должны уметь вернуться к читаемому тексту.</p>
+<h2 id="_21">Текстовые эмбеддинги</h2>
+<h3 id="_22">Эмбеддинг как числовое представление токена</h3>
+<p><strong>(def)</strong> Эмбеддинг — это результат преобразования токена в вектор в некотором непрерывном векторном пространстве. Идея состоит в том, чтобы сопоставить каждому токену такой вектор, чтобы геометрическая близость между векторами отражала семантическую или синтаксическую близость между соответствующими словами. На практике эмбеддинги позволяют нейросети работать с текстом так же естественно, как она работает с числовыми признаками: на вход поступает уже последовательность векторов фиксированной размерности.</p>
+<h3 id="one-hot">One-hot и его ограничения</h3>
+<p>Самый прямолинейный способ представить токен — это one-hot вектор размерности словаря. В таком представлении токен однозначно идентифицируется, но оно не несёт никакой информации о смысле: любые два разных слова оказываются одинаково "далёкими" друг от друга. Кроме того, one-hot представление крайне неэффективно по памяти и вычислениям: словарь может быть огромным, а вектор -- разреженным, то есть почти весь состоит из нулей.</p>
+<p><img alt="1771166988743" src="../image/lecture_04/1771166988743.png" /></p>
+<h3 id="_23">В поисках смысла: дистрибутивная гипотеза</h3>
+<p>Чтобы эмбеддинги действительно отражали смысл, нужно опираться на идею, которая связывает значение слова с его употреблением.</p>
+<div class="admonition note">
+<p class="admonition-title">Дистрибутивная гипотеза</p>
+<p>Дистрибутивная гипотеза утверждает, что слова, встречающиеся в похожих контекстах, как правило, имеют схожие значения. </p>
+</div>
+<p>В этом смысле слово характеризуется своим окружением: не самим по себе, а тем, с какими другими словами оно появляется рядом.</p>
+<p>Хорошая иллюстрация — фраза <strong>"Эти типы стали есть в цехе"</strong>. В зависимости от контекстного значения слов "типы" и "есть" смысл фразы может сильно отличаться. В одном варианте речь может идти о стали как о металле, несколько типов которых есть в цеху. В другом под "типами" мы можем понимать рабочих завода, которые принимают пищу в цеху.</p>
+<h3 id="_24">Частотные методы получения эмбеддингов</h3>
+<p>Исторически первые методы построения смысловых представлений были основаны на статистике: они подсчитывали, как часто слова встречаются в документах и в каких контекстах появляются. Из таких частотных таблиц можно получить простые векторные представления, где каждая координата отражает связь слова с каким-то признаком контекста.</p>
+<p>Один из ключевых шагов в эту сторону — построение матрицы совместной встречаемости слов. Обычно выбирается окно контекста в виде фиксированного количество слов слева и справо от анализируемого,  и для каждого анализируемого слова считается, какие другие лова встречаются рядом и как часто. В результате получается матрица, где строка соответствует целевому слову, а столбец — слову из контекста. Такая матрица уже несёт информацию о значениях, но она получается очень большой и разреженной, а частоты в ней сильно перекошены в пользу самых популярных слов.</p>
+<p><img alt="1771167027841" src="../image/lecture_04/1771167027841.png" /></p>
+<p>Один из ключевых шагов в эту сторону — построение <strong>матрицы совместной встречаемости</strong> слов. Пусть у нас есть словарь размера <span class="arithmatex">\(|V|\)</span>, а корпус представлен как последовательность токенов <span class="arithmatex">\(w_1, w_2, \ldots, w_M\)</span>. Мы фиксируем размер окна контекста <span class="arithmatex">\(c\)</span> и для каждого вхождения слова <span class="arithmatex">\(w_t\)</span> рассматриваем его окружение <span class="arithmatex">\(w_{t-c}, \ldots, w_{t-1}, w_{t+1}, \ldots, w_{t+c}\)</span>. Тогда матрица совместной встречаемости <span class="arithmatex">\(C \in \mathbb{R}^{|V| \times |V|}\)</span> определяется как количество совместных появлений целевого слова <span class="arithmatex">\(i\)</span> и контекстного слова <span class="arithmatex">\(j\)</span> в пределах окна:</p>
+<div class="arithmatex">\[
+C_{ij} = \sum_{t=1}^{M} \mathbf{1}[w_t = i]\sum_{\substack{k=-c \\ k\neq 0}}^{c}\mathbf{1}[w_{t+k}=j],
+\]</div>
+<p>где <span class="arithmatex">\(\mathbf{1}[\cdot]\)</span> — индикатор. Такая матрица уже несёт информацию о значениях, но она получается очень большой и разреженной, а частоты в ней сильно перекошены в пользу самых популярных слов.</p>
+<p><img alt="1771167037991" src="../image/lecture_04/1771167037991.png" /></p>
+<h3 id="ppmi-lsa">PPMI и LSA</h3>
+<p>Чтобы сделать матрицу совместной встречаемости более информативной, применяют нормализации, которые уменьшают влияние частотных слов и усиливают значимые связи. Для этого удобно перейти от “сырых” счётчиков к вероятностям. Обозначим</p>
+<div class="arithmatex">\[
+p(i,j)=\frac{C_{ij}}{\sum_{a,b} C_{ab}}, \quad 
+p(i)=\frac{\sum_j C_{ij}}{\sum_{a,b} C_{ab}}, \quad
+p(j)=\frac{\sum_i C_{ij}}{\sum_{a,b} C_{ab}}.
+\]</div>
+<p>Тогда <strong>PMI</strong> (pointwise mutual information) измеряет, насколько совместное появление пары <span class="arithmatex">\((i,j)\)</span> “неожиданно” по сравнению со случаем независимости:</p>
+<div class="arithmatex">\[
+\mathrm{PMI}(i,j) = \log \frac{p(i,j)}{p(i)p(j)}.
+\]</div>
+<p>А <strong>PPMI</strong> (positive PMI) отбрасывает отрицательные значения, оставляя только статистически “усиленные” связи:</p>
+<div class="arithmatex">\[
+\mathrm{PPMI}(i,j) = \max\big(\mathrm{PMI}(i,j), 0\big).
+\]</div>
+<p>Дальше часто делают ещё один шаг: применяют понижение размерности к матрице PPMI (или к матрице совместной встречаемости) через SVD. Пусть <span class="arithmatex">\(M\)</span> — выбранная матрица (например, <span class="arithmatex">\(M=\mathrm{PPMI}\)</span>). Тогда её разложение имеет вид</p>
+<div class="arithmatex">\[
+M \approx U_k \Sigma_k V_k^\top,
+\]</div>
+<p>где мы оставляем только первые <span class="arithmatex">\(k\)</span> компонент. Этот подход называют <strong>LSA</strong>: мы сжимаем исходное разреженное представление в компактное пространство, где начинают проявляться скрытые факторы тематики и смысла. В качестве векторного представления слова <span class="arithmatex">\(i\)</span> часто берут строку матрицы <span class="arithmatex">\(U_k \Sigma_k\)</span> (или <span class="arithmatex">\(U_k \Sigma_k^\alpha\)</span> с некоторым <span class="arithmatex">\(\alpha \in (0,1]\)</span>), то есть</p>
+<div class="arithmatex">\[
+e_i = (U_k \Sigma_k)_{i,:}.
+\]</div>
+<p>Именно в этот момент появляется важная идея: смысл можно искать как структуру в большом наборе наблюдений, а понижение размерности помогает выделить эти скрытые “направления” в данных.</p>
+<h3 id="_25">Косинусная близость векторов</h3>
+<p>Когда у нас есть векторные представления слов, возникает вопрос, как измерять их близость. Одна из самых распространённых мер — косинусная близость. Она вычисляется как нормализованное скалярное произведение векторов и по смыслу измеряет угол между ними:</p>
+<div class="arithmatex">\[
+\cos(v, w) = \frac{\langle v, w \rangle}{\|v\|_2 \cdot \|w\|_2}.
+\]</div>
+<p>Интуитивно косинусная близость хороша тем, что она меньше зависит от длины векторов и больше отражает их направление. Именно направление в эмбеддингах часто несёт семантический смысл.</p>
+<h3 id="word2vec">Word2Vec</h3>
+<p>Частотные методы вроде хорошо показывают идею дистрибутивной семантики, но они опираются на явное построение больших матриц и последующую линейную алгебру. Word2Vec делает шаг в другую сторону: он предлагает учить эмбеддинги как параметры простой нейросетевой модели классификатора, которая решает вспомогательную задачу предсказания контекста. В итоге мы получаем плотные векторы небольшой размерности, а "смысл" слова возникает как побочный продукт оптимизации — ровно в духе дистрибутивной гипотезы.</p>
+<p>В классическом Word2Vec есть две симметричные постановки: <strong>CBOW</strong> и <strong>Skip-gram</strong>.</p>
+<p><img alt="1771167320867" src="../image/lecture_04/1771167320867.png" /></p>
+<p>В CBOW модель по контексту предсказывает центральное слово, а в Skip-gram — наоборот, по центральному слову предсказывает слова контекста. Пусть <span class="arithmatex">\(w_t\)</span> — токен в позиции <span class="arithmatex">\(t\)</span>, а окно контекста имеет ширину <span class="arithmatex">\(c\)</span>. Тогда контекст можно записать как набор индексов <span class="arithmatex">\(w_{t-c}, \ldots, w_{t-1}, w_{t+1}, \ldots, w_{t+c}\)</span>. В Skip-gram мы хотим максимизировать вероятность наблюдаемого контекста при фиксированном центральном слове:</p>
+<div class="arithmatex">\[
+\max \sum_{t=1}^{M}\sum_{\substack{k=-c \\ k\neq 0}}^{c} \log p\big(w_{t+k}\mid w_t\big).
+\]</div>
+<p>Чтобы задать вероятности, Word2Vec вводит две матрицы параметров: входные эмбеддинги <span class="arithmatex">\(E \in \mathbb{R}^{|V|\times d}\)</span> и выходные эмбеддинги <span class="arithmatex">\(E' \in \mathbb{R}^{|V|\times d}\)</span>. Для слова <span class="arithmatex">\(w\)</span> его вектором служит строка <span class="arithmatex">\(v_w = E_{w,:}\)</span>, а для контекстного слова <span class="arithmatex">\(u_w = E'_{w,:}\)</span>. Тогда вероятность слова контекста задаётся через softmax:</p>
+<div class="arithmatex">\[
+p(o \mid i)=\frac{\exp(u_o^\top v_i)}{\sum_{w \in V}\exp(u_w^\top v_i)}.
+\]</div>
+<p>Эта формула очень понятна по смыслу: если скалярное произведение <span class="arithmatex">\(u_o^\top v_i\)</span> большое, то слово <span class="arithmatex">\(o\)</span> считается "хорошим" контекстом для слова <span class="arithmatex">\(i\)</span>. Однако в таком виде обучение становится дорогим: знаменатель требует суммирования по всему словарю <span class="arithmatex">\(V\)</span>, а он может быть огромным. Поэтому на практике используют приближения, самое известное из которых — <strong>negative sampling</strong>. Вместо полного softmax мы учим модель отличать "правильные пары" (наблюдаемые в корпусе) от "случайных" (сэмплированных негативов). Тогда для положительной пары <span class="arithmatex">\((i,o)\)</span> оптимизируют:</p>
+<div class="arithmatex">\[
+\log \sigma(u_o^\top v_i) + \sum_{j=1}^{K} \mathbb{E}_{w_j\sim P_n}\Big[\log \sigma(-u_{w_j}^\top v_i)\Big],
+\]</div>
+<p>где <span class="arithmatex">\(\sigma(\cdot)\)</span> — сигмоида, <span class="arithmatex">\(K\)</span> — число негативных примеров, а <span class="arithmatex">\(P_n\)</span> — распределение для сэмплирования негативных слов (часто это частоты, возведённые в степень <span class="arithmatex">\(3/4\)</span>). Интуитивно это означает: модель должна давать большое скалярное произведение для реальных соседей и маленькое — для случайных слов.</p>
+<p>После обучения возникает практический вопрос: какие векторы считать эмбеддингами слова — <span class="arithmatex">\(v_w\)</span> или <span class="arithmatex">\(u_w\)</span>? Часто берут входные эмбеддинги <span class="arithmatex">\(v_w\)</span>, иногда используют сумму <span class="arithmatex">\(v_w + u_w\)</span> или их конкатенацию. Важно другое: геометрия этого пространства начинает отражать смысловые отношения. Слова, встречающиеся в похожих контекстах, получают близкие векторы, а некоторые направления в пространстве начинают соответствовать устойчивым семантическим признакам. Именно поэтому Word2Vec стал исторически важным шагом: он показал, что смысл можно получить не вручную, а как результат оптимизации простой предиктивной задачи на больших текстовых данных.</p>
+<h2 id="_26">Рекуррентные нейронные сети</h2>
+<h3 id="_27">Основная идея и формальное определение</h3>
+<p>Рекуррентные нейронные сети (RNN) — это класс моделей, предназначенных для обработки последовательностей переменной длины. Их ключевая идея состоит в том, что модель обрабатывает последовательность шаг за шагом и хранит внутреннее состояние, которое переносит информацию о прошлом в будущее. На каждом шаге сеть получает текущий элемент последовательности <span class="arithmatex">\(x_t\)</span> и обновляет скрытое состояние <span class="arithmatex">\(h_t\)</span>:</p>
+<div class="arithmatex">\[
+h_t = f(h_{t-1}, x_t).
+\]</div>
+<p><img alt="1771167525611" src="../image/lecture_04/1771167525611.png" /></p>
+<p>Таким образом, скрытое состояние играет роль “памяти”: оно аккумулирует контекст и позволяет модели учитывать то, что было раньше.</p>
+<h3 id="_28">Обучение и инференс</h3>
+<p>Обучение RNN происходит по тем же принципам, что и обучение других нейросетей: мы задаём функцию потерь и минимизируем её градиентными методами. Пусть на каждом шаге сеть обновляет скрытое состояние и выдаёт выход</p>
+<div class="arithmatex">\[
+h_t = f(h_{t-1}, x_t), \qquad \hat y_t = g(h_t),
+\]</div>
+<p>где <span class="arithmatex">\(x_t\)</span> — вход на шаге <span class="arithmatex">\(t\)</span>, <span class="arithmatex">\(h_t\)</span> — скрытое состояние, а <span class="arithmatex">\(\hat y_t\)</span> — предсказание модели. Тогда суммарная функция потерь по последовательности часто записывается как</p>
+<div class="arithmatex">\[
+\mathcal{L} = \sum_{t=1}^{T} \ell(\hat y_t, y_t),
+\]</div>
+<p>или, если задача many-to-one, как <span class="arithmatex">\(\mathcal{L}=\ell(\hat y, y)\)</span>, где <span class="arithmatex">\(\hat y = g(h_T)\)</span>. Отличие RNN состоит в том, что градиент распространяется через последовательность во времени, поэтому этот процесс называют backpropagation through time: при вычислении производных параметров учитывается цепочка зависимостей <span class="arithmatex">\(h_1 \to h_2 \to \ldots \to h_T\)</span>. На инференсе RNN проходит по последовательности слева направо, последовательно обновляя состояние и выдавая выход в нужной форме — одно значение, последовательность или генерацию токенов. Если последовательность генерируется автогрессивно, то часто используется схема</p>
+<div class="arithmatex">\[
+x_t = \text{Embed}(\hat y_{t-1}), \qquad \hat y_t = g(h_t),
+\]</div>
+<p>то есть предыдущее предсказание становится входом на следующий шаг.</p>
+<h3 id="rnn">Многослойная и двунаправленная RNN</h3>
+<p>Чтобы увеличить вычислительные способности модели, RNN часто делают многослойной. В многослойной RNN скрытое состояние каждого слоя получает на вход состояние предыдущего слоя на том же временном шаге. Для <span class="arithmatex">\(L\)</span> слоёв это можно записать так:</p>
+<div class="arithmatex">\[
+h_t^{(1)} = f^{(1)}(h_{t-1}^{(1)}, x_t),
+\]</div>
+<div class="arithmatex">\[
+h_t^{(\ell)} = f^{(\ell)}(h_{t-1}^{(\ell)}, h_t^{(\ell-1)}), \qquad \ell=2,\ldots,L,
+\]</div>
+<p>а выход обычно строится по верхнему слою: <span class="arithmatex">\(\hat y_t = g(h_t^{(L)})\)</span>. Такая архитектура позволяет верхним слоям извлекать более абстрактные признаки последовательности.</p>
+<p><img alt="1771167590915" src="../image/lecture_04/1771167590915.png" /></p>
+<p>Двунаправленная RNN  обрабатывает последовательность сразу в двух направлениях — слева направо и справа налево. Формально строятся два набора состояний:</p>
+<div class="arithmatex">\[
+\overrightarrow{h}_t = f(\overrightarrow{h}_{t-1}, x_t), \qquad
+\overleftarrow{h}_t = f(\overleftarrow{h}_{t+1}, x_t),
+\]</div>
+<p>после чего объединяются (например, конкатенацией)</p>
+<div class="arithmatex">\[
+h_t = [\overrightarrow{h}_t;\overleftarrow{h}_t],
+\]</div>
+<p>и уже по <span class="arithmatex">\(h_t\)</span> строится предсказание <span class="arithmatex">\(\hat y_t = g(h_t)\)</span>. Это полезно в задачах, где важен контекст с обеих сторон, например для разметки текста, но такая модель не подходит для онлайн-сценариев, где “будущее” ещё неизвестно.</p>
+<p><img alt="1771167615635" src="../image/lecture_04/1771167615635.png" /></p>
+<h3 id="_29">Проблемы обучения рекуррентных нейронных сетей</h3>
+<p>При обучении рекуррентных сетей градиент "протекает" через множество шагов времени, и на каждом шаге он умножается на матрицу Якоби перехода состояния, поэтому по правилу цепочки получается произведение вида:</p>
+<div class="arithmatex">\[
+\frac{\partial \mathcal{L}}{\partial h_t} = \frac{\partial \mathcal{L}}{\partial h_T}\prod_{k=t+1}^{T}\frac{\partial h_k}{\partial h_{k-1}}.
+\]</div>
+<p>Если нормы этих матриц в среднем меньше 1, произведение быстро стремится к нулю — возникает затухающий градиент, и модель перестаёт учить "дальние" зависимости; если же нормы больше 1, произведение раздувается — получается взрывной градиент, обучение становится нестабильным и может расходиться. Именно поэтому для RNN важно контролировать динамику градиентов (например, клиппингом) и использовать архитектуры с механизмами управления внутренней памятью (LSTM и GRU), которые облегчают перенос информации на большие расстояния по времени.</p>
+<h3 id="lstm-gru">LSTM и GRU</h3>
+<p>LSTM и GRU — модификации RNN, которые вводят механизмы управления памятью через "вентили" (от англ. gates). Эти вентили регулируют, какую информацию сохранять, какую забывать и какую добавлять, благодаря чему модель лучше переносит информацию на большие расстояния по времени.</p>
+<p><img alt="1771167685303" src="../image/lecture_04/1771167685303.png" /></p>
+<p>В <strong>LSTM</strong> состояние разделено на скрытое состояние <span class="arithmatex">\(h_t\)</span> и “память” <span class="arithmatex">\(c_t\)</span>. Обновление задаётся следующими уравнениями:</p>
+<div class="arithmatex">\[
+f_t = \sigma(W_f x_t + U_f h_{t-1} + b_f),
+\qquad
+i_t = \sigma(W_i x_t + U_i h_{t-1} + b_i),
+\]</div>
+<div class="arithmatex">\[
+o_t = \sigma(W_o x_t + U_o h_{t-1} + b_o),
+\qquad
+\tilde c_t = \tanh(W_c x_t + U_c h_{t-1} + b_c),
+\]</div>
+<div class="arithmatex">\[
+c_t = f_t \odot c_{t-1} + i_t \odot \tilde c_t,
+\qquad
+h_t = o_t \odot \tanh(c_t),
+\]</div>
+<p>где <span class="arithmatex">\(f_t\)</span> — forget gate, <span class="arithmatex">\(i_t\)</span> — input gate, <span class="arithmatex">\(o_t\)</span> — output gate, а <span class="arithmatex">\(\odot\)</span> — поэлементное умножение. Интуитивно: <span class="arithmatex">\(f_t\)</span> решает, что забыть из старой памяти, <span class="arithmatex">\(i_t\)</span> — что добавить нового, а <span class="arithmatex">\(o_t\)</span> — что показать наружу.</p>
+<p>В <strong>GRU</strong> используется более компактная схема без отдельного <span class="arithmatex">\(c_t\)</span>. Вводятся два “ворота” — reset и update:</p>
+<div class="arithmatex">\[
+r_t = \sigma(W_r x_t + U_r h_{t-1} + b_r),
+\qquad
+z_t = \sigma(W_z x_t + U_z h_{t-1} + b_z),
+\]</div>
+<div class="arithmatex">\[
+\tilde h_t = \tanh(W_h x_t + U_h (r_t \odot h_{t-1}) + b_h),
+\]</div>
+<div class="arithmatex">\[
+h_t = (1 - z_t)\odot h_{t-1} + z_t \odot \tilde h_t.
+\]</div>
+<p>Здесь <span class="arithmatex">\(z_t\)</span> управляет тем, сколько старого состояния сохранить, а <span class="arithmatex">\(r_t\)</span> — тем, насколько учитывать прошлое при вычислении нового кандидата <span class="arithmatex">\(\tilde h_t\)</span>.</p>
+<p>На практике LSTM и GRU стали стандартом для многих задач обработки последовательностей до появления трансформеров, и даже сегодня они остаются полезными в задачах, где важна простота, скорость и последовательная обработка данных.</p>
+<h3 id="seq2seq">Seq2Seq модели и генерация последовательностей произвольной длины</h3>
+<p>Вы могли заметить, что до этого момента мы почти не обсуждали задачи, связанные с порождением последовательностей (синхронизированные варианты many-to-many — не в счёт). Действительно, многие рассмотренные выше модели применимы в задачах, где длина входной и выходной последовательности фиксирована или заранее известна, но в практических задачах это часто не так. Например, в машинном переводе мы не знаем заранее, какой длины получится перевод, и между словами исходного предложения и его перевода обычно нет однозначного соответствия.</p>
+<p><img alt="1771169304528" src="../image/lecture_04/1771169304528.png" /></p>
+<p>Естественным решением для задач <strong>sequence-to-sequence (seq2seq)</strong> является архитектура <strong>энкодер–декодер</strong>. Энкодер читает входную последовательность токен за токеном и сжимает информацию о ней в контекстное представление (context vector) — обычно это последнее скрытое состояние: <span class="arithmatex">\(c = h_T\)</span>. Декодер, в свою очередь, получает это представление и порождает новую последовательность по одному токену, фактически работая как языковая модель с дополнительным условием на вход (исходную фразу). Часто энкодер читают в обратном порядке: тогда последние токены входа оказываются ближе к первым шагам генерации, и декодеру проще "стартовать" с нескольких правильных предсказаний.</p>
+<p>Процесс генерации устроен так: начальное состояние декодера инициализируется контекстным вектором, например <span class="arithmatex">\(s_0 = c\)</span>. На первый шаг подаётся специальный токен начала последовательности <span class="arithmatex">\(\langle BOS \rangle\)</span>, далее декодер выдаёт распределение следующего токена и выбранный токен подаётся на следующий шаг:</p>
+<div class="arithmatex">\[
+s_t = f(s_{t-1}, y_{t-1}, c), \qquad p(y_t \mid y_{&lt;t}, c) = \mathrm{softmax}(W s_t).
+\]</div>
+<p>Эта процедура повторяется до появления токена конца последовательности <span class="arithmatex">\(\langle EOS \rangle\)</span> или до достижения максимальной длины. На обучении чаще всего используют <strong>teacher forcing</strong>: вместо собственного предсказания <span class="arithmatex">\(y_{t-1}\)</span> на вход подают правильный токен, что делает обучение стабильнее и ускоряет сходимость; на инференсе же модель вынуждена опираться на собственные предыдущие ответы. Именно здесь становится понятным, почему “простого” контекстного вектора часто недостаточно — и почему следующий шаг в эволюции seq2seq-моделей связан с механизмом attention.</p>
+<h2 id="_30">Список использованных источников</h2>
+<ol>
+<li>Учебник Яндекс ШАД. <a href="https://education.yandex.ru/handbook/ml/article/nejroseti-dlya-raboty-s-posledovatelnostyami">6.2. Нейросети для работы с последовательностями</a></li>
+<li><a href="https://web.stanford.edu/~jurafsky/slp3/">Speech and Language Processing</a>. Главы 2 и 3.</li>
+<li><a href="https://lena-voita.github.io/nlp_course.html">NLP курс от Lena Voita</a></li>
+<li><a href="https://www.deeplearningbook.org/">Deep Learning Book.</a> <a href="https://www.deeplearningbook.org/contents/rnn.html">Sequence Modeling: Recurrent and Recursive Nets.</a></li>
+<li><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTM Networks</a></li>
+<li><a href="https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-recurrent-neural-networks/">Recurrent Neural Networks</a></li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

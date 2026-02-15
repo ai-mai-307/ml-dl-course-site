@@ -7,9 +7,8 @@
 1. Основные понятия глубокого обучения: [конспект](lecture_01) | [презентация](https://docs.google.com/presentation/d/1dy5D5kvqJIRfJHKsc7fqJEaVkcAT8_onHi2C9ztAxGU/edit?slide=id.p#slide=id.p) | [демо блокнот](https://github.com/ai-mai-307/dl_course_2025/blob/main/lecture_01/01_pytorch_basics.ipynb) | [домашнее задание](https://github.com/ai-mai-307/dl-hw01-template);
 2. Обработка изображений с помощью глубокого обучения: [конспект](lecture_02.md) | [презентация](https://docs.google.com/presentation/d/1rjguJmiZLKJ6AxTM_jsqS6QL81wWq6DzYb0IeQ4vWqc/edit?usp=drive_link) |  [демо блокноты](https://github.com/ai-mai-307/dl_course_2025/tree/main/lecture_02) | [домашнее задание](https://classroom.github.com/a/Eqk0V9lb);
 3. Обработка аудиосигнала с помощью глубокого обучения: [конспект](lecture_03.md) | [презентация](https://docs.google.com/presentation/d/1wBfiOF-OkOidLJh7VJqfzd2qicx3INq20syai_4W40U/edit?usp=drive_link) |  [демо блокноты](https://github.com/ai-mai-307/dl_course_2025/tree/main/lecture_03) | [домашнее задание](https://classroom.github.com/a/SWr5ewNy);
-4. Обработка последовательных данных с помощью глубокого обучения: конспект | презентация |  демо блокноты | домашнее задание;
-5. Генеративные модели: конспект | презентация |  демо блокноты | домашнее задание;
-6. Большие языковые модели: конспект | презентация |  демо блокноты | домашнее задание;
+4. Обработка последовательных данных с помощью глубокого обучения: [конспект](lecture_04.md) | [презентация](https://docs.google.com/presentation/d/1wBfiOF-OkOidLJh7VJqfzd2qicx3INq20syai_4W40U/edit?usp=sharing) |  [демо блокноты](https://github.com/ai-mai-307/dl_course_2025/tree/main/lecture_04) | [домашнее задание](https://classroom.github.com/a/IVjoRVBr);
+5. Большие языковые модели: [конспект](lecture_05.md) | [презентация](https://docs.google.com/presentation/d/1wBfiOF-OkOidLJh7VJqfzd2qicx3INq20syai_4W40U/edit?usp=sharing) |  демо блокноты | [домашнее задание](https://classroom.github.com/a/nDo-k7gN);
 
 ## Полезные материалы
 

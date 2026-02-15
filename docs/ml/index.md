@@ -8,8 +8,8 @@
 2. Предварительная обработка данных: [конспект](lecture_02.md) | [презентация](https://docs.google.com/presentation/d/1lAHsvUsYBD6CYGJRFjtDWH_8SN3hVnhIseNN2yn9ZLQ/edit?usp=drive_link) |  [демо блокноты](https://github.com/ai-mai-307/ml_course_2025/tree/main/lecture_02_eda) | [домашнее задание](https://classroom.github.com/a/9U13oNd-);
 3. Обучение с учителем. Линейные модели: [конспект](lecture_03.md) | [презентация](https://docs.google.com/presentation/d/1kiKxRJjUttdbgq9_Qi-YzjiJZTT_RTd_OAmybXDFkFU/edit?usp=drive_link) |  [демо блокноты](https://github.com/ai-mai-307/ml_course_2025/tree/main/lecture_03_sl_linear) | [домашнее задание](https://classroom.github.com/a/ifPhvert);
 4. Обучение с учителем. Деревья решений и ансамбли: [конспект](lecture_04.md) | [презентация](https://docs.google.com/presentation/d/1dx78Hv0cBPLBhh_0tysh0lPaI3z1dk61s9K1G9fxuac/edit?usp=drive_link) |  [демо блокноты](https://github.com/ai-mai-307/ml_course_2025/tree/main/lecture_04_trees) | [домашнее задание](https://classroom.github.com/a/GblsONnp);
-5. Обучение без учителя: конспект | презентация |  демо блокноты | домашнее задание;
-6. Оценка качества моделей и продвинутые техники предобработки: конспект | презентация |  демо блокноты | домашнее задание.
+5. Обучение без учителя: [конспект](lecture_05.md) | [презентация](https://docs.google.com/presentation/d/1pQ8zXWynKHt-v3pIbhIkPuyHQJw2j3poXLeZJNnSorw/edit) |  демо блокноты | [домашнее задание](https://classroom.github.com/a/8cralb2h);
+6. (Дополнительно) Оценка качества моделей и продвинутые техники предобработки: [презентация](https://docs.google.com/presentation/d/1cv-WV94cSO9s4XWEzw61w9DFeacOwE3c76FaEZqxYUU/edit?usp=sharing)
 
 ## Полезные материалы
 

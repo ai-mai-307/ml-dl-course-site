@@ -1,12 +1,27 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { satteri } from '@astrojs/markdown-satteri';
+import { obsidianCallouts } from './src/plugins/obsidian-callouts.ts';
+import { math } from './src/plugins/math.ts';
 
 export default defineConfig({
   site: 'https://ai-mai-307.github.io',
   base: '/ml-dl-course-site',
   output: 'static',
   trailingSlash: 'always',
+  markdown: {
+    processor: satteri({
+      features: {
+        math: true,
+        // Parse the generated KaTeX HTML into elements, also when compiling MDX.
+        rawHtml: true,
+        smartPunctuation: false,
+        gfm: { footnotes: { label: 'Сноски', backLabel: 'Вернуться к ссылке {reference}' } },
+      },
+      mdastPlugins: [obsidianCallouts, math],
+    }),
+  },
   vite: {
     server: {
       watch: {
@@ -17,6 +32,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Машинное и глубокое обучение',
+      customCss: ['katex/dist/katex.min.css', './src/styles/content.css'],
       // The default 404 canonical uses /404/ even though static output is 404.html.
       disable404Route: true,
       locales: {
@@ -26,6 +42,7 @@ export default defineConfig({
         { label: 'Учебник', slug: 'textbook' },
         { label: 'Курсы', link: '/courses/' },
         { label: 'Инструкции', slug: 'guides' },
+        { label: 'Пример оформления', slug: 'guides/authoring-example' },
       ],
     }),
   ],

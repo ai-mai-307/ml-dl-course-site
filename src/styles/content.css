@@ -1,0 +1,40 @@
+/* Only authoring primitives; the surrounding layout remains Starlight's. */
+.sl-markdown-content .obsidian-callout {
+  --callout-color: var(--sl-color-blue);
+  margin-block: 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--callout-color) 45%, var(--sl-color-hairline));
+  border-inline-start: 0.25rem solid var(--callout-color);
+  border-radius: 0.375rem;
+  background: color-mix(in srgb, var(--callout-color) 8%, var(--sl-color-bg));
+  color: var(--sl-color-text);
+  overflow-wrap: anywhere;
+}
+
+.sl-markdown-content .obsidian-callout--tip { --callout-color: var(--sl-color-green); }
+.sl-markdown-content .obsidian-callout--caution { --callout-color: var(--sl-color-orange); }
+.sl-markdown-content .obsidian-callout--danger { --callout-color: var(--sl-color-red); }
+.sl-markdown-content .obsidian-callout--quote { --callout-color: var(--sl-color-gray-3); }
+
+.sl-markdown-content .obsidian-callout > .obsidian-callout__title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--sl-color-white);
+}
+
+.sl-markdown-content .obsidian-callout > summary {
+  cursor: pointer;
+}
+
+.sl-markdown-content .obsidian-callout > summary:focus-visible {
+  outline: 2px solid var(--sl-color-text-accent);
+  outline-offset: 0.25rem;
+}
+
+.sl-markdown-content .obsidian-callout > :last-child { margin-bottom: 0; }
+
+.sl-markdown-content .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.25rem;
+}

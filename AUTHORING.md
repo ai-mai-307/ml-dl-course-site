@@ -36,6 +36,74 @@ $$
 ![Геометрическая интерпретация](./assets/least-squares-geometry.svg)
 ```
 
+## Working example
+
+See [the Markdown demonstration](src/content/docs/guides/authoring-example/index.md)
+and its page-local `assets/` directory. After `npm run dev`, open
+<http://localhost:4321/ml-dl-course-site/guides/authoring-example/>.
+
+Starlight pages require a `title` in YAML frontmatter. The site uses it as the
+page's H1; start sections in the body at `##` to avoid repeating the title.
+Use the appropriate `contentKind`, for example `guide` for reusable instructions.
+Headings, tables, lists, footnotes (`[^name]`), code, and images all work in `.md`.
+For syntax highlighting, name the language after the opening code fence, such as
+`python`, `bash`, or `yaml`. Code is displayed, not executed.
+
+## Math
+
+Use `$a^2 + b^2 = c^2$` for inline math. For a display equation, put `$$` on
+separate lines, with blank lines before and after the block:
+
+```md
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i.
+$$
+```
+
+Use `\$` for a literal dollar sign in prose. Math delimiters inside inline code
+or fenced code stay literal. The supported commands are the
+[KaTeX subset of LaTeX](https://katex.org/docs/supported.html), not a full TeX
+installation. Invalid/unknown commands fail validation or the build instead of
+silently publishing an unrendered formula. Custom global macros and automatic
+equation numbering are not configured.
+
+## Obsidian callouts
+
+The marker must start the first line of a blockquote. An optional title follows
+it, separated by a space; without a title, a Russian default is used.
+
+```md
+> [!NOTE] Свой **заголовок**
+> Здесь работают ссылки, списки и $n = 3$.
+>
+> - Первый пункт.
+> - Второй пункт.
+
+> [!TIP]- Дополнительное пояснение
+> Изначально свёрнутый блок.
+```
+
+`[!TIP]+` starts expanded and can be collapsed; `[!TIP]-` starts collapsed.
+Without a suffix, a callout is always visible. Collapsible callouts use native
+`details`/`summary`, including keyboard operation, without extra JavaScript.
+Nested callouts use nested blockquotes (`> > [!NOTE]`). Formatting in the title
+and Markdown in the body are preserved.
+
+Callout names are case-insensitive. Supported types and aliases:
+
+| Appearance | Types |
+| --- | --- |
+| Note | `note`, `abstract`, `summary`, `tldr`, `info`, `todo`, `example` |
+| Tip / success | `tip`, `hint`, `important`, `success`, `check`, `done` |
+| Caution / question | `warning`, `caution`, `attention`, `question`, `help`, `faq` |
+| Danger / error | `danger`, `error`, `bug`, `failure`, `fail`, `missing` |
+| Quotation | `quote`, `cite` |
+
+Unknown types use the note appearance and their type name as the default title.
+Ordinary blockquotes are unchanged. Write `> \[!NOTE]` to display the marker
+literally in a quotation, or place the whole example in a fenced code block.
+Obsidian-specific custom icons, colors, and CSS snippets are not imported.
+
 ## Avoid in ordinary `.md`
 
 - raw HTML for layout;
@@ -176,3 +244,29 @@ There are three levels:
 3. **Heavy ML/DL computation** — external notebook/runtime (GitHub, Colab, DataSphere, etc.).
 
 Do not load a browser Python runtime on every page by default.
+
+## Rendering and verification
+
+The site uses Astro's supported Satteri processor, configured in
+`astro.config.mjs`. GFM tables and footnotes, code highlighting, and local images
+use the existing Astro/Starlight pipeline. Image paths are resolved from the
+Markdown file; Astro emits production assets with the site's URL prefix.
+Smart punctuation is disabled so quotes and dashes are not automatically rewritten.
+
+Two small build-time plugins in `src/plugins/` implement the missing conventions:
+
+- `math.ts` renders parsed math nodes with KaTeX as HTML plus accessible MathML.
+  Its literal HTML nodes preserve inline context; `features.rawHtml` lets Satteri
+  parse them into elements for both Markdown and MDX. KaTeX CSS and fonts are
+  bundled locally; no KaTeX JavaScript runs in the browser.
+- `obsidian-callouts.ts` converts marked blockquotes into `aside` or `details`,
+  preserving their Markdown children. Styling lives in `src/styles/content.css`.
+  Authors do not write the generated HTML or import UI components.
+
+`@astrojs/markdown-satteri` and `satteri` are explicit dependencies because the
+configuration and plugins use their public APIs. No extra browser framework is added.
+
+Run `npm test` for transformation tests. Run `npm run validate` before committing:
+it tests the plugins, checks types/content, builds the site, checks internal links,
+and verifies the generated demonstration HTML, highlighted code, images, and fonts.
+`npm run check:authoring` runs the generated-output tests alone after a build.

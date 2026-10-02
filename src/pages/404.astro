@@ -1,0 +1,22 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+const base = import.meta.env.BASE_URL;
+const canonical = new URL(`${base}404.html`, Astro.site).href;
+---
+
+<StarlightPage
+  frontmatter={{
+    title: 'Страница не найдена',
+    description: 'По этому адресу нет страницы.',
+    template: 'splash',
+    head: [
+      { tag: 'link', attrs: { rel: 'canonical', href: canonical } },
+      { tag: 'meta', attrs: { property: 'og:url', content: canonical } },
+      { tag: 'meta', attrs: { name: 'robots', content: 'noindex' } },
+    ],
+  }}
+>
+  <p>Возможно, адрес изменился или в ссылке есть опечатка.</p>
+  <p><a href={base}>Вернуться на главную</a></p>
+</StarlightPage>

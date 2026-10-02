@@ -1,0 +1,33 @@
+{
+  "name": "ml-dl-course-site",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "check:content": "astro sync",
+    "check:links": "node scripts/check-links.mjs",
+    "validate": "npm run check && npm run build && npm run check:links",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "8.0.2",
+    "@astrojs/starlight": "0.42.4",
+    "astro": "7.3.5",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "parse5": "8.0.1",
+    "typescript": "6.0.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}

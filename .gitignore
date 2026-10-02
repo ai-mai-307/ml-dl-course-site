@@ -211,3 +211,6 @@ __marimo__/
 /.astro/
 /.tools/
 npm-debug.log*
+
+# Personal Obsidian vault settings (templates are versioned separately).
+/src/content/.obsidian/

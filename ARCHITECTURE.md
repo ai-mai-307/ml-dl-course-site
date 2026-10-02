@@ -125,6 +125,10 @@ The current MkDocs site remains production until the replacement is verified.
 ## Why course manifests are separate from course pages
 
 A course is not a copy of the textbook. It is a route through canonical materials.
+Modules follow the order of the manifest and are numbered automatically; an optional
+`label` changes only the display label. A module may reference multiple independent
+textbook pages, and a textbook page may be reused by multiple modules or courses.
+The separate `pages` list holds organizational documents, outside the teaching sequence.
 
 Example:
 
@@ -132,10 +136,15 @@ Example:
 courseId: ml
 termId: 2026-fall
 title: Классическое машинное обучение
+pages:
+  - role: exam
+    doc: courses/ml/2026-fall/exam
 modules:
-  - number: 3
-    title: Линейные модели
+  - title: Линейные модели
     resources:
+      - type: doc
+        role: theory
+        doc: textbook/ml/introduction
       - type: doc
         role: theory
         doc: textbook/ml/linear-models
@@ -148,7 +157,24 @@ modules:
         href: https://example.org/notebook
 ```
 
-The course landing page is generated from this data.
+The course landing page is generated from this data, with separate «О курсе» and
+«Учебная программа» sections. Both organizational pages and internal module resources
+use `reference('docs')` and must resolve before the production build can succeed.
+
+## Publication state and authoring templates
+
+All content collections publish by default; `draft: true` makes a page available
+only during development. Starlight owns draft filtering for `docs`. Custom course
+and note routes and lists share a small visibility predicate. Course `status`
+describes its lifecycle and is independent of its `draft` publication flag.
+Public course pages reject references to draft documents during production builds.
+Course visibility does not cascade to its separate documents.
+
+The Obsidian vault is `src/content/`; `_templates/` contains plain Markdown
+frontmatter templates with `draft: true`. This directory is outside the roots
+of the collection loaders. Personal `.obsidian/` settings are not versioned.
+Notes have minimal list/detail routes for authoring and publication checks;
+no sample note, RSS feed, or tag archive is introduced by this authoring work.
 
 ## Versioning policy
 

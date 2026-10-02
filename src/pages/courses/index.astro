@@ -1,5 +1,11 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+import { courseUrl, statusLabels, termLabel } from '../../utils/courses';
+import { isVisible } from '../../utils/publishing';
+
+const courses = (await getCollection('courses', (entry) => isVisible(entry, import.meta.env.DEV)))
+  .sort((a, b) => a.id.localeCompare(b.id));
 ---
 
 <StarlightPage
@@ -8,5 +14,16 @@ import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
     description: 'Программы и материалы учебных курсов.',
   }}
 >
-  <p>Программы курсов и материалы занятий появятся здесь позже.</p>
+  <p>Курсы задают последовательность работы с учебником, инструкциями и заданиями.</p>
+  {courses.length === 0 && <p>Программы курсов появятся здесь позже.</p>}
+  <ul>
+    {courses.map((course) => (
+      <li>
+        <a href={courseUrl(course, import.meta.env.BASE_URL)}>{course.data.title}</a>
+        {course.data.draft && <small> — не опубликован</small>}
+        <p>{termLabel(course.data.termId)} · {statusLabels[course.data.status]}</p>
+        <p>{course.data.description}</p>
+      </li>
+    ))}
+  </ul>
 </StarlightPage>

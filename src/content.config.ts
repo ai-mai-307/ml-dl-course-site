@@ -61,6 +61,12 @@ const courseResourceSchema = z.discriminatedUnion('type', [
   }),
 ]);
 
+const coursePageSchema = z.strictObject({
+  role: z.enum(['overview', 'assessment', 'exam', 'schedule', 'policy', 'resources', 'other']),
+  doc: reference('docs'),
+  label: z.string().trim().min(1).optional(),
+});
+
 const courses = defineCollection({
   loader: glob({
     pattern: '**/*.{yaml,yml}',
@@ -75,6 +81,8 @@ const courses = defineCollection({
     description: z.string(),
 
     status: z.enum(['draft', 'active', 'completed', 'archived']),
+    // Publication visibility is independent of the course's lifecycle status.
+    draft: z.boolean().default(false),
     language: z.string().default('ru'),
 
     institution: z.string().optional(),
@@ -100,10 +108,14 @@ const courses = defineCollection({
       })
       .optional(),
 
+    // Course-wide documents are independent of the teaching sequence.
+    pages: z.array(coursePageSchema).default([]),
+
     modules: z
       .array(
-        z.object({
-          number: z.number().int().positive(),
+        z.strictObject({
+          // Position in this array determines numbering; label is a display-only exception.
+          label: z.string().trim().min(1).optional(),
           title: z.string(),
           description: z.string().optional(),
           published: z.boolean().default(true),

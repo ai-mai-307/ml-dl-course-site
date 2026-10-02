@@ -42,6 +42,7 @@ export default defineConfig({
         { label: 'Учебник', slug: 'textbook' },
         { label: 'Курсы', link: '/courses/' },
         { label: 'Инструкции', slug: 'guides' },
+        { label: 'Заметки', link: '/notes/' },
         { label: 'Пример оформления', slug: 'guides/authoring-example' },
       ],
     }),

@@ -1,0 +1,94 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import AnchorHeading from '@astrojs/starlight/components/AnchorHeading.astro';
+import { resolveCourse, pageRoleLabels, statusLabels, termLabel, type ResolvedCourse } from '../../../../utils/courses';
+import { isVisible } from '../../../../utils/publishing';
+
+export const getStaticPaths = (async () => {
+  const courses = await getCollection('courses', (entry) => isVisible(entry, import.meta.env.DEV));
+  return Promise.all(courses.map(async (entry) => ({
+    params: { courseId: entry.data.courseId, termId: entry.data.termId },
+    props: { course: await resolveCourse(entry, (reference) => getEntry(reference), import.meta.env.BASE_URL, import.meta.env.DEV) },
+  })));
+}) satisfies GetStaticPaths;
+
+interface Props { course: ResolvedCourse }
+const { course } = Astro.props;
+const headings = [
+  { depth: 2, slug: 'course-information', text: 'О курсе' },
+  { depth: 2, slug: 'curriculum', text: 'Учебная программа' },
+  ...course.modules.map((module) => ({
+    depth: 3, slug: `module-${module.position}`, text: `${module.label}. ${module.title}`,
+  })),
+];
+---
+
+<StarlightPage
+  frontmatter={{ title: course.title, description: course.description, draft: course.draft }}
+  headings={headings}
+  lang={course.language}
+>
+  <p><a href={`${import.meta.env.BASE_URL}courses/`}>Все курсы</a></p>
+  <section aria-labelledby="course-information">
+    <AnchorHeading level={2} id="course-information">О курсе</AnchorHeading>
+    <p>{course.description}</p>
+    <dl class="course-meta">
+      <div><dt>Статус</dt><dd>{statusLabels[course.status]}</dd></div>
+      <div><dt>Семестр</dt><dd>{termLabel(course.termId)} <small>({course.termId})</small></dd></div>
+    </dl>
+    {course.audience && <p>{course.audience}</p>}
+    {course.schedule && <p>{course.schedule.summary} {course.schedule.location}</p>}
+    {course.pages.length > 0 && <>
+      <h3>Организационные страницы</h3>
+      <ul class="course-pages">
+        {course.pages.map((page) => (
+          <li data-course-page-role={page.role}>
+            <span class="page-role">{pageRoleLabels[page.role]}:</span>{' '}
+            <a href={page.href}>{page.label}</a>
+          </li>
+        ))}
+      </ul>
+    </>}
+  </section>
+
+  <section class="curriculum" aria-labelledby="curriculum">
+    <AnchorHeading level={2} id="curriculum">Учебная программа</AnchorHeading>
+    {course.modules.length === 0 && <p>Модули пока не опубликованы.</p>}
+    {course.modules.map((module) => (
+      <section class="course-module" aria-labelledby={`module-${module.position}`}>
+        <AnchorHeading level={3} id={`module-${module.position}`}>
+          {module.label}. {module.title}
+        </AnchorHeading>
+        {module.description && <p>{module.description}</p>}
+        {module.groups.length === 0 && <p>Материалы появятся позже.</p>}
+        {module.groups.map((group) => (
+          <div class="resource-group" data-resource-role={group.role}>
+            <h4>{group.label}</h4>
+            <ul>
+              {group.resources.map((resource) => (
+                <li>
+                  <a href={resource.href}>{resource.label}</a>
+                  {resource.type === 'link' && <small class="external-label"> — внешний ресурс</small>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+    ))}
+  </section>
+</StarlightPage>
+
+<style>
+  .course-meta { display: flex; flex-wrap: wrap; gap: 1rem 3rem; }
+  dl.course-meta > div { margin: 0; }
+  .course-meta dt { font-size: var(--sl-text-sm); color: var(--sl-color-gray-2); }
+  dl.course-meta dd { margin: 0; font-weight: 600; }
+  .resource-group h4 { font-size: var(--sl-text-lg); }
+  .external-label { color: var(--sl-color-gray-2); }
+  .page-role { font-weight: 600; }
+  .curriculum { margin-block-start: 3rem; padding-block-start: 1rem; border-top: 1px solid var(--sl-color-hairline); }
+  .course-module { margin-block-start: 2.5rem; }
+</style>

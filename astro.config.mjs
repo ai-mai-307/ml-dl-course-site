@@ -4,6 +4,7 @@ import starlight from '@astrojs/starlight';
 import { satteri } from '@astrojs/markdown-satteri';
 import { obsidianCallouts } from './src/plugins/obsidian-callouts.ts';
 import { math } from './src/plugins/math.ts';
+import { codeLanguage } from './src/plugins/code-language.ts';
 
 export default defineConfig({
   site: 'https://ai-mai-307.github.io',
@@ -21,6 +22,7 @@ export default defineConfig({
         gfm: { footnotes: { label: 'Сноски', backLabel: 'Вернуться к ссылке {reference}' } },
       },
       mdastPlugins: [obsidianCallouts, math],
+      hastPlugins: [codeLanguage],
     }),
   },
   vite: {

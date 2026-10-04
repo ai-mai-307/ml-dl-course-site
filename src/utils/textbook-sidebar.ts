@@ -8,14 +8,7 @@ function compact(item: Item): Item {
   if (item.type === 'link') return item;
   const entries = item.entries.map(compact);
   if (entries.length === 1 && entries[0]!.type === 'link') return entries[0]!;
-  const overview = item.label === 'preprocessing'
-    ? entries.find((entry) => entry.type === 'link' && entry.href.endsWith('/preprocessing/'))
-    : undefined;
-  return {
-    ...item,
-    label: item.label === 'preprocessing' ? 'Предварительная обработка данных' : item.label,
-    entries: overview ? [overview, ...entries.filter((entry) => entry !== overview)] : entries,
-  };
+  return { ...item, entries };
 }
 
 export const onRequest = defineRouteMiddleware(({ locals }) => {

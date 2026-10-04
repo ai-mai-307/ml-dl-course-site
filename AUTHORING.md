@@ -410,11 +410,11 @@ other formats retain the standard Sharp optimization. This adds no client JavaSc
 The textbook overview lists chapters in two ordered ML/DL groups and hides draft links
 in production. Native Starlight autogeneration reads sidebar.order and applies draft
 filtering. A small [route-data middleware](https://starlight.astro.build/guides/route-data/)
-removes redundant single-page folder groups from the textbook sidebar and keeps
-preprocessing as a named group with its overview first. Files still use page-local
+removes redundant single-page folder groups from the textbook sidebar.
+Preprocessing is now one chapter, with its former topics as internal headings. Files still use page-local
 index.md/assets directories; no public routes or content IDs depend on this formatting.
 
-Two small build-time plugins in `src/plugins/` implement the missing conventions:
+Three small build-time plugins in `src/plugins/` implement the missing conventions:
 
 - `math.ts` renders parsed math nodes with KaTeX as HTML plus accessible MathML.
   Its literal HTML nodes preserve inline context; `features.rawHtml` lets Satteri
@@ -423,6 +423,12 @@ Two small build-time plugins in `src/plugins/` implement the missing conventions
 - `obsidian-callouts.ts` converts marked blockquotes into `aside` or `details`,
   preserving their Markdown children. Styling lives in `src/styles/content.css`.
   Authors do not write the generated HTML or import UI components.
+
+- `code-language.ts` preserves an explicitly declared fence language for native
+  Expressive Code after raw HTML processing rebuilds the syntax tree. It copies
+  the existing language class into the metadata expected by the installed renderer,
+  without guessing a language or changing code. Starlight supplies highlighting,
+  its existing light/dark themes and copy buttons; no custom theme is configured.
 
 `@astrojs/markdown-satteri` and `satteri` are explicit dependencies because the
 configuration and plugins use their public APIs. No extra browser framework is added.
@@ -443,8 +449,9 @@ and verifies the generated demonstration HTML, highlighted code, images, and fon
 
 ## Textbook migration baseline (Task 4B)
 
-The nine remaining ML/DL lectures are large draft topic pages; preprocessing keeps
-the seven-page Task 4 split. Review them in development at /ml-dl-course-site/textbook/.
+The nine remaining ML/DL lectures are large draft topic pages. Task 4C reunites
+the experimental preprocessing split into one draft chapter, preserving all six
+topics, code and 13 local images. Review them in development at /ml-dl-course-site/textbook/.
 The demo course has not been reorganized or assigned a historical term.
 See [the Task 4B report](migration/task-4b-report.md) for source fidelity, route mappings,
 source defects and later splitting candidates. Numeric asset names and original alt
@@ -455,3 +462,14 @@ The baseline integration test builds an isolated publication copy of all textboo
 drafts, checks every heading and image, GIF byte preservation and internal links,
 then removes its own temporary directory. Production output is tested separately
 for draft exclusion. Review does not flip draft flags in the working content.
+
+## Textbook cleanup (Task 4C)
+
+There are ten large ML/DL chapters. The old preprocessing subpage routes are
+removed; link to /textbook/ml/preprocessing/ or its native heading anchors instead.
+The demonstration course references that single docs collection ID.
+See [the Task 4C report](migration/task-4c-report.md). The source-preservation test
+compares the merged chapter with both legacy and hashes of the six migrated
+sections. All three textbook fences already declared python; metadata and
+code bodies remain unchanged. A real build verifies Python token colors in
+both themes, copy payloads, draft exclusion and internal links.

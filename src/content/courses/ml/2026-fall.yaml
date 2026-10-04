@@ -61,23 +61,8 @@ modules:
         href: https://example.com/#other
 
   - title: Предварительная обработка данных
-    description: Первый срез миграции на проверке; шесть самостоятельных тем в одном модуле.
+    description: Единая глава предобработки данных на проверке.
     resources:
       - type: doc
         role: theory
-        doc: textbook/ml/preprocessing/scaling
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/categorical-features
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/temporal-features
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/outliers
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/missing-values
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/sklearn-api
+        doc: textbook/ml/preprocessing

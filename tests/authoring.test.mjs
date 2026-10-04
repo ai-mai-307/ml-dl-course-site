@@ -4,6 +4,7 @@ import { markdownToHtml, mdxToJs } from 'satteri';
 import { parseFragment } from 'parse5';
 import { obsidianCallouts } from '../src/plugins/obsidian-callouts.ts';
 import { math } from '../src/plugins/math.ts';
+import { codeLanguage } from '../src/plugins/code-language.ts';
 
 const options = { features: { math: true, rawHtml: true }, mdastPlugins: [obsidianCallouts, math] };
 const render = async (source) => (await markdownToHtml(source, options)).html;
@@ -89,4 +90,15 @@ test('the same plugins compile in MDX without requiring MDX for ordinary content
   const result = await mdxToJs('> [!NOTE]\n> Формула $x^2$\n\n<div>MDX</div>', options);
   assert.match(result.code, /obsidian-callout/);
   assert.match(result.code, /katex/);
+});
+
+test('raw HTML compatibility preserves explicit fence language without guessing', async () => {
+  const languages = [];
+  await markdownToHtml(['```python', 'import numpy as np', '```', '', '```', 'unknown example', '```'].join('\n'), {
+    features: { rawHtml: true },
+    hastPlugins: [codeLanguage, { name: 'inspect-languages', element: { filter: ['pre'], visit(node) {
+      languages.push(node.children.find(n => n.type === 'element' && n.tagName === 'code')?.data?.lang);
+    } } }],
+  });
+  assert.deepEqual(languages, ['python', undefined]);
 });

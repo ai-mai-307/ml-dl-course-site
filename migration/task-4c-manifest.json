@@ -1,0 +1,197 @@
+{
+  "mergedSections": [
+    {
+      "slug": "scaling",
+      "title": "Масштабирование и нормализация данных",
+      "sha256": "edbc70ddf66d2a49b9e44a20b67d9e3dcf86303f9a13e4599243a31369518e73"
+    },
+    {
+      "slug": "categorical-features",
+      "title": "Преобразование категориальных признаков",
+      "sha256": "c0f8261ba4efded1f65aeca9f3ec32ed29a9ec0c7a05b1ebcb04223885683f7b"
+    },
+    {
+      "slug": "temporal-features",
+      "title": "Обработка временных признаков",
+      "sha256": "5bdef1ad8fb51f256ffb6464b54c18245162e3384fc1a51a3ae8e70437422307"
+    },
+    {
+      "slug": "outliers",
+      "title": "Выявление и выбросов аномалий в данных",
+      "sha256": "7c9970eea861ab4f1b15c5f7fedaad6403e2e6c6dc16c8eae805def2cb202a16"
+    },
+    {
+      "slug": "missing-values",
+      "title": "Обработка пропущенных значений",
+      "sha256": "bf846ee178913479d621f40b6a31002b73f3ef97c20336138e7a58335ec2608d"
+    },
+    {
+      "slug": "sklearn-api",
+      "title": "Sklearn-api",
+      "sha256": "a6a45a1d922a9aeac4192b71844b00b42d59c14f82032679c822826dd93dd5ab"
+    }
+  ],
+  "assets": [
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444018677.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/categorical-features/assets/one-hot-encoding.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/one-hot-encoding.png",
+      "sha256": "cd62659b2c2c20970addc6eb132c8afb4ea3b18ccc1814b905ce415bac8dd652",
+      "alt": "Таблица преобразования категориального признака Color в бинарные столбцы"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444033175.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/categorical-features/assets/ordinal-encoding.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/ordinal-encoding.png",
+      "sha256": "ecc2d6f6bbf0a9cc97842d97a3bdb566ff3e50e9e8ec6e9335b50791483cfae4",
+      "alt": "Порядковое кодирование оценок Poor, Good, Very Good и Excellent числами от 1 до 4"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444044017.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/categorical-features/assets/count-encoding.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/count-encoding.png",
+      "sha256": "9b863c989bce69957c3828f6909b25c58230fb297a2164132661d2dd3f71913f",
+      "alt": "Кодирование Apple и Banana количеством появлений в выборке"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444060614.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/categorical-features/assets/frequency-encoding.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/frequency-encoding.png",
+      "sha256": "8aad0f3a27c3525b61be39d52fc4c1255ce0eb4b0781e89c2fb1e104c3f3ec23",
+      "alt": "Замена категорий Male и Female их частотами 0.4 и 0.6"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444150818.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/temporal-features/assets/month-one-hot-encoding.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/month-one-hot-encoding.png",
+      "sha256": "a8e565634be177b5b0c0b390b854c65ceb5bc34de73cabdaf7ef13ba7d30d99b",
+      "alt": "Таблица бинарных признаков month_2–month_12 для дат"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444175709.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/temporal-features/assets/date-to-timestamp.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/date-to-timestamp.png",
+      "sha256": "e6c9548777811dd16ff0200b33c12111431328aff0aa59620ca53ff067fa4170",
+      "alt": "Пример преобразования дат в числовой Timestamp в электронной таблице"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444263994.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/temporal-features/assets/cyclic-hour-encoding.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/cyclic-hour-encoding.png",
+      "sha256": "f638caea920d17ad7f1e5b44adb4851491654c443738f36f11cb6d4bba538fe6",
+      "alt": "Переход от линейной шкалы часов суток к точке на окружности"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444318466.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/outliers/assets/three-sigma-rule.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/three-sigma-rule.png",
+      "sha256": "ac5aa927e1ceaac44663ac4d0d77d6e4ee034492494d4078aa8426a6bc6baa3a",
+      "alt": "Нормальное распределение с интервалами одной, двух и трёх сигм"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760444335437.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/outliers/assets/interquartile-range.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/interquartile-range.png",
+      "sha256": "b2c283ab4e3a5d90defb9d59f722ffb28b867375c8b6e4ad60c7c5cceb1e9755",
+      "alt": "Квартили, межквартильный размах и границы выбросов на диаграмме размаха"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760445617219.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/missing-values/assets/simple-imputation.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/simple-imputation.png",
+      "sha256": "df538e85d720fc01656f30dad09906f74eaab801303421b0ebc48b5cac9fb091",
+      "alt": "Заполнение пропусков в таблице средним, медианой и модой"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760445680789.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/missing-values/assets/imputation-distributions.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/imputation-distributions.png",
+      "sha256": "c8a9a3f1ec826596d908d2c77e62da31d83f1c23c25adf3417a6efb8247a9741",
+      "alt": "Сравнение распределений после заполнения пропусков средним, нулём и MissForest"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760445890602.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/missing-values/assets/knn-imputation-steps.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/knn-imputation-steps.png",
+      "sha256": "ff0b9de1ca3c0f1d5779b08f0e3c2c6f1ded21e1469f69a95ee649d53e90ff6e",
+      "alt": "Шаги заполнения пропуска по двум ближайшим соседям"
+    },
+    {
+      "legacy": "docs/ml/image/lecture_02/1760445875103.png",
+      "before": "src/content/docs/textbook/ml/preprocessing/missing-values/assets/knn-imputation-distribution.png",
+      "after": "src/content/docs/textbook/ml/preprocessing/assets/knn-imputation-distribution.png",
+      "sha256": "8a46b870fd324c13737f18111df5208fdb354f6cdd8343e5c96f08065b5ec214",
+      "alt": "Распределение признака до и после kNN-импутации"
+    }
+  ],
+  "legacySourceSha256": "9d9e031e381b8c2f56dfc2c154a514ee8b156e6427d6ca734c56ee7f02af5bed",
+  "unchangedChapters": [
+    {
+      "file": "src/content/docs/textbook/ml/introduction/index.md",
+      "sha256": "20faa43cf3eceb2afef3883454080993284ab7f5d5cc82a231a6d30d6ae851bc"
+    },
+    {
+      "file": "src/content/docs/textbook/ml/linear-models/index.md",
+      "sha256": "9cd8a480c23c109348cd8479ee5de84b9d965cfeb9885b900fcbc0bc8be89845"
+    },
+    {
+      "file": "src/content/docs/textbook/ml/trees-and-ensembles/index.md",
+      "sha256": "628dd27cea0827fe9101771c361866afdfe4187d7365c2634ec00aecf1bca4dc"
+    },
+    {
+      "file": "src/content/docs/textbook/ml/clustering-and-dimensionality-reduction/index.md",
+      "sha256": "0621f95a08a4174101444a34d408c0bf5c4d13efdbb64eb34e92369fbbd3424b"
+    },
+    {
+      "file": "src/content/docs/textbook/dl/neural-network-foundations/index.md",
+      "sha256": "36db53276883e3da38d4d4fae366826ffddb7df77578e6919fd0ac9b788ec5ab"
+    },
+    {
+      "file": "src/content/docs/textbook/dl/computer-vision/index.md",
+      "sha256": "a2098313a341abd18744e45a5dea185de230b5d51ca9499b59ba5cc8d8994068"
+    },
+    {
+      "file": "src/content/docs/textbook/dl/audio/index.md",
+      "sha256": "9d6e52f4ed73e7cf4b24b058ca071c39992c9cded0e35990791015c9d1997637"
+    },
+    {
+      "file": "src/content/docs/textbook/dl/sequences-and-text/index.md",
+      "sha256": "a0a40e71d939a921d9f83dc45ee38d145cfcf14b3066fcbcb9b9a60f6caeba8f"
+    },
+    {
+      "file": "src/content/docs/textbook/dl/large-language-models/index.md",
+      "sha256": "497ae68602f2f9edf067e3eb66d69df72193c25fc2bf039f6dda502ab9dcb851"
+    }
+  ],
+  "fencedBlocks": [
+    {
+      "file": "src/content/docs/textbook/ml/preprocessing/index.md",
+      "index": 1,
+      "language": "python",
+      "codeSha256": "fd1aa5332179af27222d107da6ba2d5548ed21546b4d528cb6c735a763abcb69"
+    },
+    {
+      "file": "src/content/docs/textbook/ml/preprocessing/index.md",
+      "index": 2,
+      "language": "python",
+      "codeSha256": "6949482a56cd304e373ed7f440328f603073153c3411bf27892e19f0a38fd7d2"
+    },
+    {
+      "file": "src/content/docs/textbook/ml/preprocessing/index.md",
+      "index": 3,
+      "language": "python",
+      "codeSha256": "ec831f1921bb29a37cc6e010e7b58e01a241db9f5f4ef4984863c260fb4b2f50"
+    }
+  ],
+  "fenceAudit": {
+    "chaptersChecked": 10,
+    "blocksChecked": 3,
+    "languageIdentifiersAdded": 0,
+    "existingLanguages": {
+      "python": 3
+    },
+    "addedLanguages": {},
+    "blocksWithoutLanguage": [],
+    "dlBlocks": 0
+  }
+}

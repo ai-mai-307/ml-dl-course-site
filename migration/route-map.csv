@@ -1,11 +1,5 @@
 legacy_route,target_route,relationship,status,source_section
-"/ml/lecture_02/","/textbook/ml/preprocessing/","primary-redirect-target","migrated-draft","Введение; использованные источники"
-"/ml/lecture_02/","/textbook/ml/preprocessing/scaling/","split-section","migrated-draft","Масштабирование и нормализация данных"
-"/ml/lecture_02/","/textbook/ml/preprocessing/categorical-features/","split-section","migrated-draft","Преобразование категориальных признаков"
-"/ml/lecture_02/","/textbook/ml/preprocessing/temporal-features/","split-section","migrated-draft","Обработка временных признаков"
-"/ml/lecture_02/","/textbook/ml/preprocessing/outliers/","split-section","migrated-draft","Выявление и выбросов аномалий в данных"
-"/ml/lecture_02/","/textbook/ml/preprocessing/missing-values/","split-section","migrated-draft","Обработка пропущенных значений"
-"/ml/lecture_02/","/textbook/ml/preprocessing/sklearn-api/","split-section","migrated-draft","Sklearn-api"
+"/ml/lecture_02/","/textbook/ml/preprocessing/","primary-redirect-target","migrated-draft","Полная глава: введение; шесть разделов; использованные источники"
 "/ml/lecture_01/","/textbook/ml/introduction/","primary-redirect-target","migrated-draft","Первое знакомство с машинным обучением"
 "/ml/lecture_03/","/textbook/ml/linear-models/","primary-redirect-target","migrated-draft","Обучение с учителем. Линейные модели"
 "/ml/lecture_04/","/textbook/ml/trees-and-ensembles/","primary-redirect-target","migrated-draft","Обучение с учителем. Решающие деревья и ансамблевые модели"

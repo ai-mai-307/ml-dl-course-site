@@ -58,15 +58,8 @@ test('baseline copies exactly the referenced assets and preserves all GIF bytes'
   }
 });
 
-test('preprocessing text and the seven Task 4 route-map rows are retained', async () => {
-  assert.equal(audit.preservedPreprocessing.length, 7);
-  for (const item of audit.preservedPreprocessing) {
-    const text = await read(item.file);
-    const unchangedBody = text.replace(/^---\n[\s\S]*?\n---\n/, '');
-    assert.equal(hash(unchangedBody), item.bodySha256);
-  }
+test('all nine baseline route mappings remain unchanged', async () => {
   const routes = await read('migration/route-map.csv');
-  assert.equal(routes.split('\n').filter((row) => row.startsWith('"/ml/lecture_02/"')).length, 7);
   for (const page of audit.pages) {
     const oldRoute = '/' + page.source.slice(5, -3) + '/';
     const matching = routes.split('\n').filter((row) => row.startsWith('"' + oldRoute + '"'));
@@ -82,7 +75,7 @@ test('all real textbook drafts compile, render and pass link checks in an isolat
     for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
-    for (const file of [...audit.pages.map((p) => p.target), ...audit.preservedPreprocessing.map((p) => p.file)]) {
+    for (const file of [...audit.pages.map((p) => p.target), 'src/content/docs/textbook/ml/preprocessing/index.md']) {
       const draft = await read(file);
       assert.match(draft, /\ndraft: true\n/);
       await writeFile(path.join(fixture, file), draft.replace('\ndraft: true\n', '\ndraft: false\n'));
@@ -137,7 +130,7 @@ test('all real textbook drafts compile, render and pass link checks in an isolat
     const sidebarGroups = landing.filter(n => n.tagName === 'summary').map(textContent);
     assert.ok(sidebarGroups.includes('Машинное обучение'));
     assert.ok(sidebarGroups.includes('Глубокое обучение'));
-    assert.ok(sidebarGroups.includes('Предварительная обработка данных'));
+    assert.ok(!sidebarGroups.includes('Предварительная обработка данных'), 'preprocessing is now a single link, not a group');
     assert.ok(!sidebarGroups.some(label => /introduction|linear-models|scaling|neural-network-foundations/.test(label)));
     const chapterLinks = landing.filter((n) => n.tagName === 'a' && attr(n, 'href')?.startsWith('/ml-dl-course-site/textbook/'));
     for (const page of audit.pages) assert.ok(chapterLinks.some((n) => attr(n, 'href') === '/ml-dl-course-site' + page.route), page.route);

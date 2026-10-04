@@ -1,13 +1,11 @@
-# Demonstration from the starter specification, not a historical course migration.
+# Published test fixture, independent of the author's draft migration manifest.
 courseId: ml
 termId: 2026-fall
 title: Классическое машинное обучение — демонстрационный курс
 shortTitle: ML · демонстрация
 description: >
-  Демонстрационный маршрут из спецификации: страницы-заглушки и первый
-  срез предобработки данных на проверке. Это не историческое проведение курса.
+  Тестовый маршрут из страниц-заглушек и примеров внешних ссылок.
 status: draft
-draft: true
 language: ru
 
 pages:
@@ -59,25 +57,3 @@ modules:
         role: other
         label: Пример дополнительного ресурса
         href: https://example.com/#other
-
-  - title: Предварительная обработка данных
-    description: Первый срез миграции на проверке; шесть самостоятельных тем в одном модуле.
-    resources:
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/scaling
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/categorical-features
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/temporal-features
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/outliers
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/missing-values
-      - type: doc
-        role: theory
-        doc: textbook/ml/preprocessing/sklearn-api

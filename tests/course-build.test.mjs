@@ -20,6 +20,8 @@ test('actual Astro builds validate course pages, module numbering, references, a
     for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
+    // Keep schema/route tests independent of the author's now-private migration demo.
+    await cp(path.join(root, 'tests/fixtures/course.yaml'), path.join(fixture, 'src/content/courses/ml/2026-fall.yaml'));
     const build = () => spawnSync(process.execPath, [astroCli, 'build'], {
       cwd: fixture,
       env: { ...process.env, ASTRO_TELEMETRY_DISABLED: '1', NO_COLOR: '1', FORCE_COLOR: '0' },

@@ -46,6 +46,8 @@ test('Obsidian templates match real schemas and drafts stay out of production', 
     for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
+    // This fixture intentionally omits draft to test the publication default.
+    await cp(path.join(root, 'tests/fixtures/course.yaml'), path.join(fixture, 'src/content/courses/ml/2026-fall.yaml'));
     const kinds = ['textbook', 'guide', 'assignment', 'exam', 'note'];
     const expanded = new Map();
     for (const kind of kinds) {

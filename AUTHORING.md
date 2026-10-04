@@ -324,7 +324,8 @@ Do not load a browser Python runtime on every page by default.
 Create one YAML manifest at `src/content/courses/<courseId>/<termId>.yaml`.
 The path must match its `courseId` and `termId`. The starter's
 [ml/2026-fall.yaml](src/content/courses/ml/2026-fall.yaml) is a demonstration
-using only placeholders; its term does not identify any migrated historical material.
+using placeholders and a draft preprocessing module; its term does not identify
+any migrated historical material.
 
 A course page at `/courses/<courseId>/<termId>/` is generated from the manifest.
 It contains a route through materials, not copies of their text. List modules
@@ -382,7 +383,8 @@ headings under «Учебная программа»; resources within each grou
 
 Course statuses `draft`, `active`, `completed`, and `archived` are displayed
 as labels independently of the publication flag `draft`. The demonstration
-course has `status: draft` and is public because its `draft` flag is omitted.
+course has both `status: draft` and `draft: true` while the first migration slice
+is under review, so it is available only in development.
 A module with `published: false` is hidden; omitted `published` means
 `true`. References in `pages` and **all** modules are validated before filtering.
 For public courses, missing documents fail `astro build` with the manifest ID,

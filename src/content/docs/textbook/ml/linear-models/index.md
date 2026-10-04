@@ -1,7 +1,7 @@
 ---
 title: "Обучение с учителем. Линейные модели"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Линейные модели"
   order: 3

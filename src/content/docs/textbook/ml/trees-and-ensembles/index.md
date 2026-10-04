@@ -1,7 +1,7 @@
 ---
 title: "Обучение с учителем. Решающие деревья и ансамблевые модели"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Деревья и ансамбли"
   order: 4

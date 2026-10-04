@@ -9,12 +9,12 @@ const headings = groups.map((group, index) => ({ depth: 2, slug: index === 0 ? '
 ---
 
 <StarlightPage frontmatter={{ title: 'Учебник', description: 'Теория машинного и глубокого обучения.' }} headings={headings}>
-  <p>Теория машинного и глубокого обучения, общая для разных курсов.</p>
+  <p>Учебник по машинному и глубокому обучению: десять глав в двух разделах. Материалы общие для разных курсов и доступны для самостоятельного изучения.</p>
   {groups.map((group, index) => (
     <section aria-labelledby={headings[index].slug}>
       <AnchorHeading level={2} id={headings[index].slug}>{group.label}</AnchorHeading>
       {group.chapters.length === 0
-        ? <p>Материалы раздела готовятся к публикации.</p>
+        ? <p>В этом разделе пока нет опубликованных глав.</p>
         : <ul>
             {group.chapters.map((chapter) => (
               <li><a href={import.meta.env.BASE_URL + chapter.id + '/'}>{chapter.label}</a></li>

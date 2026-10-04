@@ -1,7 +1,7 @@
 ---
 title: "Основные понятия глубокого обучения"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Основы нейронных сетей"
   order: 1

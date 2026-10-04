@@ -1,7 +1,7 @@
 ---
 title: "Большие языковые модели"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Трансформеры / большие языковые модели"
   order: 5

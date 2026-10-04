@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -33,7 +33,7 @@ test('baseline covers exactly nine lectures and preserves all content outside re
     }
     const actual = await read(page.target);
     assert.equal(body(actual), expected, page.source);
-    assert.match(actual, /\ndraft: true\n/);
+    assert.match(actual, /\ndraft: false\n/);
     assert.match(actual, /\ncontentKind: textbook\n/);
     assert.doesNotMatch(actual.split('\n---\n')[0], /\n(?:courseId|termId):/);
     assert.doesNotMatch(body(actual), /^!!!|^\?\?\?/m);
@@ -64,11 +64,11 @@ test('all nine baseline route mappings remain unchanged', async () => {
     const oldRoute = '/' + page.source.slice(5, -3) + '/';
     const matching = routes.split('\n').filter((row) => row.startsWith('"' + oldRoute + '"'));
     assert.equal(matching.length, 1);
-    assert.ok(matching[0].includes('"' + page.route + '","primary-redirect-target","migrated-draft"'));
+    assert.ok(matching[0].includes('"' + page.route + '","primary-redirect-target","migrated-published"'));
   }
 });
 
-test('all real textbook drafts compile, render and pass link checks in an isolated publication copy', { timeout: 180000 }, async () => {
+test('all published baseline chapters compile, render and pass link checks in an isolated copy', { timeout: 180000 }, async () => {
   await mkdir(toolsDir, { recursive: true });
   const fixture = await mkdtemp(path.join(toolsDir, 'baseline-build-test-'));
   try {
@@ -76,9 +76,7 @@ test('all real textbook drafts compile, render and pass link checks in an isolat
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
     for (const file of [...audit.pages.map((p) => p.target), 'src/content/docs/textbook/ml/preprocessing/index.md']) {
-      const draft = await read(file);
-      assert.match(draft, /\ndraft: true\n/);
-      await writeFile(path.join(fixture, file), draft.replace('\ndraft: true\n', '\ndraft: false\n'));
+      assert.match(await read(file), /\ndraft: false\n/);
     }
     const astroPackageUrl = new URL(import.meta.resolve('astro/package.json'));
     const astroPackage = JSON.parse(await readFile(astroPackageUrl, 'utf8'));

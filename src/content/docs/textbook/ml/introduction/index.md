@@ -1,7 +1,7 @@
 ---
 title: "Первое знакомство с машинным обучением"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Введение в машинное обучение"
   order: 1

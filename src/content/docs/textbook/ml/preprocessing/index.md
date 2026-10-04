@@ -1,7 +1,7 @@
 ---
 title: "Предварительная обработка данных"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   order: 2
 ---

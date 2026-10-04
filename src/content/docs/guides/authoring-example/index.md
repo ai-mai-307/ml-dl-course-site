@@ -1,6 +1,7 @@
 ---
 title: Пример оформления Markdown
 description: Формулы, код, примечания, изображения и таблицы в обычном Markdown.
+draft: true
 contentKind: guide
 imageNameKey: authoring-example
 ---

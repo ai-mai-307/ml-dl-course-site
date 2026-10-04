@@ -1,7 +1,7 @@
 ---
 title: "Обработка аудиосигнала с помощью глубокого обучения"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Обработка аудио"
   order: 3

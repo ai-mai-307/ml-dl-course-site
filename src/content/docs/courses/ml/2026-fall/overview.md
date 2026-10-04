@@ -1,6 +1,7 @@
 ---
 title: Описание курса — заглушка
 description: Демонстрационная организационная страница курса.
+draft: true
 contentKind: reference
 courseId: ml
 termId: 2026-fall

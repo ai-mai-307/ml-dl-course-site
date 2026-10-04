@@ -24,7 +24,7 @@ test('merged preprocessing preserves all legacy sections, code, formulas and sou
   const source = await read('docs/ml/lecture_02.md');
   assert.equal(hash(await readFile(path.join(root, 'docs/ml/lecture_02.md'))), audit.legacySourceSha256);
   const page = await read(contentRoot + '/index.md');
-  assert.match(page, /\ndraft: true\n/);
+  assert.match(page, /\ndraft: false\n/);
   assert.match(page, /\ncontentKind: textbook\n/);
   let restored = body(page);
   for (const asset of audit.assets) {
@@ -52,7 +52,7 @@ test('merged preprocessing preserves all legacy sections, code, formulas and sou
   }
   const routes = csvRows(await read('migration/route-map.csv')).filter((row) => row[0] === '/ml/lecture_02/');
   assert.deepEqual(routes.map((row) => row.slice(0, 4)), [
-    ['/ml/lecture_02/', '/textbook/ml/preprocessing/', 'primary-redirect-target', 'migrated-draft'],
+    ['/ml/lecture_02/', '/textbook/ml/preprocessing/', 'primary-redirect-target', 'migrated-published'],
   ]);
 });
 
@@ -69,9 +69,9 @@ test('all 13 preprocessing assets move intact into one page-local directory', as
   assert.ok((await readFile(path.join(root, 'docs/ml/image/lecture_02/1760444292702.png'))).length > 0);
 });
 
-test('fence audit covers all ten chapters and leaves all code and other chapters unchanged', async () => {
+test('fence audit preserves all code and other chapters except their publication flag', async () => {
   for (const chapter of audit.unchangedChapters) {
-    assert.equal(hash(await readFile(path.join(root, chapter.file))), chapter.sha256, chapter.file);
+    assert.equal(hash((await readFile(path.join(root, chapter.file), 'utf8')).replace('draft: false', 'draft: true')), chapter.sha256, chapter.file);
   }
   const found = [];
   for (const file of [contentRoot + '/index.md', ...audit.unchangedChapters.map((p) => p.file)]) {
@@ -95,7 +95,7 @@ test('merged review copy renders Python highlighting and the demo course referen
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
     await seedCourseDocs(fixture);
-    for (const file of [contentRoot + '/index.md', 'src/content/courses/ml/2026-fall.yaml']) {
+    for (const file of ['src/content/courses/ml/2026-fall.yaml']) {
       const draft = await read(file);
       assert.match(draft, /\ndraft: true\n/);
       await writeFile(path.join(fixture, file), draft.replace('\ndraft: true\n', '\ndraft: false\n'));

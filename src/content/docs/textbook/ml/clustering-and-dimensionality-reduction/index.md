@@ -1,7 +1,7 @@
 ---
 title: "Обучение без учителя. Кластеризация и понижение размерности"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Кластеризация и понижение размерности"
   order: 5

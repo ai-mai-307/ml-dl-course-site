@@ -1,7 +1,7 @@
 ---
 title: "Обработка изображений с помощью глубокого обучения"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Компьютерное зрение"
   order: 2

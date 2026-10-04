@@ -1,6 +1,7 @@
 ---
 title: Экзамен — заглушка
 description: Демонстрационная страница об экзамене курса.
+draft: true
 contentKind: exam
 courseId: ml
 termId: 2026-fall

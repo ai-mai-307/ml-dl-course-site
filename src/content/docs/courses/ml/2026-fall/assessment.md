@@ -1,6 +1,7 @@
 ---
 title: Оценивание — заглушка
 description: Демонстрационная страница правил оценивания курса.
+draft: true
 contentKind: reference
 courseId: ml
 termId: 2026-fall

@@ -447,6 +447,15 @@ it runs the tests, checks types/content, builds the site, checks internal links,
 and verifies the generated demonstration HTML, highlighted code, images, and fonts.
 `npm run check:authoring` runs the generated-output tests alone after a build.
 
+## Published textbook (Task 6A)
+
+All ten real ML/DL baseline chapters now use `draft: false` and are available in
+production through the textbook overview, sidebar and search. Their teaching
+content is unchanged. The Git and course placeholders and authoring example are
+`draft: true` and remain available in development; authoring-output tests build
+the example in an isolated copy. Previous migration sections below describe the
+historical draft/review stages. See [the Task 6A report](migration/task-6a-report.md).
+
 ## Textbook migration baseline (Task 4B)
 
 The nine remaining ML/DL lectures are large draft topic pages. Task 4C reunites

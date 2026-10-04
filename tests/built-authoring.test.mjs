@@ -1,11 +1,37 @@
 import assert from 'node:assert/strict';
-import { readFile, stat } from 'node:fs/promises';
-import test from 'node:test';
+import { cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import test, { after } from 'node:test';
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parse } from 'parse5';
 import config from '../astro.config.mjs';
 
-// Run after the production build: verifies the real Astro/Starlight pipeline.
-const output = new URL('../dist/', import.meta.url);
+// The authoring example is a draft. Verify it using the real production pipeline
+// in a disposable copy, without publishing the demonstration on the public site.
+const root = fileURLToPath(new URL('../', import.meta.url));
+const toolsDir = path.join(root, '.tools');
+await mkdir(toolsDir, { recursive: true });
+const fixture = await mkdtemp(path.join(toolsDir, 'authoring-output-test-'));
+after(async () => {
+  const relative = path.relative(toolsDir, path.resolve(fixture));
+  assert.ok(relative.startsWith('authoring-output-test-') && !relative.includes(path.sep));
+  await rm(fixture, { recursive: true, force: true });
+});
+for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
+  await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
+}
+const examplePath = path.join(fixture, 'src/content/docs/guides/authoring-example/index.md');
+await writeFile(examplePath, (await readFile(examplePath, 'utf8')).replace('draft: true', 'draft: false'));
+const packageUrl = new URL(import.meta.resolve('astro/package.json'));
+const packageJson = JSON.parse(await readFile(packageUrl, 'utf8'));
+const cli = fileURLToPath(new URL(packageJson.bin.astro, packageUrl));
+const build = spawnSync(process.execPath, [cli, 'build'], {
+  cwd: fixture, encoding: 'utf8', timeout: 90000, windowsHide: true,
+  env: { ...process.env, ASTRO_TELEMETRY_DISABLED: '1', NO_COLOR: '1', FORCE_COLOR: '0' },
+});
+assert.equal(build.status, 0, (build.error ?? '') + '\n' + build.stdout + '\n' + build.stderr);
+const output = pathToFileURL(path.join(fixture, 'dist') + path.sep);
 const html = await readFile(new URL('guides/authoring-example/index.html', output), 'utf8');
 const page = parse(html);
 function elements(root, tag) {

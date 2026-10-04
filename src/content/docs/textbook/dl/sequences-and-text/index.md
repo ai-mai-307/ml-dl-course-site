@@ -1,7 +1,7 @@
 ---
 title: "Обработка последовательных данных и текста"
 contentKind: textbook
-draft: true
+draft: false
 sidebar:
   label: "Последовательности и текст"
   order: 4

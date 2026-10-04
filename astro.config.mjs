@@ -51,7 +51,9 @@ export default defineConfig({
         { label: 'Курсы', link: '/courses/' },
         { label: 'Инструкции', slug: 'guides' },
         { label: 'Заметки', link: '/notes/' },
-        { label: 'Пример оформления', slug: 'guides/authoring-example' },
+        ...(process.env.NODE_ENV === 'development'
+          ? [{ label: 'Пример оформления', slug: 'guides/authoring-example' }]
+          : []),
       ],
     }),
   ],

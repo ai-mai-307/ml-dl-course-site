@@ -1,0 +1,23 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import NoteMetadata from '../../components/notes/Metadata.astro';
+import { isVisible } from '../../utils/publishing';
+
+export const getStaticPaths = (async () => {
+  const notes = await getCollection('notes', (entry) => isVisible(entry, import.meta.env.DEV));
+  return notes.map((note) => ({ params: { id: note.id }, props: { note } }));
+}) satisfies GetStaticPaths;
+
+interface Props { note: CollectionEntry<'notes'> }
+const { note } = Astro.props;
+const { Content, headings } = await render(note);
+---
+
+<StarlightPage frontmatter={{ title: note.data.title, description: note.data.description, draft: note.data.draft, prev: false, next: false }} headings={headings}>
+  <p><a href={`${import.meta.env.BASE_URL}notes/`}>Все заметки</a></p>
+  <NoteMetadata note={note.data} />
+  <p>{note.data.description}</p>
+  <Content />
+</StarlightPage>

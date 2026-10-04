@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Astro v2 and local Node.js tooling
+/node_modules/
+/.astro/
+/.tools/
+npm-debug.log*
+
+# Personal Obsidian vault settings (templates are versioned separately).
+/src/content/.obsidian/

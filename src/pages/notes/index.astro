@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import NoteMetadata from '../../components/notes/Metadata.astro';
+import { isVisible } from '../../utils/publishing';
+
+const notes = (await getCollection('notes', (entry) => isVisible(entry, import.meta.env.DEV)))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf() || a.id.localeCompare(b.id));
+---
+
+<StarlightPage frontmatter={{ title: 'Заметки', description: 'Авторские статьи и короткие заметки.', prev: false, next: false }}>
+  {notes.length === 0 ? (
+    <div class="notes-empty">
+      <p>Заметок пока нет.</p>
+      <p>Здесь будут появляться авторские статьи и короткие заметки.</p>
+    </div>
+  ) : (
+    <ul class="notes-list">
+      {notes.map((note) => (
+        <li>
+          <article>
+            <h2><a href={`${import.meta.env.BASE_URL}notes/${note.id.split('/').map(encodeURIComponent).join('/')}/`}>{note.data.title}</a></h2>
+            {note.data.draft && <small>Черновик</small>}
+            <NoteMetadata note={note.data} />
+            <p>{note.data.description}</p>
+          </article>
+        </li>
+      ))}
+    </ul>
+  )}
+</StarlightPage>
+
+<style>
+  .notes-empty { padding-block: 0.5rem 1rem; }
+  .notes-empty p + p { margin-block-start: 0.65rem; }
+  ul.notes-list { list-style: none; padding: 0; }
+  .notes-list > li { margin: 0; }
+  .notes-list > li + li { margin-block-start: 2.5rem; padding-block-start: 1.5rem; border-top: 1px solid var(--sl-color-hairline); }
+  .notes-list h2 { margin: 0; font-size: var(--sl-text-h3); overflow-wrap: anywhere; }
+</style>

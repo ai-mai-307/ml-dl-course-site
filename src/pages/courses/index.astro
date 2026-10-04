@@ -1,0 +1,30 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getCollection } from 'astro:content';
+import { courseUrl, statusLabels, termLabel } from '../../utils/courses';
+import { isVisible } from '../../utils/publishing';
+
+const courses = (await getCollection('courses', (entry) => isVisible(entry, import.meta.env.DEV)))
+  .sort((a, b) => a.id.localeCompare(b.id));
+---
+
+<StarlightPage
+  frontmatter={{
+    title: 'Курсы',
+    description: 'Учебные курсы: аудитории, семестры и материалы.',
+  }}
+>
+  <p>Материалы курсов осеннего семестра 2026 года дополняются по ходу обучения.</p>
+  {courses.length === 0 && <p>Программы курсов появятся здесь позже.</p>}
+  <ul>
+    {courses.map((course) => (
+      <li>
+        <a href={courseUrl(course, import.meta.env.BASE_URL)}>{course.data.title}</a>
+        {course.data.draft && <small> — не опубликован</small>}
+        <p>{termLabel(course.data.termId)} · {statusLabels[course.data.status]}</p>
+        {course.data.audience && <p>{course.data.audience}</p>}
+        <p>{course.data.description}</p>
+      </li>
+    ))}
+  </ul>
+</StarlightPage>

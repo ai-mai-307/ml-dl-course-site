@@ -1,0 +1,66 @@
+courseId: deep-learning
+termId: 2026-fall
+title: Глубокое машинное обучение
+audience: Магистры групп 226СВ и 238СВ
+description: >-
+  Материалы курса обновляются по ходу осеннего семестра 2026 года.
+status: active
+draft: false
+language: ru
+
+pages:
+  - role: overview
+    doc: courses/deep-learning/2026-fall/overview
+  - role: assessment
+    doc: courses/deep-learning/2026-fall/assessment
+  - role: schedule
+    doc: courses/deep-learning/2026-fall/schedule
+  - role: exam
+    doc: courses/deep-learning/2026-fall/exam
+  - role: resources
+    doc: courses/deep-learning/2026-fall/resources
+
+modules:
+  - title: Основы нейронных сетей
+    description: >
+      Основные понятия глубокого обучения. Устройство многослойного
+      персептрона. Обучение с помощью алгоритма обратного распространения ошибки.
+      Функции активации и алгоритмы инициализации весов.
+
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/dl/neural-network-foundations
+        label: Конспект
+
+      - type: link
+        role: slides
+        label: Презентация
+        href: https://docs.google.com/presentation/d/1XNP2DGuHNf8Y4_wwH4vGz0kikgCvqYr8ra4GFdf34zk/edit?usp=sharing
+
+      - type: link
+        role: notebook
+        label: Демонстрационный блокнот
+        href: https://github.com/ai-mai-307/dl_course_2025/blob/main/lecture_01/01_pytorch_basics.ipynb
+
+      - type: doc
+        role: assignment
+        doc: courses/deep-learning/2026-fall/assignments/hw-01
+        label: Домашнее задание №1
+
+  - title: Обработка изображений. Сверточные нейронные сети.
+    description: >
+      Обработка изображений с помощью глубокого обучения. Понятие изображения.
+      Сверточные фильтры. Двумерный сверточный слой. Одномерный сверточный слой.
+      Задачи машинного зрения. Архитектуры нейронных сетей для решения задач машинного зрения.
+
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/dl/computer-vision
+        label: Конспект
+
+      - type: link
+        role: slides
+        label: Презентация
+        href: https://docs.google.com/presentation/d/1vouMrIzvqie9A86E5Akr6FFW7GycT5D0y6856Yo3zx4/edit?usp=sharing

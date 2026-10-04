@@ -1,0 +1,23 @@
+courseId: intro-ml-dl-pish
+termId: 2026-fall
+title: Введение в машинное и глубокое обучение
+audience: Студенты ПИШ
+description: >-
+  Материалы курса обновляются по ходу осеннего семестра 2026 года.
+status: active
+draft: false
+language: ru
+
+pages:
+  - role: overview
+    doc: courses/intro-ml-dl-pish/2026-fall/overview
+  - role: assessment
+    doc: courses/intro-ml-dl-pish/2026-fall/assessment
+  - role: schedule
+    doc: courses/intro-ml-dl-pish/2026-fall/schedule
+  - role: exam
+    doc: courses/intro-ml-dl-pish/2026-fall/exam
+  - role: resources
+    doc: courses/intro-ml-dl-pish/2026-fall/resources
+
+modules: []

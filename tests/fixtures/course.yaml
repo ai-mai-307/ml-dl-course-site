@@ -1,0 +1,59 @@
+# Published test fixture, independent of the author's real courses.
+courseId: ml
+termId: 2026-fall
+title: Классическое машинное обучение — демонстрационный курс
+shortTitle: ML · демонстрация
+description: >
+  Тестовый маршрут из страниц-заглушек и примеров внешних ссылок.
+status: draft
+language: ru
+
+pages:
+  - role: overview
+    doc: courses/ml/2026-fall/overview
+  - role: assessment
+    doc: courses/ml/2026-fall/assessment
+  - role: exam
+    doc: courses/ml/2026-fall/exam
+
+modules:
+  - title: Введение в машинное обучение
+    description: Первый модуль демонстрирует ссылки на учебник и общую инструкцию.
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/ml/introduction
+      - type: doc
+        role: guide
+        doc: guides/git
+
+  - title: Линейные модели
+    description: Один модуль объединяет несколько самостоятельных страниц учебника и практические ресурсы.
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/ml/introduction
+        label: Вводные понятия — заглушка
+      - type: doc
+        role: theory
+        doc: textbook/ml/linear-models
+      - type: doc
+        role: assignment
+        doc: courses/ml/2026-fall/assignments/hw-03
+        label: Домашнее задание №3 — заглушка
+      - type: link
+        role: notebook
+        label: Пример ссылки на notebook
+        href: https://example.com/#notebook
+      - type: link
+        role: slides
+        label: Пример ссылки на слайды
+        href: https://example.com/#slides
+      - type: link
+        role: repository
+        label: Пример ссылки на репозиторий
+        href: https://example.com/#repository
+      - type: link
+        role: other
+        label: Пример дополнительного ресурса
+        href: https://example.com/#other

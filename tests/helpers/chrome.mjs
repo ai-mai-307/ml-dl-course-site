@@ -4,13 +4,14 @@ import { access, mkdtemp, rm } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 
-// Browser tests need no npm runtime. Set CHROME_PATH when Chrome is installed elsewhere.
+// Browser tests need no npm runtime. Set CHROME_PATH or CHROME_BIN when Chrome is installed elsewhere.
 export async function chromePath() {
-  const candidates = [process.env.CHROME_PATH,
+  const candidates = [process.env.CHROME_PATH, process.env.CHROME_BIN,
     'C:/Program Files/Google/Chrome/Application/chrome.exe',
     'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-    '/usr/bin/chromium', '/usr/bin/chromium-browser', '/usr/bin/google-chrome',
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'].filter(Boolean);
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable',
+    '/usr/bin/chromium', '/usr/bin/chromium-browser'].filter(Boolean);
   for (const candidate of candidates) { try { await access(candidate); return candidate; } catch {} }
 }
 
@@ -32,14 +33,17 @@ export async function openChrome(executable) {
   try {
     const port = await new Promise((resolve, reject) => {
       let stderr = '';
+      const stderrTail = () => stderr.trimEnd().split(/\r?\n/).slice(-20).join('\n') || '(empty)';
       const startupTimeout = process.env.CI ? 30000 : 15000;
       const timer = setTimeout(() => {
-        const tail = stderr.trimEnd().split(/\r?\n/).slice(-20).join('\n');
-        reject(Error('Chrome startup timed out after ' + startupTimeout + ' ms\nChrome stderr (last 20 lines):\n' + (tail || '(empty)')));
+        reject(Error('Chrome startup timed out after ' + startupTimeout + ' ms\nChrome stderr (last 20 lines):\n' + stderrTail()));
       }, startupTimeout);
       const fail = (error) => { clearTimeout(timer); reject(error); };
       child.once('error', fail);
-      child.once('exit', (code) => fail(Error('Chrome exited ' + code)));
+      child.once('exit', (code, signal) => fail(Error(
+        'Chrome exited: code=' + code + ', signal=' + signal + '\nExecutable: ' + executable +
+        '\nChrome stderr (last 20 lines):\n' + stderrTail()
+      )));
       child.stderr.on('data', (chunk) => {
         stderr += chunk;
         const match = /DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)/.exec(stderr);

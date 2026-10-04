@@ -23,6 +23,8 @@ jobs:
       - run: npm ci
       # validate includes the production build and checks the resulting dist/.
       - run: npm run validate
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'

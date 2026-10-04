@@ -49,7 +49,16 @@ export default defineConfig({
           { label: 'Глубокое обучение', items: [{ autogenerate: { directory: 'textbook/dl' } }] },
         ] },
         { label: 'Курсы', link: '/courses/' },
-        { label: 'Инструкции', slug: 'guides' },
+        { label: 'Инструкции', items: [
+          { label: 'Обзор инструкций', slug: 'guides' },
+          { label: 'GitHub Classroom — архив', slug: 'guides/github-classroom' },
+          { label: 'DataSphere — требует обновления', items: [
+            { slug: 'guides/datasphere/clone-repository' },
+            { slug: 'guides/datasphere/commit-and-push' },
+            { slug: 'guides/datasphere/datasets' },
+            { slug: 'guides/datasphere/budget' },
+          ] },
+        ] },
         { label: 'Заметки', link: '/notes/' },
         ...(process.env.NODE_ENV === 'development'
           ? [{ label: 'Пример оформления', slug: 'guides/authoring-example' }]

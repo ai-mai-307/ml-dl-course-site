@@ -1,3 +1,4 @@
+import { seedCourseDocs } from './helpers/course-docs.mjs';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
@@ -36,7 +37,7 @@ test('lecture split preserves every source paragraph, code block, formula, and s
   assert.equal(landing.split('\n\n## Темы раздела')[0], source.slice(source.indexOf('\n') + 1, sections[0].index).trim());
   assert.equal(landing.slice(landing.indexOf('## Использованные источники')).trim(), source.slice(sections[6].index).trim());
   for (const slug of slugs) assert.ok(landing.includes(`](./${slug}/)`));
-  const routes = csvRows(await read('migration/route-map.csv'));
+  const routes = csvRows(await read('migration/route-map.csv')).filter((row) => row[0] === '/ml/lecture_02/');
   assert.equal(routes.length, 7);
   assert.deepEqual(routes.filter((row) => row[2] === 'primary-redirect-target').map((row) => row[1]), ['/textbook/ml/preprocessing/']);
   assert.ok(routes.every((row) => row[0] === '/ml/lecture_02/' && row[3] === 'migrated-draft'));
@@ -62,6 +63,7 @@ test('review copy builds all migrated pages and composes one module from six doc
     for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
+    await seedCourseDocs(fixture);
     // Production omits drafts. Publish ONLY in this disposable copy to exercise
     // real image, math, code and link generation without changing author visibility.
     for (const slug of ['', ...slugs]) {

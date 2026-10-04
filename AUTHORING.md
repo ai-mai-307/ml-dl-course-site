@@ -324,7 +324,7 @@ Do not load a browser Python runtime on every page by default.
 Create one YAML manifest at `src/content/courses/<courseId>/<termId>.yaml`.
 The path must match its `courseId` and `termId`. The starter's
 [ml/2026-fall.yaml](src/content/courses/ml/2026-fall.yaml) is a demonstration
-using placeholders and a draft preprocessing module; its term does not identify
+using draft textbook chapters, organizational placeholders, and a preprocessing module; its term does not identify
 any migrated historical material.
 
 A course page at `/courses/<courseId>/<termId>/` is generated from the manifest.
@@ -403,6 +403,16 @@ The site uses Astro's supported Satteri processor, configured in
 use the existing Astro/Starlight pipeline. Image paths are resolved from the
 Markdown file; Astro emits production assets with the site's URL prefix.
 Smart punctuation is disabled so quotes and dashes are not automatically rewritten.
+GIF files remain GIF, byte-for-byte, through a small service using the public
+[Astro Image Service API](https://docs.astro.build/en/reference/image-service-reference/);
+other formats retain the standard Sharp optimization. This adds no client JavaScript.
+
+The textbook overview lists chapters in two ordered ML/DL groups and hides draft links
+in production. Native Starlight autogeneration reads sidebar.order and applies draft
+filtering. A small [route-data middleware](https://starlight.astro.build/guides/route-data/)
+removes redundant single-page folder groups from the textbook sidebar and keeps
+preprocessing as a named group with its overview first. Files still use page-local
+index.md/assets directories; no public routes or content IDs depend on this formatting.
 
 Two small build-time plugins in `src/plugins/` implement the missing conventions:
 
@@ -430,3 +440,18 @@ Run `npm run validate` before committing:
 it runs the tests, checks types/content, builds the site, checks internal links,
 and verifies the generated demonstration HTML, highlighted code, images, and fonts.
 `npm run check:authoring` runs the generated-output tests alone after a build.
+
+## Textbook migration baseline (Task 4B)
+
+The nine remaining ML/DL lectures are large draft topic pages; preprocessing keeps
+the seven-page Task 4 split. Review them in development at /ml-dl-course-site/textbook/.
+The demo course has not been reorganized or assigned a historical term.
+See [the Task 4B report](migration/task-4b-report.md) for source fidelity, route mappings,
+source defects and later splitting candidates. Numeric asset names and original alt
+text are retained as migration exceptions; new author-written assets still follow
+the semantic filename and alt-text conventions above.
+
+The baseline integration test builds an isolated publication copy of all textbook
+drafts, checks every heading and image, GIF byte preservation and internal links,
+then removes its own temporary directory. Production output is tested separately
+for draft exclusion. Review does not flip draft flags in the working content.

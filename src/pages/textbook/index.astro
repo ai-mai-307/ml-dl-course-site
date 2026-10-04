@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import AnchorHeading from '@astrojs/starlight/components/AnchorHeading.astro';
+import { textbookSections } from '../../utils/textbook';
+
+const groups = textbookSections(await getCollection('docs'), import.meta.env.DEV);
+const headings = groups.map((group, index) => ({ depth: 2, slug: index === 0 ? 'ml' : 'dl', text: group.label }));
+---
+
+<StarlightPage frontmatter={{ title: 'Учебник', description: 'Теория машинного и глубокого обучения.' }} headings={headings}>
+  <p>Теория машинного и глубокого обучения, общая для разных курсов.</p>
+  {groups.map((group, index) => (
+    <section aria-labelledby={headings[index].slug}>
+      <AnchorHeading level={2} id={headings[index].slug}>{group.label}</AnchorHeading>
+      {group.chapters.length === 0
+        ? <p>Материалы раздела готовятся к публикации.</p>
+        : <ul>
+            {group.chapters.map((chapter) => (
+              <li><a href={import.meta.env.BASE_URL + chapter.id + '/'}>{chapter.label}</a></li>
+            ))}
+          </ul>
+      }
+    </section>
+  ))}
+</StarlightPage>

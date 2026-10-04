@@ -1,3 +1,4 @@
+import { seedCourseDocs } from './helpers/course-docs.mjs';
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
@@ -48,6 +49,7 @@ test('Obsidian templates match real schemas and drafts stay out of production', 
     }
     // This fixture intentionally omits draft to test the publication default.
     await cp(path.join(root, 'tests/fixtures/course.yaml'), path.join(fixture, 'src/content/courses/ml/2026-fall.yaml'));
+    await seedCourseDocs(fixture);
     const kinds = ['textbook', 'guide', 'assignment', 'exam', 'note'];
     const expanded = new Map();
     for (const kind of kinds) {

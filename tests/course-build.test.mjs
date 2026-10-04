@@ -1,3 +1,4 @@
+import { seedCourseDocs } from './helpers/course-docs.mjs';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
@@ -22,6 +23,7 @@ test('actual Astro builds validate course pages, module numbering, references, a
     }
     // Keep schema/route tests independent of the author's now-private migration demo.
     await cp(path.join(root, 'tests/fixtures/course.yaml'), path.join(fixture, 'src/content/courses/ml/2026-fall.yaml'));
+    await seedCourseDocs(fixture);
     const build = () => spawnSync(process.execPath, [astroCli, 'build'], {
       cwd: fixture,
       env: { ...process.env, ASTRO_TELEMETRY_DISABLED: '1', NO_COLOR: '1', FORCE_COLOR: '0' },

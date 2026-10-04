@@ -10,6 +10,7 @@ export default defineConfig({
   base: '/ml-dl-course-site',
   output: 'static',
   trailingSlash: 'always',
+  image: { service: { entrypoint: './src/utils/image-service.ts' } },
   markdown: {
     processor: satteri({
       features: {
@@ -32,6 +33,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Машинное и глубокое обучение',
+      routeMiddleware: './src/utils/textbook-sidebar.ts',
       customCss: ['katex/dist/katex.min.css', './src/styles/content.css'],
       // The default 404 canonical uses /404/ even though static output is 404.html.
       disable404Route: true,
@@ -39,7 +41,11 @@ export default defineConfig({
         root: { label: 'Русский', lang: 'ru' },
       },
       sidebar: [
-        { label: 'Учебник', slug: 'textbook' },
+        { label: 'Учебник', items: [
+          { label: 'Обзор учебника', link: '/textbook/' },
+          { label: 'Машинное обучение', items: [{ autogenerate: { directory: 'textbook/ml' } }] },
+          { label: 'Глубокое обучение', items: [{ autogenerate: { directory: 'textbook/dl' } }] },
+        ] },
         { label: 'Курсы', link: '/courses/' },
         { label: 'Инструкции', slug: 'guides' },
         { label: 'Заметки', link: '/notes/' },

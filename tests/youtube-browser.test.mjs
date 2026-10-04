@@ -11,7 +11,8 @@ import { chromePath, openChrome } from './helpers/chrome.mjs';
 const executable = await chromePath();
 
 test('real browser: pointer/Enter/Space activate only their player, failures and no-JS preserve the source link',
-  { skip: !executable && 'Install Chrome or set CHROME_PATH for keyboard/browser tests', timeout: 45000 }, async () => {
+  { skip: !process.env.CI && !executable && 'Install Chrome or set CHROME_PATH for keyboard/browser tests', timeout: 45000 }, async () => {
+  assert.ok(executable, 'Chrome is required in CI; install Chrome or set CHROME_PATH');
   const runtime = await readFile(new URL('../public/scripts/youtube-preview.js', import.meta.url), 'utf8');
   const css = (await Promise.all(['src/styles/themes/research-brown.css', 'src/styles/themes/shared.css', 'src/styles/content.css'].map((file) => readFile(new URL('../' + file, import.meta.url), 'utf8')))).join('\n').replace(/@import[^;]+;/g, '');
   const options = { features: { rawHtml: true }, mdastPlugins: [youtubePreviews('/test'), obsidianCallouts] };

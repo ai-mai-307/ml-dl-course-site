@@ -16,7 +16,7 @@ export async function chromePath() {
 
 export async function openChrome(executable) {
   const profile = await mkdtemp(path.join(os.tmpdir(), 'youtube-browser-test-'));
-  const child = spawn(executable, ['--headless=new', '--disable-gpu', '--no-first-run',
+  const child = spawn(executable, ['--headless=new', '--disable-gpu', '--disable-dev-shm-usage', '--no-first-run',
     '--no-default-browser-check', '--remote-debugging-port=0', '--user-data-dir=' + profile],
     { windowsHide: true, stdio: ['ignore', 'ignore', 'pipe'] });
   let socket;
@@ -32,7 +32,11 @@ export async function openChrome(executable) {
   try {
     const port = await new Promise((resolve, reject) => {
       let stderr = '';
-      const timer = setTimeout(() => reject(Error('Chrome startup timed out')), 15000);
+      const startupTimeout = process.env.CI ? 30000 : 15000;
+      const timer = setTimeout(() => {
+        const tail = stderr.trimEnd().split(/\r?\n/).slice(-20).join('\n');
+        reject(Error('Chrome startup timed out after ' + startupTimeout + ' ms\nChrome stderr (last 20 lines):\n' + (tail || '(empty)')));
+      }, startupTimeout);
       const fail = (error) => { clearTimeout(timer); reject(error); };
       child.once('error', fail);
       child.once('exit', (code) => fail(Error('Chrome exited ' + code)));

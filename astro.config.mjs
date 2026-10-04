@@ -31,7 +31,7 @@ export default defineConfig({
   vite: {
     server: {
       watch: {
-        ignored: ['**/.venv/**', '**/.tools/**', '**/site-v2-starter/**', '**/site/**'],
+        ignored: ['**/.venv/**', '**/.tools/**', '**/site/**'],
       },
     },
   },

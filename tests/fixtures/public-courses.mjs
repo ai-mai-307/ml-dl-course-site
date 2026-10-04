@@ -4,4 +4,3 @@ export const fallCourses = [
   { id: 'intro-ml-dl-pish', title: 'Введение в машинное и глубокое обучение', audience: 'Студенты ПИШ' },
 ];
 export const organizationalRoles = ['overview', 'assessment', 'schedule', 'exam', 'resources'];
-export const updatingWarning = 'Материалы этой страницы уточняются в течение осеннего семестра 2026 года. Содержание может дополняться и изменяться по мере прохождения курса.';

@@ -1,234 +1,146 @@
-# site-v2 architecture
+# Architecture
 
-## Goal
+## Content domains
 
-Build an author-oriented educational website for ML/DL materials with four clearly separated concerns:
+The site is an author-led educational publication built with Astro and Starlight.
+Its four content domains have distinct responsibilities:
 
-1. **Textbook** — canonical, course-independent theory.
-2. **Courses** — semester-specific orchestration: schedule, sequence, assignments, slides, notebooks, deadlines.
-3. **Guides** — reusable practical instructions: Git, GitHub Classroom, DataSphere, environments, etc.
-4. **Notes** — author blog / shorter articles / additions that may later become textbook chapters.
+- **Textbook**: living, canonical theory independent of courses and semesters.
+- **Courses**: semester-specific organization, assignments, assessment and routes through materials.
+- **Guides**: shared practical instructions. Archived instructions visibly state their limitations.
+- **Notes**: dated author publications that may later develop into textbook material.
 
-The current MkDocs site remains production until the replacement is verified.
+Never duplicate canonical textbook theory inside a course. About is an
+Obsidian-editable reference document, not a separate content domain.
 
-## Main technical decisions
+## Repository and routes
 
-- Framework: **Astro + Starlight**
-- Hosting initially: **GitHub Pages**
-- Main authoring format: **plain Markdown (`.md`)**
-- Special interactive pages only: **MDX (`.mdx`)**
-- Main writing environment: **Obsidian**, opening `src/content/` as the vault
-- Canonical theory must not be duplicated inside course folders
-- Course structure is stored as validated YAML manifests
-- Page-local images live next to the page that uses them
-- Global site assets live outside content
+| Source | Public route relative to the site base |
+| --- | --- |
+| `src/content/docs/textbook/<topic>/index.md` | `/textbook/<topic>/` |
+| `src/content/docs/guides/<topic>/index.md` | `/guides/<topic>/` |
+| `src/content/docs/courses/<courseId>/<termId>/<slug>.md` | `/courses/<courseId>/<termId>/<slug>/` |
+| `src/content/courses/<courseId>/<termId>.yaml` | `/courses/<courseId>/<termId>/` |
+| `src/content/notes/<slug>.md` | `/notes/<slug>/` |
+| `src/content/docs/about/index.md` | `/about/` |
 
-## Target public URL model
+`astro.config.mjs` defines the origin and base URL. Routes use stable semantic
+slugs and trailing slashes. Custom Astro pages provide home, textbook overview,
+course lists/details, Notes lists/details and 404; they use StarlightPage.
+The public navigation contains Учебник, Курсы, Инструкции, Заметки, Обо мне.
+The 404 page uses the actual static `404.html` canonical URL.
 
-```text
-/
-├── textbook/
-│   ├── ml/
-│   └── dl/
-├── courses/
-│   ├── ml/
-│   │   ├── 2026-fall/
-│   │   └── ...
-│   └── dl/
-├── guides/
-├── notes/
-└── about/
-```
+## Content collections
 
-## Target repository tree
+`src/content.config.ts` defines three collections:
 
-```text
-.
-├── AGENTS.md
-├── AUTHORING.md
-├── ARCHITECTURE.md
-├── CODEX_TASKS.md
-├── astro.config.mjs
-├── package.json
-├── tsconfig.json
-├── public/
-│   ├── favicon.svg
-│   └── brand/
-│
-├── src/
-│   ├── content.config.ts
-│   │
-│   ├── content/
-│   │   ├── docs/
-│   │   │   ├── textbook/
-│   │   │   │   ├── ml/
-│   │   │   │   │   ├── introduction/
-│   │   │   │   │   │   ├── index.md
-│   │   │   │   │   │   └── assets/
-│   │   │   │   │   ├── preprocessing/
-│   │   │   │   │   ├── linear-models/
-│   │   │   │   │   │   ├── index.md
-│   │   │   │   │   │   └── assets/
-│   │   │   │   │   └── ...
-│   │   │   │   └── dl/
-│   │   │   │       └── ...
-│   │   │   │
-│   │   │   ├── guides/
-│   │   │   │   ├── git/
-│   │   │   │   ├── github-classroom/
-│   │   │   │   ├── datasphere/
-│   │   │   │   └── ...
-│   │   │   │
-│   │   │   └── courses/
-│   │   │       ├── ml/
-│   │   │       │   └── 2026-fall/
-│   │   │       │       ├── assignments/
-│   │   │       │       ├── exam/
-│   │   │       │       └── resources/
-│   │   │       └── dl/
-│   │   │
-│   │   ├── courses/
-│   │   │   ├── ml/
-│   │   │   │   └── 2026-fall.yaml
-│   │   │   └── dl/
-│   │   │       └── 2026-fall.yaml
-│   │   │
-│   │   └── notes/
-│   │       └── YYYY-MM-DD-slug.md
-│   │
-│   ├── components/
-│   │   ├── home/
-│   │   ├── course/
-│   │   └── interactive/
-│   │       ├── LinearRegressionPlayground.svelte
-│   │       └── ...
-│   │
-│   ├── layouts/
-│   ├── pages/
-│   │   ├── index.astro
-│   │   ├── courses/
-│   │   ├── notes/
-│   │   └── about.astro
-│   │
-│   └── styles/
-│       ├── global.css
-│       └── content.css
-│
-├── migration/
-│   ├── inventory.md
-│   └── route-map.csv
-│
-└── legacy/
-    └── (optional temporary migration helpers only)
-```
+- `docs` uses Starlight's supported `docsLoader` and `docsSchema`, extended with
+  contentKind, author metadata and optional course identifiers.
+- `courses` loads YAML manifests with validated course/term IDs and typed
+  `reference('docs')` entries.
+- `notes` loads Markdown/MDX with title, description, publication date, optional
+  update date, tags and publication state.
 
-## Why course manifests are separate from course pages
+Starlight owns document routes, draft filtering and sidebar generation.
+`src/utils/textbook.ts` supplies the ordered ML/DL overview. A route-data
+middleware flattens redundant single-page groups in the generated textbook sidebar.
+`sidebar.order` controls chapter order independently of course modules.
 
-A course is not a copy of the textbook. It is a route through canonical materials.
-Modules follow the order of the manifest and are numbered automatically; an optional
-`label` changes only the display label. A module may reference multiple independent
-textbook pages, and a textbook page may be reused by multiple modules or courses.
-The separate `pages` list holds organizational documents, outside the teaching sequence.
+## Course manifests
 
-Example:
+A manifest is a route through materials, not a storage place for textbook prose.
+The path matches `courseId` and `termId`. Each semester keeps its own manifest
+and course-specific documents; previous terms are not silently overwritten.
 
-```yaml
-courseId: ml
-termId: 2026-fall
-title: Классическое машинное обучение
-pages:
-  - role: exam
-    doc: courses/ml/2026-fall/exam
-modules:
-  - title: Линейные модели
-    resources:
-      - type: doc
-        role: theory
-        doc: textbook/ml/introduction
-      - type: doc
-        role: theory
-        doc: textbook/ml/linear-models
-      - type: doc
-        role: assignment
-        doc: courses/ml/2026-fall/assignments/hw-03
-      - type: link
-        role: notebook
-        label: Практический notebook
-        href: https://example.org/notebook
-```
+The top-level `pages` array holds organizational documents separately from
+`modules`. Roles include overview, assessment, exam, schedule, policy, resources
+and other. The exam role is displayed neutrally as «Аттестация» and does not
+prescribe an assessment format.
 
-The course landing page is generated from this data, with separate «О курсе» and
-«Учебная программа» sections. Both organizational pages and internal module resources
-use `reference('docs')` and must resolve before the production build can succeed.
+Modules follow manifest order and receive positional numbers. An optional
+`label` overrides the display label only. One module may link to several
+textbook pages; one page may appear in several modules/courses. Resources
+separate theory, assignments, guides, notebooks, slides, repositories and other roles.
+External resources use explicit URL links; internal documents use collection references.
 
-## Publication state and authoring templates
+Both `pages` and `modules` may be empty. The renderer explains an empty program;
+authoring does not require inventing a semester's full sequence in advance.
+Unfilled organizational documents carry an information-updating warning that
+can be replaced when actual course information is available.
 
-All content collections publish by default; `draft: true` makes a page available
-only during development. Starlight owns draft filtering for `docs`. Custom course
-and note routes and lists share a small visibility predicate. Course `status`
-describes its lifecycle and is independent of its `draft` publication flag.
-Public course pages reject references to draft documents during production builds.
-Course visibility does not cascade to its separate documents.
+The build resolves references through `getEntry()` and fails on missing documents,
+including references in hidden modules. Published organizational pages and visible
+modules cannot link to draft documents. Hidden modules may reference existing drafts.
+Detailed schema and YAML examples are in [AUTHORING.md](AUTHORING.md).
 
-The Obsidian vault is `src/content/`; `_templates/` contains plain Markdown
-frontmatter templates with `draft: true`. This directory is outside the roots
-of the collection loaders. Personal `.obsidian/` settings are not versioned.
-Notes have public list/detail routes with publication/update dates, description
-and tags, plus an empty state until the author publishes material. No sample note,
-RSS feed, or tag archive is introduced. About is an Obsidian-editable reference
-document in docs/about/index.md. Home and the public sidebar expose five domains:
-textbook, courses, guides, notes and about; the authoring example is dev-only.
+## Publication and Notes
 
-## Fall 2026 course shells
+All collections publish by default. `draft: true` exposes a document only in
+development. Starlight implements this for docs; custom course and Note routes/lists
+share the equivalent visibility predicate. Course lifecycle `status` is independent
+of publication `draft`. Hiding a manifest does not hide its separate documents.
 
-Three public manifests use `status: active`, `draft: false`, and `modules: []`:
-`deep-learning`, `ai-design`, and `intro-ml-dl-pish`, all in `2026-fall`.
-Each references five public organizational documents via `pages`: overview,
-assessment, schedule, exam, and resources. Unfilled pages warn that information
-changes during the semester. The exam identifier is displayed neutrally as
-«Аттестация»; it does not assert an exam format. Modules will be added when known.
-The starter demo and its exclusive course pages are removed from author content;
-reference/numbering tests seed the demo solely from `tests/fixtures/`.
+Notes lists sort by publication date and show title, description, tags and optional
+updated date. Dates are formatted in Russian with UTC calendar semantics. An empty
+list has an explicit empty state. Drafts have no production pages or search entries.
+The authoring example is a development-only reference page.
 
-## Markdown YouTube previews
+## Markdown and Obsidian
 
-A dedicated Satteri mdast plugin recognizes `[!YOUTUBE]` before generic
-Obsidian callouts. It emits a static custom element, lazy thumbnail, native
-button, caption/source link and conditional module URL. The small runtime in
-`public/scripts/youtube-preview.js` upgrades all previews on that page; pages
-without valid embeds request no additional JS. No framework hydration or iframe
-API is added. The iframe is created only on native button activation, uses
-youtube-nocookie.com and keeps the original-video link outside the replaceable
-frame. URL host/ID validation and escaped caption text prevent arbitrary embeds.
-CSS uses existing design tokens; the Markdown/Notes collections remain `.md`.
+The vault root is `src/content/`. Ordinary content uses `.md`; only interactive
+pages require `.mdx`. Authors use standard Markdown links/images, GFM, LaTeX,
+footnotes and Obsidian callouts. UI/layout stays in components and styles.
+`_templates/` starts new documents as drafts and sits outside collection loaders.
+`sortspec.md` changes Obsidian's file-tree presentation only and is not published.
+Personal `.obsidian/` settings are local.
 
-## Versioning policy
+Astro's Satteri Markdown processor uses small build-time plugins for KaTeX math,
+Obsidian callouts, YouTube previews and explicit code-fence language metadata.
+Starlight supplies highlighting and copy buttons. Math is static HTML plus MathML;
+KaTeX CSS/fonts are bundled locally. Invalid math fails the build. Smart punctuation
+is disabled to preserve authored characters.
 
-### Textbook
-Living canonical content. Do not create semester copies by default.
+Images normally live beside their page in `assets/` and use relative Markdown URLs.
+Astro optimizes images and applies the site's base prefix. A small image service
+preserves animated GIF bytes; other formats use Sharp. `public/` holds global
+assets and the lightweight YouTube runtime, not a dump of content images.
 
-### Courses
-Historical objects. Each semester gets its own manifest and course-specific materials.
+## YouTube previews
 
-### Guides
-Living shared documentation unless there is a real reason to preserve an old version.
+`[!YOUTUBE]` callouts are transformed before generic Obsidian callouts. Static HTML
+contains a lazy thumbnail, native labelled button, caption and original-video link.
+URL host/ID validation and escaped captions prevent arbitrary embeds. The local
+`public/scripts/youtube-preview.js` custom element is requested only on pages
+with valid embeds. There is no framework hydration or global iframe API.
 
-### Notes
-Dated publications.
+Click, Enter or Space creates a privacy-enhanced youtube-nocookie.com iframe inside
+a 16:9 frame. The original link remains outside it for no-JS/network/player failures.
+See the authoring guide for supported URLs, optional captions and fallback details.
 
-## Interactive content policy
+## Theme system
 
-Most pages remain `.md`.
+`src/styles/design.css` imports the active **Research Brown** tokens and common
+`themes/shared.css`. Editorial, Technical and Research remain alternative token
+sets in `src/styles/themes/`. Starlight controls light/dark mode. Shared layout
+and `content.css` use these tokens for reading width, typography, borders and focus.
+Styling emphasizes readable articles, restrained navigation and accessible controls.
 
-Use `.mdx` only if the page needs an embedded interactive component.
+## Interactive content
 
-Interactive components live in `src/components/interactive/`. They must not contain canonical explanatory text that belongs in Markdown.
+Widgets live in `src/components/interactive/`; explanatory prose stays in Markdown.
+Prefer static HTML and lazy hydration of the component that needs it. Provide a
+non-interactive fallback and never make essential course instructions depend on JS.
+Browser Python runtimes may be used deliberately for small examples; GPU training
+and large datasets belong in external notebooks/services.
 
-Good examples:
-- adjustable plots;
-- decision-boundary demos;
-- neural-network architecture explorers;
-- attention visualizations;
-- small in-browser code runners.
+## Validation and delivery
 
-Heavy training jobs, GPU workflows, or large datasets should remain external notebooks/services and be linked from the page.
+`npm run validate` runs functional tests, type/content checks, the production build,
+internal-link checks and output tests. Assertions protect publication, rendering,
+references and navigation; they do not freeze editable material to legacy hashes.
+Deterministic examples belong in `tests/fixtures/` or disposable test projects.
+Generated output, browser profiles and caches are not versioned.
+
+Astro emits `dist/` including Pagefind search. The mapping in
+`migration/route-map.csv` preserves old-to-new public URL decisions for cutover
+and redirect checks. Deployment status and local commands are documented in README.

@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -17,5 +17,6 @@ export async function seedCourseDocs(fixture) {
   await cp(path.join(root, 'tests/fixtures/course-docs'), target, { recursive: true });
   await mkdir(path.join(fixture, 'src/content/courses/ml'), { recursive: true });
   const guide = path.join(fixture, 'src/content/docs/guides/git/index.md');
-  await writeFile(guide, (await readFile(guide, 'utf8')).replace('draft: true', 'draft: false'));
+  await mkdir(path.dirname(guide), { recursive: true });
+  await cp(path.join(root, 'tests/fixtures/docs/git.md'), guide);
 }

@@ -250,7 +250,7 @@ Good:
 ```text
 /textbook/ml/linear-models/
 /guides/github-classroom/
-/courses/ml/2026-fall/assignments/hw-03/
+/courses/deep-learning/2026-fall/assignments/hw-01/
 ```
 
 Avoid encoding transient implementation details in public URLs.
@@ -335,7 +335,7 @@ If a required validation command does not exist, propose or add one when appropr
 If a requested change conflicts with these architectural rules:
 
 1. do not silently choose a different architecture;
-2. identify the conflict in the task report;
+2. identify the conflict in the response;
 3. prefer the smallest reversible change;
 4. preserve existing content and URLs until the ambiguity is resolved.
 

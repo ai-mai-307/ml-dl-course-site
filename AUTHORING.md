@@ -233,7 +233,7 @@ To create a page:
 | `assignment` | `docs/courses/<courseId>/<termId>/assignments/<slug>.md` | `contentKind: assignment` |
 | `exam` | `docs/courses/<courseId>/<termId>/exam.md` | `contentKind: exam` for an explicitly confirmed exam |
 | `course-page` | `docs/courses/<courseId>/<termId>/<slug>.md` | `contentKind: reference` for organizational pages |
-| `note` | `notes/YYYY-MM-DD-<slug>.md` | Separate `notes` collection |
+| `note` | `notes/<semantic-slug>.md` | Separate `notes` collection |
 
 The `_templates/` files contain frontmatter only and sit outside all collection
 loader roots, so they are not pages. Personal vault settings in `.obsidian/`
@@ -385,20 +385,20 @@ Do not load a browser Python runtime on every page by default.
 ## Course manifests
 
 Create one YAML manifest at `src/content/courses/<courseId>/<termId>.yaml`.
-The path must match its `courseId` and `termId`. The published Fall 2026 shells are
+The path must match its `courseId` and `termId`. The published Fall 2026 courses are
 `deep-learning`, `ai-design`, and `intro-ml-dl-pish`. Their `status: active` and
 `draft: false` publish the course pages; `modules: []` is valid while the program
 is added during the semester. Empty modules display an explanatory message.
-No detailed sequence is assigned in advance. The former starter demo now exists
-only as isolated test fixtures, outside the content collections.
+Add or reorder modules when the program is known; a complete advance plan is not required.
 
 For organizational documents, insert the `course-page` template from
 `_templates/course-page.md` into `docs/courses/<courseId>/<termId>/<slug>.md`.
 Fill `title`, `description`, `courseId`, and `termId`; it uses
 `contentKind: reference` and starts with `draft: true`. Review and publish the
 document before adding its collection ID to a public manifest's `pages`.
-The current shells have public `overview.md`, `assessment.md`, `schedule.md`,
-`exam.md`, and `resources.md`, each with an «Информация обновляется» warning.
+Organizational pages include `overview.md`, `assessment.md`, `schedule.md`,
+`exam.md`, and `resources.md`. Keep an «Информация обновляется» warning on
+unfilled pages; replace it with actual information when the page is ready.
 The `exam` role/file name is a stable identifier; its display label is neutral
 «Аттестация» and does not determine the actual assessment format.
 
@@ -406,7 +406,7 @@ A course page at `/courses/<courseId>/<termId>/` is generated from the manifest.
 It contains a route through materials, not copies of their text. List modules
 in the intended reading order. Their numbers are generated from positions in
 the `modules` array (1, 2, 3, …), independently of textbook chapter or assignment
-numbers. The old `number` field is removed and rejected by the schema.
+numbers. Use the optional `label` field for exceptions; `number` is not part of the schema.
 
 Only when a special display label is needed, set an optional nonempty string
 `label`, for example `label: Практикум`. It replaces the displayed number, but
@@ -487,10 +487,10 @@ The textbook overview lists chapters in two ordered ML/DL groups and hides draft
 in production. Native Starlight autogeneration reads sidebar.order and applies draft
 filtering. A small [route-data middleware](https://starlight.astro.build/guides/route-data/)
 removes redundant single-page folder groups from the textbook sidebar.
-Preprocessing is now one chapter, with its former topics as internal headings. Files still use page-local
-index.md/assets directories; no public routes or content IDs depend on this formatting.
+Chapter files use page-local index.md/assets directories; public routes and content IDs
+do not depend on the index.md filename.
 
-Three small build-time plugins in `src/plugins/` implement the missing conventions:
+Four small build-time plugins in `src/plugins/` implement the missing conventions:
 
 - `math.ts` renders parsed math nodes with KaTeX as HTML plus accessible MathML.
   Its literal HTML nodes preserve inline context; `features.rawHtml` lets Satteri
@@ -506,6 +506,8 @@ Three small build-time plugins in `src/plugins/` implement the missing conventio
   without guessing a language or changing code. Starlight supplies highlighting,
   its existing light/dark themes and copy buttons; no custom theme is configured.
 
+- `youtube.ts` transforms the YouTube callouts described above into lightweight previews.
+
 `@astrojs/markdown-satteri` and `satteri` are explicit dependencies because the
 configuration and plugins use their public APIs. No extra browser framework is added.
 
@@ -520,15 +522,14 @@ output to verify default publication, draft exclusion, and rejection of public
 course references and explicit sidebar slugs pointing to drafts.
 Run `npm run validate` before committing:
 it runs the tests, checks types/content, builds the site, checks internal links,
-and verifies published course shells, warnings and links, plus isolated authoring
+and verifies published courses, warnings and links, plus isolated authoring
 examples, highlighted code, images, and fonts.
 `npm run check:authoring` runs the generated-output tests alone after a build.
 
-## About and Notes (Task 8)
+## About and Notes
 
 Edit «Обо мне» in `docs/about/index.md` inside the Obsidian vault. It is a
-public `contentKind: reference` page; its update warning remains until the author
-provides real information. No biography is generated.
+public `contentKind: reference` page. Edit the biography and contacts directly in Markdown.
 
 Notes stay in `notes/` and use the existing `note` template. The public index
 shows the title, `publishedAt`, description, tags and optional `updatedAt`, sorted
@@ -538,42 +539,8 @@ to unimplemented tag archives. The individual page displays the same metadata.
 The index shows an empty state when there are no published notes. Drafts remain
 visible in development and are excluded from production lists, pages and search.
 
+Use a semantic filename such as `cross-entropy.md`; it becomes `/notes/cross-entropy/`.
+Renaming a published note changes its URL and requires a deliberate redirect decision.
+
 The Markdown authoring example remains a development/reference page. Its
 sidebar entry is enabled only in development; it is absent from production.
-
-## Published textbook (Task 6A)
-
-All ten real ML/DL baseline chapters now use `draft: false` and are available in
-production through the textbook overview, sidebar and search. Their teaching
-content is unchanged. The Git placeholder and authoring example are
-`draft: true` and remain available in development; the demo course placeholders
-were removed in Task 7. Authoring-output tests build
-the example in an isolated copy. Previous migration sections below describe the
-historical draft/review stages. See [the Task 6A report](migration/task-6a-report.md).
-
-## Textbook migration baseline (Task 4B)
-
-The nine remaining ML/DL lectures are large draft topic pages. Task 4C reunites
-the experimental preprocessing split into one draft chapter, preserving all six
-topics, code and 13 local images. Review them in development at /ml-dl-course-site/textbook/.
-The demo course has not been reorganized or assigned a historical term.
-See [the Task 4B report](migration/task-4b-report.md) for source fidelity, route mappings,
-source defects and later splitting candidates. Numeric asset names and original alt
-text are retained as migration exceptions; new author-written assets still follow
-the semantic filename and alt-text conventions above.
-
-The baseline integration test builds an isolated publication copy of all textbook
-drafts, checks every heading and image, GIF byte preservation and internal links,
-then removes its own temporary directory. Production output is tested separately
-for draft exclusion. Review does not flip draft flags in the working content.
-
-## Textbook cleanup (Task 4C)
-
-There are ten large ML/DL chapters. The old preprocessing subpage routes are
-removed; link to /textbook/ml/preprocessing/ or its native heading anchors instead.
-The demonstration course references that single docs collection ID.
-See [the Task 4C report](migration/task-4c-report.md). The source-preservation test
-compares the merged chapter with both legacy and hashes of the six migrated
-sections. All three textbook fences already declared python; metadata and
-code bodies remain unchanged. A real build verifies Python token colors in
-both themes, copy payloads, draft exclusion and internal links.

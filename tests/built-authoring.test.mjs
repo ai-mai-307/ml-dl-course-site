@@ -35,6 +35,10 @@ for (const [id, source] of Object.entries({
 })) {
   await writeFile(path.join(fixture, 'src/content/notes', id + '.md'), source, 'utf8');
 }
+// Empty-state behavior is tested in a fixture, independently of real courses.
+await mkdir(path.join(fixture, 'src/content/courses/empty'), { recursive: true });
+await writeFile(path.join(fixture, 'src/content/courses/empty/2099-fall.yaml'),
+  'courseId: empty\ntermId: 2099-fall\ntitle: Empty curriculum fixture\ndescription: Fixture\nstatus: active\nmodules: []\n');
 const packageUrl = new URL(import.meta.resolve('astro/package.json'));
 const packageJson = JSON.parse(await readFile(packageUrl, 'utf8'));
 const cli = fileURLToPath(new URL(packageJson.bin.astro, packageUrl));
@@ -138,4 +142,21 @@ test('YouTube preview is static HTML in both Markdown docs and Notes; pages with
   assert.ok(!elements(home, 'script').some((n) => attr(n, 'src')?.includes('youtube-preview')));
   assert.deepEqual(await readFile(new URL('scripts/youtube-preview.js', output)),
     await readFile(path.join(root, 'public/scripts/youtube-preview.js')));
+});
+
+test('empty curriculum and empty Notes have explicit empty states', async () => {
+  const course = parse(await readFile(new URL('courses/empty/2099-fall/index.html', output), 'utf8'));
+  assert.match(text(course), /Модули пока не опубликованы/);
+  assert.ok(!elements(course, 'section').some((n) => attr(n, 'aria-labelledby')?.startsWith('module-')));
+  // Only remove fixture Notes; the author's directory is never touched.
+  for (const id of ['public-newer', 'public-older']) await rm(path.join(fixture, 'src/content/notes', id + '.md'));
+  const emptyBuild = spawnSync(process.execPath, [cli, 'build'], {
+    cwd: fixture, encoding: 'utf8', timeout: 90000, windowsHide: true,
+    env: { ...process.env, ASTRO_TELEMETRY_DISABLED: '1', NO_COLOR: '1', FORCE_COLOR: '0' },
+  });
+  assert.equal(emptyBuild.status, 0, emptyBuild.stdout + '\n' + emptyBuild.stderr);
+  const index = parse(await readFile(new URL('notes/index.html', output), 'utf8'));
+  assert.match(text(index), /Заметок пока нет/);
+  assert.equal(elements(index, 'article').length, 0);
+  assert.doesNotMatch(text(index), /PRIVATE_NOTE_METADATA_SENTINEL/);
 });

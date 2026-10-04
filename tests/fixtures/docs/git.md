@@ -1,7 +1,7 @@
 ---
 title: Git — заглушка инструкции
 description: Демонстрационная общая инструкция, независимая от семестра.
-draft: true
+draft: false
 contentKind: guide
 ---
 

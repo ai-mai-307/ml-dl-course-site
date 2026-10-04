@@ -1,5 +1,5 @@
 import { seedCourseDocs } from './helpers/course-docs.mjs';
-import { fallCourses, organizationalRoles, updatingWarning } from './fixtures/course-shells.mjs';
+import { fallCourses, organizationalRoles } from './fixtures/public-courses.mjs';
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
@@ -131,7 +131,7 @@ export async function GET() {
     assert.equal(collections.notes.find((entry) => entry.id === 'public-default').data.draft, false);
     assert.equal(collections.courses.find((entry) => entry.id === 'ml/2026-fall').data.draft, false);
     assert.ok(!Object.values(collections).flat().some((entry) => entry.id.includes('_templates')));
-    // The real course shells must work in development using their parsed schemas/references.
+    // Real courses may grow; compare development pages to the parsed collection data.
     for (const course of fallCourses) {
       const id = course.id + '/2026-fall';
       const entry = collections.courses.find((entry) => entry.id === id);
@@ -139,11 +139,13 @@ export async function GET() {
       assert.equal(entry.data.audience, course.audience);
       assert.equal(entry.data.status, 'active');
       assert.equal(entry.data.draft, false);
-      assert.deepEqual(entry.data.modules, []);
       assert.deepEqual(entry.data.pages.map((p) => p.role), organizationalRoles);
       const landing = await fetch(base + 'courses/' + id + '/');
       assert.equal(landing.status, 200, output);
-      assert.ok((await landing.text()).includes('Модули пока не опубликованы'));
+      const landingHtml = await landing.text();
+      const visible = entry.data.modules.filter((module) => module.published !== false);
+      if (!visible.length) assert.ok(landingHtml.includes('Модули пока не опубликованы'));
+      else for (const module of visible) assert.ok(landingHtml.includes(module.title));
       for (const page of entry.data.pages) {
         assert.equal(page.doc.collection, 'docs');
         assert.equal(page.doc.id, 'courses/' + id + '/' + page.role);
@@ -154,7 +156,7 @@ export async function GET() {
         assert.equal(doc.data.termId, '2026-fall');
         const response = await fetch(base + page.doc.id + '/');
         assert.equal(response.status, 200, output);
-        assert.ok((await response.text()).includes(updatingWarning));
+        assert.ok((await response.text()).includes(doc.data.title));
       }
     }
     for (const route of ['notes/', 'courses/', 'courses/fixture/2099-fall/', 'guides/']) {

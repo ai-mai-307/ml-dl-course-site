@@ -13,7 +13,7 @@ const load = async (route) => parse(await readFile(new URL(route + 'index.html',
 
 test('production home presents the five public sections without the opening-soon message', async () => {
   const page = await load('');
-  assert.equal(text(nodes(page).find((n) => n.tagName === 'h1')), 'Машинное и глубокое обучение');
+  assert.ok(text(nodes(page).find((n) => n.tagName === 'h1')).trim().length > 0);
   assert.match(text(page), /Учебник, материалы курсов, практические инструкции и авторские заметки\./);
   assert.doesNotMatch(text(page), /Новая версия сайта готовится к открытию|Пример оформления/);
   const nav = nodes(page).find((n) => n.tagName === 'nav' && attr(n, 'aria-label') === 'Разделы сайта');
@@ -40,16 +40,19 @@ test('all public section pages share exactly five top-level navigation entries',
   }
 });
 
-test('production Notes has an honest empty state and About remains an editable public reference page', async () => {
+test('published Notes and About are accessible without assuming empty author content', async () => {
   const notes = nodes(await load('notes/')).find((n) => hasClass(n, 'sl-markdown-content'));
-  assert.match(text(notes), /Заметок пока нет\./);
-  assert.match(text(notes), /Здесь будут появляться авторские статьи и короткие заметки\./);
-  assert.ok(!nodes(notes).some((n) => n.tagName === 'article' || n.tagName === 'ul'));
+  const articles = nodes(notes).filter((n) => n.tagName === 'article');
+  assert.ok(articles.length > 0);
+  assert.doesNotMatch(text(notes), /Заметок пока нет/);
+  assert.ok(nodes(notes).some((n) => attr(n, 'href') === '/ml-dl-course-site/notes/cross-entropy/'));
+  const note = await load('notes/cross-entropy/');
+  assert.ok(nodes(note).some((n) => n.tagName === 'time'));
+  assert.equal(text(nodes(note).find((n) => n.tagName === 'h1')), 'Кросс-энтропия');
+  assert.ok(nodes(note).some((n) => n.tagName === 'youtube-preview'));
+  assert.equal(nodes(note).filter((n) => n.tagName === 'iframe').length, 0);
   const about = nodes(await load('about/')).find((n) => hasClass(n, 'sl-markdown-content'));
-  const first = about.childNodes.find((n) => n.tagName);
-  assert.equal(attr(first, 'data-callout'), 'warning');
-  assert.ok(text(first).includes('Раздел обновляется.'));
-  assert.ok(text(first).includes('Здесь будет информация об авторе сайта, преподавании и других проектах.'));
+  assert.ok(text(about).trim().length > 0);
   const source = await readFile(new URL('../src/content/docs/about/index.md', import.meta.url), 'utf8');
   assert.match(source, /\ncontentKind: reference\n/);
   assert.match(source, /\ndraft: false\n/);

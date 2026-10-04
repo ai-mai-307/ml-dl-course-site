@@ -143,4 +143,15 @@ Generated output, browser profiles and caches are not versioned.
 
 Astro emits `dist/` including Pagefind search. The mapping in
 `migration/route-map.csv` preserves old-to-new public URL decisions for cutover
-and redirect checks. Deployment status and local commands are documented in README.
+and redirect checks. A strict reader in src/utils/legacy-routes.mjs feeds the native
+Astro redirects configuration. Exact equivalents and archive fallbacks are explicit
+relationships; fallback routes must exist in the legacy build. CI compares the full
+MkDocs HTML inventory with the map and Astro output. Output tests inspect meta refresh,
+canonical URLs, base prefixes and existing destinations.
+
+The neutral /archive/ document is outside the main navigation. Static redirect HTML
+requires neither JavaScript nor a server rewrite; it does not remap old heading anchors.
+Only dist/ is deployed, including the real 404.html. GitHub Actions validates PRs without
+Pages access and publishes validated main builds. A separate manual workflow restores
+the retained MkDocs source using the same Pages deployment mechanism.
+Cutover, rollback and raw artifact checks are documented in README.

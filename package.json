@@ -13,11 +13,14 @@
     "check": "astro check",
     "check:content": "astro sync",
     "check:links": "node --experimental-strip-types scripts/check-links.mjs",
-    "test": "node --experimental-strip-types --test tests/authoring.test.mjs tests/courses.test.mjs tests/course-build.test.mjs tests/drafts.test.mjs tests/youtube.test.mjs tests/youtube-browser.test.mjs",
-    "check:authoring": "node --experimental-strip-types --test tests/built-authoring.test.mjs tests/built-textbook.test.mjs tests/built-guides.test.mjs tests/built-courses.test.mjs tests/built-site.test.mjs",
+    "test": "node --experimental-strip-types --test tests/authoring.test.mjs tests/courses.test.mjs tests/course-build.test.mjs tests/drafts.test.mjs tests/youtube.test.mjs tests/youtube-browser.test.mjs tests/legacy-routes.test.mjs",
+    "check:authoring": "node --experimental-strip-types --test tests/built-authoring.test.mjs tests/built-textbook.test.mjs tests/built-guides.test.mjs tests/built-courses.test.mjs tests/built-site.test.mjs tests/built-redirects.test.mjs",
     "validate": "npm test && npm run check && npm run build && npm run check:links && npm run check:authoring",
     "astro": "astro",
-    "check:browser": "node --experimental-strip-types scripts/check-browser.mjs"
+    "check:browser": "node --experimental-strip-types scripts/check-browser.mjs",
+    "check:legacy-routes": "node --experimental-strip-types scripts/check-legacy-routes.mjs",
+    "check:artifact": "node --experimental-strip-types scripts/check-artifact.mjs",
+    "preview:artifact": "node --experimental-strip-types scripts/serve-artifact.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "0.4.2",

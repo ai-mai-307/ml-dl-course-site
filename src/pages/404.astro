@@ -18,5 +18,9 @@ const canonical = new URL(`${base}404.html`, Astro.site).href;
   }}
 >
   <p>Возможно, адрес изменился или в ссылке есть опечатка.</p>
-  <p><a href={base}>Вернуться на главную</a></p>
+  <ul>
+    <li><a href={base}>Главная</a></li>
+    <li><a href={`${base}textbook/`}>Учебник</a></li>
+    <li><a href={`${base}courses/`}>Курсы</a></li>
+  </ul>
 </StarlightPage>

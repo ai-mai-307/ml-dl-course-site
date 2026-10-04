@@ -3,6 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { chromePath, openChrome } from '../tests/helpers/chrome.mjs';
 import { textbookGroups } from '../src/utils/textbook.ts';
+import { legacyRoutes } from '../src/utils/legacy-routes.mjs';
 
 // Run against a production preview, not dev: Pagefind is generated at build time.
 const base = (process.argv[2] || 'http://localhost:4321/ml-dl-course-site/').replace(/\/$/, '');
@@ -13,7 +14,7 @@ const screenshots = process.env.BROWSER_SCREENSHOT_DIR;
 if (screenshots) await mkdir(screenshots, { recursive: true });
 const routes = ['/', '/textbook/', '/textbook/ml/preprocessing/', '/textbook/dl/neural-network-foundations/',
   '/courses/', '/courses/deep-learning/2026-fall/', '/courses/ai-design/2026-fall/',
-  '/courses/intro-ml-dl-pish/2026-fall/', '/guides/datasphere/budget/', '/notes/', '/notes/cross-entropy/', '/about/'];
+  '/courses/intro-ml-dl-pish/2026-fall/', '/guides/', '/guides/datasphere/budget/', '/notes/', '/notes/cross-entropy/', '/archive/', '/404.html', '/about/'];
 try {
   const { cdp, evaluate, waitFor, requests } = browser;
   const navigate = async (route) => {
@@ -34,6 +35,8 @@ try {
         assert.equal(state.theme, theme);
         assert.equal(state.design, 'research-brown');
         assert.ok(state.heading.trim());
+        const icon = await evaluate('document.querySelector("link[rel~=icon]")?.href');
+        assert.ok(icon && new URL(icon).pathname.startsWith(new URL(base).pathname + '/'), route + ': favicon outside site base');
         assert.ok(!state.overflow, route + ': horizontal overflow');
         assert.equal(state.iframes, 0);
         assert.ok(await evaluate('[...document.images].filter(i=>i.src.startsWith(location.origin)).every(i=>!i.complete||i.naturalWidth>0)'), route + ': broken local image');
@@ -95,5 +98,11 @@ try {
   const hidden = await evaluate('(async()=>{const pf=await import(' + JSON.stringify(base + '/pagefind/pagefind.js') + ');const all=await pf.search(null);return Promise.all(all.results.map(async r=>(await r.data()).url));})()');
   assert.ok(hidden.length > 0);
   assert.ok(!hidden.some(u => /\/guides\/(authoring-example|git)\/|\/courses\/ml\/|\/notes\/note-1\/|\/migration\/|\/design\//.test(u)));
+  for (const { from, to } of legacyRoutes) {
+    const result = await cdp('Page.navigate', { url: base + from });
+    assert.equal(result.errorText, undefined);
+    await waitFor('location.href === ' + JSON.stringify(base + to) + ' && document.readyState === "complete" && !!document.querySelector("h1")');
+  }
+  console.log('PASS: ' + legacyRoutes.length + ' static redirects followed by the browser.');
   console.log('PASS: ' + pages + ' desktop/mobile light/dark page checks; mobile menu; YouTube activation; 10 chapters and renamed note in search; 6 search result clicks; no private routes in search.');
 } finally { await browser.close(); }

@@ -18,7 +18,7 @@ after(async () => {
   assert.ok(relative.startsWith('authoring-output-test-') && !relative.includes(path.sep));
   await rm(fixture, { recursive: true, force: true });
 });
-for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
+for (const item of ['src', 'public', 'migration', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
   await cp(path.join(root, item), path.join(fixture, item), {
     recursive: true,
     // Author notes evolve independently; keep the publication fixture deterministic.

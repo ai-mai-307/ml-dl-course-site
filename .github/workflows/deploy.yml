@@ -1,21 +1,61 @@
-name: Deploy MkDocs to GitHub Pages
+name: Deploy Astro to GitHub Pages
+
 on:
+  pull_request:
+    branches: [main]
   push:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
+
 permissions:
-  contents: write
+  contents: read
+
 jobs:
   build:
+    name: Validate and build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # validate includes the production build and checks the resulting dist/.
+      - run: npm run validate
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
-      - run: pip install mkdocs-material mkdocs-jupyter mkdocs-table-reader-plugin
+          cache: pip
+      - run: pip install -r requirements.txt
       - run: mkdocs build --strict
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - run: npm run check:legacy-routes
+      # PRs never call Pages actions or upload a deployment artifact.
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          path: dist
+
+  deploy:
+    name: Deploy validated Astro artifact
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    # The same group is used by the manual legacy rollback deployment.
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v6
+        with:
+          enablement: false
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

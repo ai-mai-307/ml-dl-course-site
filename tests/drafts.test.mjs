@@ -45,7 +45,7 @@ test('Obsidian templates match real schemas and drafts stay out of production', 
     env: { ...process.env, ASTRO_TELEMETRY_DISABLED: '1', NO_COLOR: '1', FORCE_COLOR: '0' },
   });
   try {
-    for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
+    for (const item of ['src', 'public', 'migration', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
     // This fixture intentionally omits draft to test the publication default.

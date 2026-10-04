@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { legacyRedirects } from './src/utils/legacy-routes.mjs';
 import starlight from '@astrojs/starlight';
 import { satteri } from '@astrojs/markdown-satteri';
 import { obsidianCallouts } from './src/plugins/obsidian-callouts.ts';
@@ -14,6 +15,7 @@ export default defineConfig({
   base: siteBase,
   output: 'static',
   trailingSlash: 'always',
+  redirects: legacyRedirects(siteBase),
   image: { service: { entrypoint: './src/utils/image-service.ts' } },
   markdown: {
     processor: satteri({

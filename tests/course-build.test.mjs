@@ -18,7 +18,7 @@ test('actual Astro builds validate course pages, module numbering, references, a
   const fixture = await mkdtemp(path.join(toolsDir, 'course-build-test-'));
   try {
     // An isolated copy; no edits to the author's manifest, content store, or production dist.
-    for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
+    for (const item of ['src', 'public', 'migration', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
     // Keep schema/route tests independent of the author's real courses.

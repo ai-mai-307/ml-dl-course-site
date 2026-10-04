@@ -130,3 +130,15 @@ Scaffold подготовлен на основе официального ша�
 [`create astro --template starlight`](https://starlight.astro.build/getting-started/).
 Коллекция `docs` использует публичные `docsLoader` и `docsSchema`
 ([официальная конфигурация](https://starlight.astro.build/manual-setup/)).
+
+## Дизайн-концепции (Task 5A)
+
+Три обратимые темы: Editorial, Technical и Research. В `src/styles/design.css`
+измените одну строку `@import './themes/editorial.css';`, заменив имя на
+`technical.css` или `research.css`. Импорт `shared.css` сохраняется.
+Dev-сервер применит изменение автоматически; light/dark переключается штатно в Starlight.
+Для проверки реальных draft-глав используйте `npm run dev`, а не production preview.
+
+Описание токенов, шрифтов, проверок и локальные URL — в
+[отчёте Task 5A](design/task-5a-report.md). Начальный preview — Editorial;
+окончательный выбор ещё не сделан, все три концепции сохранены.

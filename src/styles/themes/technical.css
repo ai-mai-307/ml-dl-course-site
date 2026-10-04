@@ -1,0 +1,64 @@
+@import './fonts/source-sans-3.css';
+@import './fonts/jetbrains-mono.css';
+
+:root {
+
+  --design-name: technical;
+  --design-prose-font: 'Source Sans 3', sans-serif;
+  --design-ui-font: 'Source Sans 3', sans-serif;
+  --design-code-font: 'JetBrains Mono', monospace;
+  --design-caption-font: var(--design-ui-font);
+  --design-content-width: 48rem;
+  --design-prose-size: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
+  --design-prose-leading: 1.6;
+  --design-h1: clamp(1.875rem, 1.6rem + 1vw, 2.375rem);
+  --design-h2: clamp(1.375rem, 1.25rem + 0.4vw, 1.625rem);
+  --design-h3: 1.25rem;
+  --design-paragraph-gap: 0.9rem;
+  --design-section-gap: 2.25rem;
+  --design-section-rule-width: 0px;
+  --design-section-rule-space: 0rem;
+  --design-table-padding: 0.5rem 0.75rem;
+  --design-table-edge: 0.75rem;
+  --design-callout-border: 1px;
+  --design-callout-edge: 3px;
+  --design-callout-radius: 0.25rem;
+  --design-callout-padding: 0.8rem 1rem;
+  --design-callout-tint: 6%;
+  --sl-color-white: #edf3f6;
+  --sl-color-gray-1: #e0e9ee;
+  --sl-color-gray-2: #cbd8e0;
+  --sl-color-gray-3: #9caeba;
+  --sl-color-gray-4: #6d8494;
+  --sl-color-gray-5: #344655;
+  --sl-color-gray-6: #202d38;
+  --sl-color-black: #141f29;
+  --sl-color-accent-low: #163942;
+  --sl-color-accent: #70c3d5;
+  --sl-color-accent-high: #9dd9e5;
+  --design-nav-bg: #172530;
+  --design-sidebar-bg: #1b2b38;
+  --design-inline-code-bg: #2b3e4e;
+  --design-rule: #354856;
+  --design-table-head-bg: #243644;
+}
+
+:root[data-theme='light'] {
+  --sl-color-white: #1d2d39;
+  --sl-color-gray-1: #243747;
+  --sl-color-gray-2: #2e414e;
+  --sl-color-gray-3: #506573;
+  --sl-color-gray-4: #7f919e;
+  --sl-color-gray-5: #becdd6;
+  --sl-color-gray-6: #e5edf2;
+  --sl-color-black: #f8fafb;
+  --sl-color-accent-low: #d8edf1;
+  --sl-color-accent: #006b80;
+  --sl-color-accent-high: #075369;
+  --design-nav-bg: #f0f5f8;
+  --design-sidebar-bg: #eaf1f5;
+  --design-inline-code-bg: #e2edf3;
+  --design-rule: #cad8e1;
+  --design-table-head-bg: #e9f1f6;
+  --sl-color-gray-7: #edf2f6;
+}

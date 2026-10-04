@@ -1,0 +1,65 @@
+@import './fonts/source-serif-4.css';
+@import './fonts/source-sans-3.css';
+@import './fonts/jetbrains-mono.css';
+
+:root {
+
+  --design-name: editorial;
+  --design-prose-font: 'Source Serif 4', Georgia, serif;
+  --design-ui-font: 'Source Sans 3', sans-serif;
+  --design-code-font: 'JetBrains Mono', monospace;
+  --design-caption-font: var(--design-ui-font);
+  --design-content-width: 46rem;
+  --design-prose-size: clamp(1.125rem, 1.02rem + 0.35vw, 1.25rem);
+  --design-prose-leading: 1.72;
+  --design-h1: clamp(2rem, 1.7rem + 1.2vw, 2.75rem);
+  --design-h2: clamp(1.5rem, 1.3rem + 0.5vw, 1.875rem);
+  --design-h3: 1.375rem;
+  --design-paragraph-gap: 1.2rem;
+  --design-section-gap: 3.25rem;
+  --design-section-rule-width: 0px;
+  --design-section-rule-space: 0rem;
+  --design-table-padding: 0.65rem 0.9rem;
+  --design-table-edge: 0rem;
+  --design-callout-border: 0px;
+  --design-callout-edge: 2px;
+  --design-callout-radius: 0rem;
+  --design-callout-padding: 1rem 1.25rem;
+  --design-callout-tint: 4%;
+  --sl-color-white: #f0eee8;
+  --sl-color-gray-1: #e6e4de;
+  --sl-color-gray-2: #d6d6d2;
+  --sl-color-gray-3: #a6abb3;
+  --sl-color-gray-4: #737a87;
+  --sl-color-gray-5: #3b414b;
+  --sl-color-gray-6: #242830;
+  --sl-color-black: #1b1e24;
+  --sl-color-accent-low: #17283d;
+  --sl-color-accent: #9fb9ed;
+  --sl-color-accent-high: #b8cef6;
+  --design-nav-bg: #1b1e24;
+  --design-sidebar-bg: #1e2229;
+  --design-inline-code-bg: #272d37;
+  --design-rule: #393f49;
+  --design-table-head-bg: transparent;
+}
+
+:root[data-theme='light'] {
+  --sl-color-white: #222832;
+  --sl-color-gray-1: #30353d;
+  --sl-color-gray-2: #303740;
+  --sl-color-gray-3: #626974;
+  --sl-color-gray-4: #8a919c;
+  --sl-color-gray-5: #c8ccd2;
+  --sl-color-gray-6: #eaeef3;
+  --sl-color-black: #faf8f3;
+  --sl-color-accent-low: #e3eaf6;
+  --sl-color-accent: #345187;
+  --sl-color-accent-high: #2e4775;
+  --design-nav-bg: #faf8f3;
+  --design-sidebar-bg: #f6f4ef;
+  --design-inline-code-bg: #edf0f4;
+  --design-rule: #deded8;
+  --design-table-head-bg: transparent;
+  --sl-color-gray-7: #f0f2f5;
+}

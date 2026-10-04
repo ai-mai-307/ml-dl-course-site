@@ -1,0 +1,123 @@
+/* Visual layer only. Authoring transforms and primitives remain in content.css. */
+:root {
+  --sl-font: var(--design-ui-font);
+  --sl-font-mono: var(--design-code-font);
+  --sl-content-width: var(--design-content-width);
+  --sl-text-code: 0.875rem;
+  --sl-text-code-sm: 0.8125rem;
+  --sl-line-height: 1.6;
+  --sl-line-height-headings: 1.2;
+  --sl-text-h1: var(--design-h1);
+  --sl-text-h2: var(--design-h2);
+  --sl-text-h3: var(--design-h3);
+  --sl-text-h4: 1.25rem;
+  --sl-content-gap-y: var(--design-paragraph-gap);
+  --sl-color-text: var(--sl-color-gray-2);
+  --sl-color-text-accent: var(--sl-color-accent-high);
+  --sl-color-bg: var(--sl-color-black);
+  --sl-color-bg-nav: var(--design-nav-bg);
+  --sl-color-bg-sidebar: var(--design-sidebar-bg);
+  --sl-color-bg-inline-code: var(--design-inline-code-bg);
+  --sl-color-hairline: var(--design-rule);
+  --sl-color-hairline-light: var(--design-rule);
+  --sl-color-hairline-shade: var(--design-rule);
+}
+:root[data-theme='light'] {
+  --sl-color-text-accent: var(--sl-color-accent);
+}
+.sl-markdown-content {
+  font-family: var(--design-prose-font);
+  font-size: var(--design-prose-size);
+  line-height: var(--design-prose-leading);
+}
+h1,
+.sl-markdown-content :is(h2, h3, h4, h5, h6):not(:where(.not-content *)) {
+  font-family: var(--design-ui-font);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.sl-markdown-content > :is(h2, h3),
+.sl-markdown-content .sl-heading-wrapper:is(.level-h2, .level-h3) {
+  margin-block-start: var(--design-section-gap);
+}
+.sl-markdown-content > .sl-heading-wrapper:first-child { margin-block-start: 0; }
+/* Native anchor headings are inline; separators belong to their block wrapper. */
+.sl-markdown-content > h2,
+.sl-markdown-content .sl-heading-wrapper.level-h2 {
+  padding-block-end: var(--design-section-rule-space);
+  border-block-end: var(--design-section-rule-width) solid var(--design-rule);
+}
+.sl-markdown-content :is(strong, b):not(:where(.not-content *)) { font-weight: 600; }
+.sl-markdown-content a:not(:where(.not-content *)) {
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.18em;
+}
+.sl-markdown-content code:not(:where(.not-content *)) {
+  border-radius: 0.2rem;
+}
+.sl-markdown-content table:not(:where(.not-content *)) {
+  font-family: var(--design-ui-font);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: 100%;
+}
+.sl-markdown-content th:not(:where(.not-content *)) {
+  background: var(--design-table-head-bg);
+}
+.sl-markdown-content :is(th, td):not(:where(.not-content *)) {
+  padding: var(--design-table-padding);
+  border-color: var(--design-rule);
+}
+.sl-markdown-content :is(th:first-child, td:first-child):not(:where(.not-content *)) {
+  padding-inline-start: var(--design-table-edge);
+}
+.sl-markdown-content :is(th:last-child, td:last-child):not(:where(.not-content *)) {
+  padding-inline-end: var(--design-table-edge);
+}
+.sl-markdown-content .obsidian-callout {
+  border-width: var(--design-callout-border);
+  border-inline-start-width: var(--design-callout-edge);
+  border-radius: var(--design-callout-radius);
+  padding: var(--design-callout-padding);
+  background: color-mix(in srgb, var(--callout-color) var(--design-callout-tint), var(--sl-color-bg));
+}
+.sl-markdown-content .obsidian-callout__title {
+  font-family: var(--design-ui-font);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.sl-markdown-content :is(figcaption, caption):not(:where(.not-content *)) {
+  font-family: var(--design-caption-font);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--sl-color-gray-3);
+  text-align: start;
+}
+/* Normal images: intrinsic size, centered, always bounded by the article. */
+.sl-markdown-content img:not(:where(.not-content *)) {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+/* Reserved for future figure components; ordinary Markdown needs no markup.
+   Small caps width; wide uses the whole column but never upscales an image. */
+.sl-markdown-content :is(img, figure).figure-small { max-width: min(100%, 22rem); margin-inline: auto; }
+.sl-markdown-content :is(img, figure).figure-wide { max-width: 100%; margin-inline: auto; }
+.sl-markdown-content figure img { max-width: 100%; height: auto; }
+/* Preserve visible keyboard focus for links, controls and native disclosures. */
+:focus-visible { outline: 2px solid var(--sl-color-text-accent); outline-offset: 3px; }
+
+/* Long inline formulas must not widen a narrow article at reading sizes.
+   Keep KaTeX HTML/MathML intact and make only the visual box scrollable. */
+@media (max-width: 50rem) {
+  .sl-markdown-content :not(.katex-display) > .katex {
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    vertical-align: middle;
+    padding-block: 0.15em;
+  }
+}

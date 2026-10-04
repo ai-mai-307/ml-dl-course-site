@@ -36,7 +36,7 @@ export default defineConfig({
     starlight({
       title: 'Машинное и глубокое обучение',
       routeMiddleware: './src/utils/textbook-sidebar.ts',
-      customCss: ['katex/dist/katex.min.css', './src/styles/content.css'],
+      customCss: ['katex/dist/katex.min.css', './src/styles/content.css', './src/styles/design.css'],
       // The default 404 canonical uses /404/ even though static output is 404.html.
       disable404Route: true,
       locales: {

@@ -173,8 +173,22 @@ Course visibility does not cascade to its separate documents.
 The Obsidian vault is `src/content/`; `_templates/` contains plain Markdown
 frontmatter templates with `draft: true`. This directory is outside the roots
 of the collection loaders. Personal `.obsidian/` settings are not versioned.
-Notes have minimal list/detail routes for authoring and publication checks;
-no sample note, RSS feed, or tag archive is introduced by this authoring work.
+Notes have public list/detail routes with publication/update dates, description
+and tags, plus an empty state until the author publishes material. No sample note,
+RSS feed, or tag archive is introduced. About is an Obsidian-editable reference
+document in docs/about/index.md. Home and the public sidebar expose five domains:
+textbook, courses, guides, notes and about; the authoring example is dev-only.
+
+## Fall 2026 course shells
+
+Three public manifests use `status: active`, `draft: false`, and `modules: []`:
+`deep-learning`, `ai-design`, and `intro-ml-dl-pish`, all in `2026-fall`.
+Each references five public organizational documents via `pages`: overview,
+assessment, schedule, exam, and resources. Unfilled pages warn that information
+changes during the semester. The exam identifier is displayed neutrally as
+«Аттестация»; it does not assert an exam format. Modules will be added when known.
+The starter demo and its exclusive course pages are removed from author content;
+reference/numbering tests seed the demo solely from `tests/fixtures/`.
 
 ## Versioning policy
 

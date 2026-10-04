@@ -55,7 +55,7 @@ const headings = [
 
   <section class="curriculum" aria-labelledby="curriculum">
     <AnchorHeading level={2} id="curriculum">Учебная программа</AnchorHeading>
-    {course.modules.length === 0 && <p>Модули пока не опубликованы.</p>}
+    {course.modules.length === 0 && <p>Модули пока не опубликованы. Материалы программы будут добавляться по ходу семестра.</p>}
     {course.modules.map((module) => (
       <section class="course-module" aria-labelledby={`module-${module.position}`}>
         <AnchorHeading level={3} id={`module-${module.position}`}>

@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { note: Pick<CollectionEntry<'notes'>['data'], 'publishedAt' | 'updatedAt' | 'tags'> }
+const { note } = Astro.props;
+const formatter = new Intl.DateTimeFormat('ru', { dateStyle: 'long', timeZone: 'UTC' });
+const isoDate = (date: Date) => date.toISOString().slice(0, 10);
+---
+
+<p class="note-dates">
+  <span>Опубликовано <time datetime={isoDate(note.publishedAt)}>{formatter.format(note.publishedAt)}</time></span>
+  {note.updatedAt && <span>Обновлено <time datetime={isoDate(note.updatedAt)}>{formatter.format(note.updatedAt)}</time></span>}
+</p>
+{note.tags.length > 0 && <ul class="note-tags" aria-label="Теги">
+  {note.tags.map((tag) => <li>{tag}</li>)}
+</ul>}
+
+<style>
+  p.note-dates { display: flex; flex-wrap: wrap; gap: 0.35rem 1.5rem; font-family: var(--sl-font); font-size: var(--sl-text-sm); }
+  ul.note-tags { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; padding: 0; list-style: none; font-family: var(--sl-font); font-size: var(--sl-text-sm); }
+  .note-tags > li { margin: 0; overflow-wrap: anywhere; }
+</style>

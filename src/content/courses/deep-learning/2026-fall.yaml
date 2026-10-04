@@ -1,0 +1,23 @@
+courseId: deep-learning
+termId: 2026-fall
+title: Глубокое машинное обучение
+audience: Магистры групп 226СВ и 238СВ
+description: >-
+  Материалы курса обновляются по ходу осеннего семестра 2026 года.
+status: active
+draft: false
+language: ru
+
+pages:
+  - role: overview
+    doc: courses/deep-learning/2026-fall/overview
+  - role: assessment
+    doc: courses/deep-learning/2026-fall/assessment
+  - role: schedule
+    doc: courses/deep-learning/2026-fall/schedule
+  - role: exam
+    doc: courses/deep-learning/2026-fall/exam
+  - role: resources
+    doc: courses/deep-learning/2026-fall/resources
+
+modules: []

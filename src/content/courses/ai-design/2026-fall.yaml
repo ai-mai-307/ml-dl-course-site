@@ -1,0 +1,23 @@
+courseId: ai-design
+termId: 2026-fall
+title: Технологии ИИ в конструировании
+audience: Магистры группы 111СВ
+description: >-
+  Материалы курса обновляются по ходу осеннего семестра 2026 года.
+status: active
+draft: false
+language: ru
+
+pages:
+  - role: overview
+    doc: courses/ai-design/2026-fall/overview
+  - role: assessment
+    doc: courses/ai-design/2026-fall/assessment
+  - role: schedule
+    doc: courses/ai-design/2026-fall/schedule
+  - role: exam
+    doc: courses/ai-design/2026-fall/exam
+  - role: resources
+    doc: courses/ai-design/2026-fall/resources
+
+modules: []

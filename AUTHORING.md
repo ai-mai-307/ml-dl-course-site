@@ -183,7 +183,7 @@ To create a page:
    name and `{{date:YYYY-MM-DD}}` with today's date.
 3. Edit `title` (especially for a file named `index.md`) and `description`, then
    write the body below the frontmatter. All templates start with `draft: true`.
-4. For assignments and exams, fill the initially empty `courseId` and `termId`
+4. For assignments, exams, and organizational course pages, fill the initially empty `courseId` and `termId`
    with the deliberately chosen course identifiers. Templates do not assign
    a semester to historical material. For notes, review `publishedAt` and `tags`.
 
@@ -192,7 +192,8 @@ To create a page:
 | `textbook` | `docs/textbook/<topic>/index.md` | `contentKind: textbook` |
 | `guide` | `docs/guides/<topic>/index.md` | `contentKind: guide` |
 | `assignment` | `docs/courses/<courseId>/<termId>/assignments/<slug>.md` | `contentKind: assignment` |
-| `exam` | `docs/courses/<courseId>/<termId>/exam.md` | `contentKind: exam` |
+| `exam` | `docs/courses/<courseId>/<termId>/exam.md` | `contentKind: exam` for an explicitly confirmed exam |
+| `course-page` | `docs/courses/<courseId>/<termId>/<slug>.md` | `contentKind: reference` for organizational pages |
 | `note` | `notes/YYYY-MM-DD-<slug>.md` | Separate `notes` collection |
 
 The `_templates/` files contain frontmatter only and sit outside all collection
@@ -345,10 +346,22 @@ Do not load a browser Python runtime on every page by default.
 ## Course manifests
 
 Create one YAML manifest at `src/content/courses/<courseId>/<termId>.yaml`.
-The path must match its `courseId` and `termId`. The starter's
-[ml/2026-fall.yaml](src/content/courses/ml/2026-fall.yaml) is a demonstration
-using draft textbook chapters, organizational placeholders, and a preprocessing module; its term does not identify
-any migrated historical material.
+The path must match its `courseId` and `termId`. The published Fall 2026 shells are
+`deep-learning`, `ai-design`, and `intro-ml-dl-pish`. Their `status: active` and
+`draft: false` publish the course pages; `modules: []` is valid while the program
+is added during the semester. Empty modules display an explanatory message.
+No detailed sequence is assigned in advance. The former starter demo now exists
+only as isolated test fixtures, outside the content collections.
+
+For organizational documents, insert the `course-page` template from
+`_templates/course-page.md` into `docs/courses/<courseId>/<termId>/<slug>.md`.
+Fill `title`, `description`, `courseId`, and `termId`; it uses
+`contentKind: reference` and starts with `draft: true`. Review and publish the
+document before adding its collection ID to a public manifest's `pages`.
+The current shells have public `overview.md`, `assessment.md`, `schedule.md`,
+`exam.md`, and `resources.md`, each with an «Информация обновляется» warning.
+The `exam` role/file name is a stable identifier; its display label is neutral
+«Аттестация» and does not determine the actual assessment format.
 
 A course page at `/courses/<courseId>/<termId>/` is generated from the manifest.
 It contains a route through materials, not copies of their text. List modules
@@ -371,12 +384,13 @@ not accepted in `pages`. Items keep their YAML order and appear under «О ку�
 
 Use `type: doc` for an internal module resource. A module can reference several
 independent textbook pages; repeat `role: theory` as many times as necessary.
-There is no one-to-one relationship between modules and chapters:
+There is no one-to-one relationship between modules and chapters. The following
+is a syntax example, not a proposed program for the Fall 2026 courses:
 
 ```yaml
 pages:
   - role: assessment
-    doc: courses/ml/2026-fall/assessment
+    doc: courses/deep-learning/2026-fall/assessment
 
 modules:
   - title: Основы и линейные модели
@@ -405,9 +419,9 @@ Resource roles are `theory`, `assignment`, `guide`, `notebook`, `slides`,
 headings under «Учебная программа»; resources within each group retain their YAML order.
 
 Course statuses `draft`, `active`, `completed`, and `archived` are displayed
-as labels independently of the publication flag `draft`. The demonstration
-course has both `status: draft` and `draft: true` while the first migration slice
-is under review, so it is available only in development.
+as labels independently of the publication flag `draft`. The three real Fall 2026
+courses use `status: active` and `draft: false`; `draft: true` is reserved for
+materials still being authored.
 A module with `published: false` is hidden; omitted `published` means
 `true`. References in `pages` and **all** modules are validated before filtering.
 For public courses, missing documents fail `astro build` with the manifest ID,
@@ -467,15 +481,34 @@ output to verify default publication, draft exclusion, and rejection of public
 course references and explicit sidebar slugs pointing to drafts.
 Run `npm run validate` before committing:
 it runs the tests, checks types/content, builds the site, checks internal links,
-and verifies the generated demonstration HTML, highlighted code, images, and fonts.
+and verifies published course shells, warnings and links, plus isolated authoring
+examples, highlighted code, images, and fonts.
 `npm run check:authoring` runs the generated-output tests alone after a build.
+
+## About and Notes (Task 8)
+
+Edit «Обо мне» in `docs/about/index.md` inside the Obsidian vault. It is a
+public `contentKind: reference` page; its update warning remains until the author
+provides real information. No biography is generated.
+
+Notes stay in `notes/` and use the existing `note` template. The public index
+shows the title, `publishedAt`, description, tags and optional `updatedAt`, sorted
+by publication date (newest first). Dates are displayed in Russian using UTC so
+local time zones do not shift their calendar day. Tags are metadata, not links
+to unimplemented tag archives. The individual page displays the same metadata.
+The index shows an empty state when there are no published notes. Drafts remain
+visible in development and are excluded from production lists, pages and search.
+
+The Markdown authoring example remains a development/reference page. Its
+sidebar entry is enabled only in development; it is absent from production.
 
 ## Published textbook (Task 6A)
 
 All ten real ML/DL baseline chapters now use `draft: false` and are available in
 production through the textbook overview, sidebar and search. Their teaching
-content is unchanged. The Git and course placeholders and authoring example are
-`draft: true` and remain available in development; authoring-output tests build
+content is unchanged. The Git placeholder and authoring example are
+`draft: true` and remain available in development; the demo course placeholders
+were removed in Task 7. Authoring-output tests build
 the example in an isolated copy. Previous migration sections below describe the
 historical draft/review stages. See [the Task 6A report](migration/task-6a-report.md).
 

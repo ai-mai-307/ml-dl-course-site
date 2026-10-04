@@ -23,6 +23,14 @@ for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'packa
 }
 const examplePath = path.join(fixture, 'src/content/docs/guides/authoring-example/index.md');
 await writeFile(examplePath, (await readFile(examplePath, 'utf8')).replace('draft: true', 'draft: false'));
+// Notes samples exist only in this disposable project, never in author content.
+for (const [id, source] of Object.entries({
+  'public-newer': '---\ntitle: Note metadata fixture\ndescription: Publication metadata and tags.\npublishedAt: 2026-03-10\nupdatedAt: 2026-04-12\ntags: [нейросети, "ML & практика"]\ndraft: false\n---\n\nFixture body.\n',
+  'public-older': '---\ntitle: Older note fixture\ndescription: Minimal published note.\npublishedAt: 2026-02-01\n---\n\nFixture body.\n',
+  'private': '---\ntitle: PRIVATE_NOTE_METADATA_SENTINEL\ndescription: PRIVATE_NOTE_METADATA_SENTINEL\npublishedAt: 2099-01-01\ntags: [PRIVATE_NOTE_METADATA_SENTINEL]\ndraft: true\n---\n',
+})) {
+  await writeFile(path.join(fixture, 'src/content/notes', id + '.md'), source, 'utf8');
+}
 const packageUrl = new URL(import.meta.resolve('astro/package.json'));
 const packageJson = JSON.parse(await readFile(packageUrl, 'utf8'));
 const cli = fileURLToPath(new URL(packageJson.bin.astro, packageUrl));
@@ -85,4 +93,29 @@ test('page-local image and KaTeX styles/fonts are emitted as local build assets'
   const fonts = [...css.matchAll(/url\(["']?([^"')]+\.woff2)["']?\)/g)].map((match) => match[1]);
   assert.ok(fonts.length > 0);
   for (const font of fonts) assert.ok((await stat(assetUrl(font))).isFile());
+});
+
+test('Notes index/detail render dates, descriptions and tags without publishing fixture drafts', async () => {
+  const index = parse(await readFile(new URL('notes/index.html', output), 'utf8'));
+  const articles = elements(index, 'article');
+  assert.equal(articles.length, 2);
+  const links = articles.map((article) => elements(article, 'a')[0]);
+  assert.deepEqual(links.map((link) => attr(link, 'href')), [base + 'notes/public-newer/', base + 'notes/public-older/']);
+  assert.equal(text(links[0]), 'Note metadata fixture');
+  assert.ok(text(articles[0]).includes('Publication metadata and tags.'));
+  assert.deepEqual(elements(articles[0], 'time').map((n) => attr(n, 'datetime')), ['2026-03-10', '2026-04-12']);
+  assert.match(text(articles[0]), /Опубликовано.*10 марта 2026/s);
+  assert.match(text(articles[0]), /Обновлено.*12 апреля 2026/s);
+  const tags = elements(articles[0], 'ul').find((n) => attr(n, 'aria-label') === 'Теги');
+  assert.deepEqual(elements(tags, 'li').map(text), ['нейросети', 'ML & практика']);
+  assert.equal(elements(articles[1], 'time').length, 1);
+  assert.doesNotMatch(text(articles[1]), /Обновлено/);
+  assert.ok(!elements(articles[1], 'ul').some((n) => attr(n, 'aria-label') === 'Теги'));
+  assert.doesNotMatch(text(index), /PRIVATE_NOTE_METADATA_SENTINEL|Заметок пока нет/);
+  await assert.rejects(stat(new URL('notes/private/index.html', output)), { code: 'ENOENT' });
+  const detail = parse(await readFile(new URL('notes/public-newer/index.html', output), 'utf8'));
+  assert.deepEqual(elements(detail, 'time').map((n) => attr(n, 'datetime')), ['2026-03-10', '2026-04-12']);
+  assert.ok(text(detail).includes('ML & практика'));
+  const pagination = elements(detail, 'div').find((n) => attr(n, 'class')?.split(' ').includes('pagination-links'));
+  assert.ok(!pagination || elements(pagination, 'a').length === 0);
 });

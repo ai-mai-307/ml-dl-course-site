@@ -17,7 +17,7 @@ export const roleLabels: Record<Resource['role'], string> = {
 };
 
 export const pageRoleLabels: Record<CoursePage['role'], string> = {
-  overview: 'Обзор курса', assessment: 'Оценивание', exam: 'Экзамен',
+  overview: 'Обзор курса', assessment: 'Оценивание', exam: 'Аттестация',
   schedule: 'Расписание', policy: 'Правила курса', resources: 'Общие ресурсы', other: 'Другое',
 };
 

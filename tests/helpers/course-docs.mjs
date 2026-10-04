@@ -1,4 +1,4 @@
-import { cp, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,13 +11,11 @@ export async function seedCourseDocs(fixture) {
     await cp(path.join(root, 'tests/fixtures/docs', slug + '.md'),
       path.join(fixture, 'src/content/docs/textbook/ml', slug, 'index.md'));
   }
-  // Publish only the course's demo references inside the isolated fixture.
-  for (const relative of [
-    'guides/git/index.md',
-    ...['overview.md', 'assessment.md', 'exam.md', 'assignments/hw-03.md']
-      .map((file) => 'courses/ml/2026-fall/' + file),
-  ]) {
-    const filename = path.join(fixture, 'src/content/docs', relative);
-    await writeFile(filename, (await readFile(filename, 'utf8')).replace('draft: true', 'draft: false'));
-  }
+  // Demo documents are test fixtures, never part of the author's content.
+  const target = path.join(fixture, 'src/content/docs/courses/ml/2026-fall');
+  await mkdir(target, { recursive: true });
+  await cp(path.join(root, 'tests/fixtures/course-docs'), target, { recursive: true });
+  await mkdir(path.join(fixture, 'src/content/courses/ml'), { recursive: true });
+  const guide = path.join(fixture, 'src/content/docs/guides/git/index.md');
+  await writeFile(guide, (await readFile(guide, 'utf8')).replace('draft: true', 'draft: false'));
 }

@@ -60,6 +60,7 @@ export default defineConfig({
           ] },
         ] },
         { label: 'Заметки', link: '/notes/' },
+        { label: 'Обо мне', slug: 'about' },
         ...(process.env.NODE_ENV === 'development'
           ? [{ label: 'Пример оформления', slug: 'guides/authoring-example' }]
           : []),

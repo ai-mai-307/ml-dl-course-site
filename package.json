@@ -14,7 +14,7 @@
     "check:content": "astro sync",
     "check:links": "node --experimental-strip-types scripts/check-links.mjs",
     "test": "node --experimental-strip-types --test tests/authoring.test.mjs tests/courses.test.mjs tests/course-build.test.mjs tests/drafts.test.mjs tests/migration.test.mjs tests/baseline-migration.test.mjs tests/guides-migration.test.mjs",
-    "check:authoring": "node --experimental-strip-types --test tests/built-authoring.test.mjs tests/built-migration.test.mjs tests/built-guides.test.mjs",
+    "check:authoring": "node --experimental-strip-types --test tests/built-authoring.test.mjs tests/built-migration.test.mjs tests/built-guides.test.mjs tests/built-course-shells.test.mjs tests/built-site.test.mjs",
     "validate": "npm test && npm run check && npm run build && npm run check:links && npm run check:authoring",
     "astro": "astro"
   },

@@ -192,9 +192,10 @@ $$
 
 ## Многослойный персептрон
 
-**(def)** **Линейный слой (linear dense, linear layer)** – линейное преобразование над входящими данными, где матрица W и вектор b – обучаемые параметры: $x \mapsto Wx + b, \space (x \in \mathbb{R}^{d \times 1}, W^{k \times d}, b \in \mathbb{R}^{k \times 1})$
-
-**(def)** **Многослойный персептрон (multilayer perceptron, MLP)** – нейросеть, в которой есть больше двух линейных слоев и различные функции активации.
+> [!NOTE] Определение
+> **Линейный слой (linear dense, linear layer)** – линейное преобразование над входящими данными, где матрица W и вектор b – обучаемые параметры: $x \mapsto Wx + b, \space (x \in \mathbb{R}^{d \times 1}, W^{k \times d}, b \in \mathbb{R}^{k \times 1})$
+> 
+> **Многослойный персептрон (multilayer perceptron, MLP)** – нейросеть, в которой есть больше двух линейных слоев и различные функции активации.
 
 ![1770888406367](./assets/1770888406367.png)
 
@@ -315,7 +316,6 @@ $$
    $$
    \frac{\partial C}{\partial b^{\,l}} = \delta^{\,l}
    $$
-
 ### Алгоритм по шагам
 
 1. **Прямой проход**: для входа $x$ вычисляем все $z^l$ и $a^l$ вплоть до выхода.
@@ -459,5 +459,3 @@ $$
 3. 3blue1brown (Grant Sanderson): Neural Networks ([Video](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi), [Texts](https://www.3blue1brown.com/#lessons))
 4. Michael Nielsen: [Networks and Deep Learning](http://neuralnetworksanddeeplearning.com/index.html)
 5. [Яндекс ШАД](https://education.yandex.ru/handbook/ml): параграфы 5.2, 5.3, 5.4
-
-[^1]: 

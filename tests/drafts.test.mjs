@@ -1,4 +1,5 @@
 import { seedCourseDocs } from './helpers/course-docs.mjs';
+import { fallCourses, organizationalRoles, updatingWarning } from './fixtures/course-shells.mjs';
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
@@ -48,9 +49,9 @@ test('Obsidian templates match real schemas and drafts stay out of production', 
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
     // This fixture intentionally omits draft to test the publication default.
-    await cp(path.join(root, 'tests/fixtures/course.yaml'), path.join(fixture, 'src/content/courses/ml/2026-fall.yaml'));
     await seedCourseDocs(fixture);
-    const kinds = ['textbook', 'guide', 'assignment', 'exam', 'note'];
+    await cp(path.join(root, 'tests/fixtures/course.yaml'), path.join(fixture, 'src/content/courses/ml/2026-fall.yaml'));
+    const kinds = ['textbook', 'guide', 'assignment', 'exam', 'course-page', 'note'];
     const expanded = new Map();
     for (const kind of kinds) {
       const template = (await readFile(path.join(root, `src/content/_templates/${kind}.md`), 'utf8')).replaceAll('\r\n', '\n');
@@ -112,13 +113,13 @@ export async function GET() {
       const entry = collections[collection].find((entry) => entry.id === id);
       assert.equal(entry.data.draft, true);
       assert.equal(entry.data.title, `PRIVATE_TEMPLATE_${kind}: "quotes" and 'apostrophe'`);
-      if (kind !== 'note') assert.equal(entry.data.contentKind, kind);
+      if (kind !== 'note') assert.equal(entry.data.contentKind, kind === 'course-page' ? 'reference' : kind);
       else {
         assert.equal(entry.data.publishedAt, '2030-01-02T00:00:00.000Z');
         assert.equal(entry.data.description, '');
         assert.deepEqual(entry.data.tags, []);
       }
-      if (kind === 'assignment' || kind === 'exam') {
+      if (kind === 'assignment' || kind === 'exam' || kind === 'course-page') {
         assert.equal(entry.data.courseId, '');
         assert.equal(entry.data.termId, '');
       }
@@ -130,6 +131,32 @@ export async function GET() {
     assert.equal(collections.notes.find((entry) => entry.id === 'public-default').data.draft, false);
     assert.equal(collections.courses.find((entry) => entry.id === 'ml/2026-fall').data.draft, false);
     assert.ok(!Object.values(collections).flat().some((entry) => entry.id.includes('_templates')));
+    // The real course shells must work in development using their parsed schemas/references.
+    for (const course of fallCourses) {
+      const id = course.id + '/2026-fall';
+      const entry = collections.courses.find((entry) => entry.id === id);
+      assert.equal(entry.data.title, course.title);
+      assert.equal(entry.data.audience, course.audience);
+      assert.equal(entry.data.status, 'active');
+      assert.equal(entry.data.draft, false);
+      assert.deepEqual(entry.data.modules, []);
+      assert.deepEqual(entry.data.pages.map((p) => p.role), organizationalRoles);
+      const landing = await fetch(base + 'courses/' + id + '/');
+      assert.equal(landing.status, 200, output);
+      assert.ok((await landing.text()).includes('Модули пока не опубликованы'));
+      for (const page of entry.data.pages) {
+        assert.equal(page.doc.collection, 'docs');
+        assert.equal(page.doc.id, 'courses/' + id + '/' + page.role);
+        const doc = collections.docs.find((entry) => entry.id === page.doc.id);
+        assert.equal(doc.data.draft, false);
+        assert.equal(doc.data.contentKind, 'reference');
+        assert.equal(doc.data.courseId, course.id);
+        assert.equal(doc.data.termId, '2026-fall');
+        const response = await fetch(base + page.doc.id + '/');
+        assert.equal(response.status, 200, output);
+        assert.ok((await response.text()).includes(updatingWarning));
+      }
+    }
     for (const route of ['notes/', 'courses/', 'courses/fixture/2099-fall/', 'guides/']) {
       const page = await fetch(`${base}${route}`);
       assert.equal(page.status, 200, output);
@@ -143,7 +170,7 @@ export async function GET() {
     for (const route of ['notes/public-default', 'notes/public-explicit', 'authoring-fixtures/public', 'courses/ml/2026-fall']) {
       assert.ok((await stat(path.join(fixture, 'dist', route, 'index.html'))).isFile());
     }
-    for (const route of ['notes/authoring-draft', 'courses/fixture/2099-fall', ...kinds.slice(0, 4).map((kind) => `authoring-fixtures/${kind}`)]) {
+    for (const route of ['notes/authoring-draft', 'courses/fixture/2099-fall', ...kinds.filter((kind) => kind !== 'note').map((kind) => `authoring-fixtures/${kind}`)]) {
       await assert.rejects(stat(path.join(fixture, 'dist', route, 'index.html')), { code: 'ENOENT' });
     }
     async function checkOutput(directory) {

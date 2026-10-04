@@ -1,4 +1,4 @@
-# Demonstration from the starter specification, not a historical course migration.
+# Demonstration from the starter specification, isolated migration test fixture.
 courseId: ml
 termId: 2026-fall
 title: Классическое машинное обучение — демонстрационный курс
@@ -7,7 +7,7 @@ description: >
   Демонстрационный маршрут из спецификации: страницы-заглушки и первый
   срез предобработки данных на проверке. Это не историческое проведение курса.
 status: draft
-draft: true
+draft: false
 language: ru
 
 pages:

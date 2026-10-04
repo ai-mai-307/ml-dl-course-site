@@ -1,7 +1,7 @@
 import { seedCourseDocs } from './helpers/course-docs.mjs';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { cp, mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, readdir, rm, stat } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -95,11 +95,8 @@ test('merged review copy renders Python highlighting and the demo course referen
       await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
     }
     await seedCourseDocs(fixture);
-    for (const file of ['src/content/courses/ml/2026-fall.yaml']) {
-      const draft = await read(file);
-      assert.match(draft, /\ndraft: true\n/);
-      await writeFile(path.join(fixture, file), draft.replace('\ndraft: true\n', '\ndraft: false\n'));
-    }
+    await cp(path.join(root, 'tests/fixtures/course-preprocessing.yaml'),
+      path.join(fixture, 'src/content/courses/ml/2026-fall.yaml'));
     const packageUrl = new URL(import.meta.resolve('astro/package.json'));
     const packageJson = JSON.parse(await readFile(packageUrl, 'utf8'));
     const cli = fileURLToPath(new URL(packageJson.bin.astro, packageUrl));

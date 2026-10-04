@@ -2,19 +2,49 @@
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 
 const base = import.meta.env.BASE_URL;
+const sections = [
+  { path: 'textbook', title: 'Учебник', description: 'Теория машинного и глубокого обучения, организованная по темам.' },
+  { path: 'courses', title: 'Курсы', description: 'Материалы занятий и организационная информация для студентов.' },
+  { path: 'guides', title: 'Инструкции', description: 'Практические инструкции. Архивные материалы отмечены предупреждениями.' },
+  { path: 'notes', title: 'Заметки', description: 'Авторские статьи и короткие заметки.' },
+  { path: 'about', title: 'Обо мне', description: 'Об авторе сайта, преподавании и других проектах.' },
+];
 ---
 
 <StarlightPage
   frontmatter={{
     title: 'Машинное и глубокое обучение',
-    description: 'Учебник, курсы и практические инструкции по ML и DL.',
+    description: 'Учебник, материалы курсов, практические инструкции и авторские заметки.',
     template: 'splash',
   }}
 >
-  <p>Новая версия сайта готовится к открытию.</p>
-  <ul>
-    <li><a href={`${base}textbook/`}>Учебник</a> — теория машинного и глубокого обучения.</li>
-    <li><a href={`${base}courses/`}>Курсы</a> — программы, задания и материалы занятий.</li>
-    <li><a href={`${base}guides/`}>Инструкции</a> — помощь в практической работе.</li>
-  </ul>
+  <p class="home-intro">Учебник, материалы курсов, практические инструкции и авторские заметки.</p>
+  <nav aria-label="Разделы сайта">
+    <ul class="home-sections">
+      {sections.map((section) => (
+        <li>
+          <h2><a href={`${base}${section.path}/`}>{section.title}</a></h2>
+          <p>{section.description}</p>
+        </li>
+      ))}
+    </ul>
+  </nav>
 </StarlightPage>
+
+<style>
+  .home-intro { max-width: 38rem; }
+  ul.home-sections {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 3rem;
+    margin-block-start: 2.5rem;
+  }
+  .home-sections > li { margin: 0; border-top: 1px solid var(--sl-color-hairline); padding-block-start: 1rem; }
+  .home-sections h2 { margin: 0; font-size: var(--sl-text-h3); }
+  .home-sections p { margin-block-start: 0.65rem; }
+  @media (max-width: 40rem) {
+    ul.home-sections { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+</style>

@@ -19,13 +19,17 @@ after(async () => {
   await rm(fixture, { recursive: true, force: true });
 });
 for (const item of ['src', 'public', 'astro.config.mjs', 'tsconfig.json', 'package.json']) {
-  await cp(path.join(root, item), path.join(fixture, item), { recursive: true });
+  await cp(path.join(root, item), path.join(fixture, item), {
+    recursive: true,
+    // Author notes evolve independently; keep the publication fixture deterministic.
+    filter: (source) => !source.startsWith(path.join(root, 'src/content/notes') + path.sep),
+  });
 }
 const examplePath = path.join(fixture, 'src/content/docs/guides/authoring-example/index.md');
 await writeFile(examplePath, (await readFile(examplePath, 'utf8')).replace('draft: true', 'draft: false'));
 // Notes samples exist only in this disposable project, never in author content.
 for (const [id, source] of Object.entries({
-  'public-newer': '---\ntitle: Note metadata fixture\ndescription: Publication metadata and tags.\npublishedAt: 2026-03-10\nupdatedAt: 2026-04-12\ntags: [нейросети, "ML & практика"]\ndraft: false\n---\n\nFixture body.\n',
+  'public-newer': '---\ntitle: Note metadata fixture\ndescription: Publication metadata and tags.\npublishedAt: 2026-03-10\nupdatedAt: 2026-04-12\ntags: [нейросети, "ML & практика"]\ndraft: false\n---\n\nFixture body.\n\n> [!YOUTUBE] Notes embed fixture\n> https://youtu.be/M7lc1UVf-VE\n',
   'public-older': '---\ntitle: Older note fixture\ndescription: Minimal published note.\npublishedAt: 2026-02-01\n---\n\nFixture body.\n',
   'private': '---\ntitle: PRIVATE_NOTE_METADATA_SENTINEL\ndescription: PRIVATE_NOTE_METADATA_SENTINEL\npublishedAt: 2099-01-01\ntags: [PRIVATE_NOTE_METADATA_SENTINEL]\ndraft: true\n---\n',
 })) {
@@ -118,4 +122,20 @@ test('Notes index/detail render dates, descriptions and tags without publishing 
   assert.ok(text(detail).includes('ML & практика'));
   const pagination = elements(detail, 'div').find((n) => attr(n, 'class')?.split(' ').includes('pagination-links'));
   assert.ok(!pagination || elements(pagination, 'a').length === 0);
+});
+
+test('YouTube preview is static HTML in both Markdown docs and Notes; pages without embeds request no module', async () => {
+  for (const document of [page, parse(await readFile(new URL('notes/public-newer/index.html', output), 'utf8'))]) {
+    assert.equal(elements(document, 'youtube-preview').length, 1);
+    assert.equal(elements(document, 'iframe').length, 0);
+    const poster = elements(document, 'button').find((n) => attr(n, 'class')?.includes('youtube-preview__poster'));
+    assert.ok(poster && attr(poster, 'aria-label'));
+    assert.equal(attr(poster, 'disabled'), '');
+    assert.equal(elements(document, 'script').filter((n) => attr(n, 'src') === base + 'scripts/youtube-preview.js').length, 1);
+    assert.ok(elements(document, 'a').some((n) => attr(n, 'href')?.includes('M7lc1UVf-VE')));
+  }
+  const home = parse(await readFile(new URL('index.html', output), 'utf8'));
+  assert.ok(!elements(home, 'script').some((n) => attr(n, 'src')?.includes('youtube-preview')));
+  assert.deepEqual(await readFile(new URL('scripts/youtube-preview.js', output)),
+    await readFile(path.join(root, 'public/scripts/youtube-preview.js')));
 });

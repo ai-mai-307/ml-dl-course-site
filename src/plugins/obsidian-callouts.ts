@@ -25,7 +25,7 @@ const kinds: Record<string, [string, string]> = {
 };
 
 // Split the title from the body without flattening links, emphasis, or math.
-function splitHeader(children: InlineNode[], markerLength: number) {
+export function splitHeader(children: InlineNode[], markerLength: number) {
   const title: InlineNode[] = [];
   const body: InlineNode[] = [];
   let inBody = false;

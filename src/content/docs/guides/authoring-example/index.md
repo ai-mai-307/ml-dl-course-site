@@ -61,3 +61,8 @@ print(f"Среднее: {mean:.1f}")
 | Изображение | `![Описание](./assets/authoring-flow.svg)` |
 
 [^example]: Сноски остаются частью того же Markdown-файла.
+
+## YouTube
+
+> [!YOUTUBE] Пример встроенного видео
+> https://www.youtube.com/watch?v=M7lc1UVf-VE

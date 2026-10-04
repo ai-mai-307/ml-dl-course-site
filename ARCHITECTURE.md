@@ -190,6 +190,18 @@ changes during the semester. The exam identifier is displayed neutrally as
 The starter demo and its exclusive course pages are removed from author content;
 reference/numbering tests seed the demo solely from `tests/fixtures/`.
 
+## Markdown YouTube previews
+
+A dedicated Satteri mdast plugin recognizes `[!YOUTUBE]` before generic
+Obsidian callouts. It emits a static custom element, lazy thumbnail, native
+button, caption/source link and conditional module URL. The small runtime in
+`public/scripts/youtube-preview.js` upgrades all previews on that page; pages
+without valid embeds request no additional JS. No framework hydration or iframe
+API is added. The iframe is created only on native button activation, uses
+youtube-nocookie.com and keeps the original-video link outside the replaceable
+frame. URL host/ID validation and escaped caption text prevent arbitrary embeds.
+CSS uses existing design tokens; the Markdown/Notes collections remain `.md`.
+
 ## Versioning policy
 
 ### Textbook

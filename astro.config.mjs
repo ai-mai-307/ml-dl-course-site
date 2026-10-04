@@ -3,12 +3,15 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { satteri } from '@astrojs/markdown-satteri';
 import { obsidianCallouts } from './src/plugins/obsidian-callouts.ts';
+import { youtubePreviews } from './src/plugins/youtube.ts';
 import { math } from './src/plugins/math.ts';
 import { codeLanguage } from './src/plugins/code-language.ts';
 
+const siteBase = '/ml-dl-course-site';
+
 export default defineConfig({
   site: 'https://ai-mai-307.github.io',
-  base: '/ml-dl-course-site',
+  base: siteBase,
   output: 'static',
   trailingSlash: 'always',
   image: { service: { entrypoint: './src/utils/image-service.ts' } },
@@ -21,7 +24,7 @@ export default defineConfig({
         smartPunctuation: false,
         gfm: { footnotes: { label: 'Сноски', backLabel: 'Вернуться к ссылке {reference}' } },
       },
-      mdastPlugins: [obsidianCallouts, math],
+      mdastPlugins: [youtubePreviews(siteBase), obsidianCallouts, math],
       hastPlugins: [codeLanguage],
     }),
   },
@@ -34,7 +37,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: 'Машинное и глубокое обучение',
+      title: 'Введение в машинное и глубокое обучение',
       routeMiddleware: './src/utils/textbook-sidebar.ts',
       customCss: ['katex/dist/katex.min.css', './src/styles/content.css', './src/styles/design.css'],
       // The default 404 canonical uses /404/ even though static output is 404.html.

@@ -104,6 +104,45 @@ Ordinary blockquotes are unchanged. Write `> \[!NOTE]` to display the marker
 literally in a quotation, or place the whole example in a fenced code block.
 Obsidian-specific custom icons, colors, and CSS snippets are not imported.
 
+## YouTube previews
+
+Use an ordinary Obsidian callout in a Markdown document or note:
+
+```md
+> [!YOUTUBE]
+> https://www.youtube.com/watch?v=M7lc1UVf-VE
+```
+
+Supported links are HTTPS `youtube.com/watch?v=…` (including `www` and
+`m` hosts) and `youtu.be/…`. Copy the URL as-is; no manual ID extraction
+is needed. A standard Markdown link in the block also works, using its href.
+For an optional caption, write `> [!YOUTUBE] Название видео` or give a
+Markdown link a human-readable label. Captions are rendered as text.
+No title lookup, API key, oEmbed request or external metadata dependency is used.
+Without a caption, the label is «Видео на YouTube». Sharing query parameters
+remain on the original-video link; start-time/playlist parameters do not change
+the embedded player's starting position. Only one URL belongs in each block.
+Invalid URLs or blocks with additional prose remain ordinary callouts.
+
+The preview requests a lazy thumbnail and a local JavaScript module only on
+pages containing a valid embed. It loads no player iframe or YouTube iframe API
+before interaction. Click, Enter or Space on the native play button replaces
+the poster with a 16:9 privacy-enhanced player from youtube-nocookie.com.
+The normal «Смотреть на YouTube» link remains with or without JavaScript and
+when thumbnail/player requests fail. Remote/private/removed videos or videos
+with embedding disabled may require opening that link.
+
+The player uses strict-origin-when-cross-origin Referrer Policy, rather than
+no-referrer: YouTube requires a Referer for embeds. See
+[YouTube's embed instructions](https://support.google.com/youtube/answer/171780?hl=en).
+
+The development/reference example lives at
+http://localhost:4321/ml-dl-course-site/guides/authoring-example/ after `npm run dev`.
+It remains draft and absent from production. Browser activation tests run with
+Chrome detected locally or via `CHROME_PATH`; without Chrome the browser test
+explicitly skips, while source/output tests still run. They block external
+requests so keyboard/failure checks do not depend on YouTube availability.
+
 ## Avoid in ordinary `.md`
 
 - raw HTML for layout;

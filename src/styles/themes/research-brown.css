@@ -1,0 +1,102 @@
+/* Research Brown: identical Research geometry and fonts; role-based palette. */
+@import './fonts/ibm-plex-serif.css';
+@import './fonts/ibm-plex-sans.css';
+@import './fonts/ibm-plex-mono.css';
+
+:root {
+
+  --design-name: research-brown;
+  --design-prose-font: 'IBM Plex Serif', Georgia, serif;
+  --design-ui-font: 'IBM Plex Sans', sans-serif;
+  --design-code-font: 'IBM Plex Mono', monospace;
+  --design-caption-font: var(--design-code-font);
+  --design-content-width: 44rem;
+  --design-prose-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem);
+  --design-prose-leading: 1.75;
+  --design-h1: clamp(1.875rem, 1.6rem + 1vw, 2.5rem);
+  --design-h2: clamp(1.4rem, 1.25rem + 0.4vw, 1.75rem);
+  --design-h3: 1.3125rem;
+  --design-paragraph-gap: 1.1rem;
+  --design-section-gap: 3rem;
+  --design-section-rule-width: 1px;
+  --design-section-rule-space: 0.65rem;
+  --design-table-padding: 0.65rem 0.8rem;
+  --design-table-edge: 0.8rem;
+  --design-callout-border: 1px 0;
+  --design-callout-edge: 3px;
+  --design-callout-radius: 0rem;
+  --design-callout-padding: 1.1rem 1.25rem;
+  --design-callout-tint: 5%;
+  --sl-color-white: #fffdf9;
+  --sl-color-gray-1: #f1ece7;
+  --sl-color-gray-2: #e5ddd6;
+  --sl-color-gray-3: #bdb2aa;
+  --sl-color-gray-4: #96877e;
+  --sl-color-gray-5: #50443c;
+  --sl-color-gray-6: #2d2723;
+  --sl-color-black: #1e1b19;
+  --sl-color-accent-low: #443329;
+  --sl-color-accent: #a87962;
+  --sl-color-accent-high: #c29a83;
+  --design-nav-bg: #1e1b19;
+  --design-sidebar-bg: #26211e;
+  --design-inline-code-bg: #352c27;
+  --design-rule: #50443c;
+  --design-table-head-bg: #352c27;
+}
+
+:root[data-theme='light'] {
+  --sl-color-white: #201e1c;
+  --sl-color-gray-1: #252220;
+  --sl-color-gray-2: #252220;
+  --sl-color-gray-3: #7a6a62;
+  --sl-color-gray-4: #96877e;
+  --sl-color-gray-5: #b5a79d;
+  --sl-color-gray-6: #e7ded6;
+  --sl-color-black: #faf8f4;
+  --sl-color-accent-low: #efe8e1;
+  --sl-color-accent: #6b4b3e;
+  --sl-color-accent-high: #4a342c;
+  --design-nav-bg: #faf8f4;
+  --design-sidebar-bg: #f5f0ea;
+  --design-inline-code-bg: #efe8e1;
+  --design-rule: #cbc1ba;
+  --design-table-head-bg: #e7ded6;
+  --sl-color-gray-7: #f5f0ea;
+}
+
+/* Brown-only roles where Starlight shares one accent across different states. */
+:root {
+  --brown-brand: #c29a83;
+  --brown-link-hover: #e3c5b3;
+  --brown-selected-bg: #866554;
+  --brown-selected-text: #fffdf9;
+  --brown-hover-bg: #3b3029;
+}
+:root[data-theme='light'] {
+  --brown-brand: #4a342c;
+  --brown-link-hover: #4a342c;
+  --brown-selected-bg: #5a4035;
+  --brown-selected-text: #fffdf9;
+  --brown-hover-bg: #e7ded6;
+}
+
+.site-title { color: var(--brown-brand); }
+.site-title:hover,
+.sl-markdown-content a:hover:not(:where(.not-content *)) {
+  color: var(--brown-link-hover);
+}
+#starlight__sidebar a[aria-current='page'] {
+  background-color: var(--brown-selected-bg);
+  color: var(--brown-selected-text);
+}
+#starlight__sidebar a:not([aria-current='page']):is(:hover, :focus-visible),
+#starlight__sidebar summary:is(:hover, :focus-visible) {
+  background-color: var(--brown-hover-bg);
+  color: var(--brown-link-hover);
+}
+/* Only informational/default callouts use the brand accent.
+   Tip/success, caution/warning and danger keep their existing semantic hues. */
+.sl-markdown-content .obsidian-callout--note {
+  --callout-color: var(--sl-color-text-accent);
+}

@@ -131,14 +131,17 @@ Scaffold подготовлен на основе официального ша�
 Коллекция `docs` использует публичные `docsLoader` и `docsSchema`
 ([официальная конфигурация](https://starlight.astro.build/manual-setup/)).
 
-## Дизайн-концепции (Task 5A)
+## Дизайн-концепции (Task 5A и Task 5B.1)
 
-Три обратимые темы: Editorial, Technical и Research. В `src/styles/design.css`
-измените одну строку `@import './themes/editorial.css';`, заменив имя на
-`technical.css` или `research.css`. Импорт `shared.css` сохраняется.
-Dev-сервер применит изменение автоматически; light/dark переключается штатно в Starlight.
+Доступны четыре обратимые темы: Editorial, Technical, Research и Research Brown.
+Текущий preview использует Research Brown. Исходные три темы сохранены без изменений.
+В `src/styles/design.css` измените одну строку `@import './themes/research-brown.css';`,
+заменив имя на `editorial.css`, `technical.css` или `research.css`.
+Импорт `shared.css` сохраняется. Dev-сервер применит изменение автоматически;
+light/dark переключается штатно в Starlight.
 Для проверки реальных draft-глав используйте `npm run dev`, а не production preview.
+После смены темы для production preview нужна новая сборка.
 
-Описание токенов, шрифтов, проверок и локальные URL — в
-[отчёте Task 5A](design/task-5a-report.md). Начальный preview — Editorial;
-окончательный выбор ещё не сделан, все три концепции сохранены.
+Исходные концепции, токены и шрифты — в [отчёте Task 5A](design/task-5a-report.md).
+Коричневая палитра, контраст, результаты проверок и локальные URL — в
+[отчёте Task 5B.1](design/task-5b1-report.md).

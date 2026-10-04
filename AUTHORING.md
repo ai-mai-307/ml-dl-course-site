@@ -224,6 +224,29 @@ imageNameKey: linear-models
 
 This field can be used by attachment-renaming plugins and is accepted by the site schema.
 
+## Порядок глав в Obsidian
+
+Для vault `src/content/` установите community plugin
+[Custom File Explorer sorting](https://github.com/SebastianMC/obsidian-custom-sort):
+**Settings → Community plugins → Browse**, найдите плагин, нажмите **Install**, затем **Enable**.
+Нажмите кнопку плагина на боковой ribbon-панели, чтобы применить сортировку.
+
+Спецификация уже находится в [src/content/sortspec.md](src/content/sortspec.md).
+Плагин автоматически читает заметки с именем `sortspec.md`; назначать отдельную
+заметку в его настройках не требуется. Два `target-folder` заданы относительно
+корня vault: `docs/textbook/ml` и `docs/textbook/dl`. Папки глав отображаются
+в указанном педагогическом порядке. Новые, не перечисленные элементы идут после
+них; остальные папки используют обычную сортировку Obsidian.
+
+Для изменения порядка редактируйте многострочное поле `sorting-spec` в Source mode,
+сохраняя YAML-отступы, затем выключите и включите сортировку кнопкой плагина.
+Повторное нажатие отключает её и возвращает стандартный порядок.
+Правила меняют только отображение: имена папок, ссылки и `sidebar.order` сайта
+остаются прежними. Служебная заметка хранится в корне vault, вне всех коллекций
+Astro; не переносите её в `docs/`, `courses/` или `notes/`. Она не публикуется
+и не попадает в поиск сайта. Настройки и файлы установки плагина в `.obsidian/`
+остаются локальными и не коммитятся.
+
 ## Drafts, local preview, and publication
 
 `draft: true` keeps a material available in development while excluding it from

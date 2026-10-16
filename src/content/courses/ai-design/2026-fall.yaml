@@ -20,4 +20,54 @@ pages:
   - role: resources
     doc: courses/ai-design/2026-fall/resources
 
-modules: []
+modules:
+  - title: Знакомство с машинным обучением
+    description: >
+      Что такое машинное обучение и чем оно отличается от "обычного"
+      способа решения задач с помощью компьютера?.
+
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/ml/introduction
+        label: Краткий конспект
+
+      - type: link
+        role: slides
+        label: Презентация
+        href: https://docs.google.com/presentation/d/1pM0lCqdpLgl9RVIJ7xFkUCCwCWVnQPzX0SmCNH-ounw/edit?usp=sharing
+
+
+  - title: Введение в глубокое обучение
+    description: >
+      Искусственные нейронные сети, многослойный персептрон,
+      функции активации и основные принципы обучения.
+
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/dl/neural-network-foundations
+        label: Конспект без сокращений
+
+      - type: link
+        role: slides
+        label: Презентация
+        href: https://docs.google.com/presentation/d/1bDpBsqKj977OTG4ayziypEg6WID7aZQZb3w6_dkBbbc/edit?usp=sharing
+
+      - type: link
+        role: notebook
+        label: Демонстрационный блокнот
+        href: https://github.com/ai-mai-307/dl_course_2025/blob/main/lecture_01/01_pytorch_basics.ipynb
+
+
+  - title: Генеративные модели и большие языковые модели
+    resources: []
+
+  - title: Знакомство с AI-агентами
+    resources: []
+
+  - title: AI-агенты и для различных задач
+    resources: []
+
+  - title: Оценка качества и надёжности AI-систем
+    resources: []

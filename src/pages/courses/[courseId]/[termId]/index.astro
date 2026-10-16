@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import AnchorHeading from '@astrojs/starlight/components/AnchorHeading.astro';
-import { resolveCourse, pageRoleLabels, statusLabels, termLabel, type ResolvedCourse } from '../../../../utils/courses';
+import { resolveCourse, pageRoleLabels, statusLabels, termLabel, formatCourseDate, type ResolvedCourse } from '../../../../utils/courses';
 import { isVisible } from '../../../../utils/publishing';
 
 export const getStaticPaths = (async () => {
@@ -36,6 +36,7 @@ const headings = [
     <p>{course.description}</p>
     <dl class="course-meta">
       <div><dt>Статус</dt><dd>{statusLabels[course.status]}</dd></div>
+      {course.startDate && <div><dt>Начало обучения</dt><dd>{formatCourseDate(course.startDate)}</dd></div>}
       <div><dt>Семестр</dt><dd>{termLabel(course.termId)} <small>({course.termId})</small></dd></div>
     </dl>
     {course.audience && <p>{course.audience}</p>}

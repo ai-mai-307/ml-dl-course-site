@@ -33,7 +33,12 @@ for (const course of fallCourses) {
     const elements = nodes(page);
     assert.equal(text(elements.find((n) => n.tagName === 'h1')), course.title);
     assert.ok(text(page).includes(course.audience));
-    assert.match(text(page), /Идёт обучение/);
+    if (course.id === 'intro-ml-dl-pish') {
+      assert.match(text(page), /Скоро начнётся/);
+      assert.match(text(page), /5 ноября 2026 года/);
+    } else {
+      assert.match(text(page), /Идёт обучение/);
+    }
     assert.match(text(page), /Осень 2026/);
     assert.ok(!elements.some((n) => attr(n, 'class')?.includes('draft-banner')));
     const info = elements.find((n) => attr(n, 'aria-labelledby') === 'course-information');

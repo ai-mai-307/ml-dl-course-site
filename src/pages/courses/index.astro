@@ -1,7 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getCollection } from 'astro:content';
-import { courseUrl, statusLabels, termLabel } from '../../utils/courses';
+import { courseUrl, formatCourseDate, statusLabels, termLabel } from '../../utils/courses';
 import { isVisible } from '../../utils/publishing';
 
 const courses = (await getCollection('courses', (entry) => isVisible(entry, import.meta.env.DEV)))
@@ -22,6 +22,7 @@ const courses = (await getCollection('courses', (entry) => isVisible(entry, impo
         <a href={courseUrl(course, import.meta.env.BASE_URL)}>{course.data.title}</a>
         {course.data.draft && <small> — не опубликован</small>}
         <p>{termLabel(course.data.termId)} · {statusLabels[course.data.status]}</p>
+        {course.data.startDate && <p>Начало обучения: {formatCourseDate(course.data.startDate)}</p>}
         {course.data.audience && <p>{course.data.audience}</p>}
         <p>{course.data.description}</p>
       </li>

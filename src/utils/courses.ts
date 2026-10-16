@@ -7,7 +7,7 @@ type CoursePage = Course['data']['pages'][number];
 type DocReference = Extract<Resource, { type: 'doc' }>['doc'];
 
 export const statusLabels: Record<Course['data']['status'], string> = {
-  draft: 'Черновик', active: 'Идёт обучение', completed: 'Завершён', archived: 'Архив',
+  draft: 'Черновик', upcoming: 'Скоро начнётся', active: 'Идёт обучение', completed: 'Завершён', archived: 'Архив',
 };
 
 export const roleLabels: Record<Resource['role'], string> = {
@@ -85,6 +85,14 @@ export async function resolveCourse(
     };
   }));
   return { ...data, pages, modules: modules.filter((module) => module.published) };
+}
+
+export function formatCourseDate(date: Date) {
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear();
+  const month = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', timeZone: 'UTC' })
+    .formatToParts(date).find((part) => part.type === 'month')?.value ?? ''; 
+  return `${day} ${month} ${year} года`;
 }
 
 export type ResolvedCourse = Awaited<ReturnType<typeof resolveCourse>>;

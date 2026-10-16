@@ -80,7 +80,7 @@ const courses = defineCollection({
     shortTitle: z.string().optional(),
     description: z.string(),
 
-    status: z.enum(['draft', 'active', 'completed', 'archived']),
+    status: z.enum(['draft', 'upcoming', 'active', 'completed', 'archived']),
     // Publication visibility is independent of the course's lifecycle status.
     draft: z.boolean().default(false),
     language: z.string().default('ru'),

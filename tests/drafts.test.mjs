@@ -137,7 +137,7 @@ export async function GET() {
       const entry = collections.courses.find((entry) => entry.id === id);
       assert.equal(entry.data.title, course.title);
       assert.equal(entry.data.audience, course.audience);
-      assert.equal(entry.data.status, 'active');
+      assert.equal(entry.data.status, course.id === 'intro-ml-dl-pish' ? 'upcoming' : 'active');
       assert.equal(entry.data.draft, false);
       assert.deepEqual(entry.data.pages.map((p) => p.role), organizationalRoles);
       const landing = await fetch(base + 'courses/' + id + '/');

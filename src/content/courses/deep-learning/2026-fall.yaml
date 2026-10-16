@@ -64,3 +64,8 @@ modules:
         role: slides
         label: Презентация
         href: https://docs.google.com/presentation/d/1vouMrIzvqie9A86E5Akr6FFW7GycT5D0y6856Yo3zx4/edit?usp=sharing
+
+      - type: doc
+        role: assignment
+        doc: courses/deep-learning/2026-fall/assignments/hw-02
+        label: Домашнее задание №2

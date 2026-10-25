@@ -301,7 +301,8 @@ $$
 $$  
 \sigma'(x)=\sigma(x)(1-\sigma(x)).  
 $$
-![Производная функции Sigmoid][assets/Pasted%20image%2020261020020147.png]Причём:
+![](assets/Pasted%20image%2020261025203016.png)
+Причём:
 $$  
 0<\sigma'(x)\leq\frac14.  
 $$

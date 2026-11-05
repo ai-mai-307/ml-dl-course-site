@@ -69,3 +69,41 @@ modules:
         role: assignment
         doc: courses/deep-learning/2026-fall/assignments/hw-02
         label: Домашнее задание №2
+
+  - title: Обработка аудио c помощью нейронных сетей
+    description: >-
+      Представление аудиосигналов, спектрограммы и Mel-признаки.
+      Классификация акустических событий с помощью
+      сверточных нейронных сетей.
+
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/dl/audio
+        label: Конспект
+
+      - type: link
+        role: slides
+        label: Презентация
+        href: https://docs.google.com/presentation/d/1B4nhSaJw7dnG94u0X6b4bVXs6skKS1--d-DhMvVb0uE/edit?usp=sharing
+
+      - type: doc
+        role: assignment
+        doc: courses/deep-learning/2026-fall/assignments/hw-03
+        label: Домашнее задание №3
+
+  - title: Обработка текста с помощью нейронных сетей
+    description: >-
+          Представление текстов в виде векторов-эмбеддингов.
+          Рекуррентные нейронные сети. Модели seq2seq. Механизм внимания и трансформер.
+
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/dl/sequences-and-text
+        label: Конспект
+
+      - type: link
+        role: slides
+        label: Презентация
+        href: https://docs.google.com/presentation/d/199q-F6Vf8yyFI87gdO3PFYT9r5s8TrcAGVXnR9R_OLM/edit?usp=sharing

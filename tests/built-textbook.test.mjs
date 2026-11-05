@@ -66,12 +66,19 @@ test('textbook math and code render without freezing editable content to old sna
     assert.ok(!elements.some((n) => attr(n, 'class')?.includes('katex-error')), chapter.id);
     formulaCount += elements.filter((n) => n.tagName === 'math').length;
     const source = (await readFile(path.join(root, 'src/content/docs', chapter.id, 'index.md'), 'utf8')).replaceAll('\r\n', '\n');
-    const fences = [...source.matchAll(/^(\x60{3,}|~{3,})([^\n]*)\n([\s\S]*?)^\1[ \t]*$/gm)];
+    // Parse Markdown containers too: callout code carries blockquote prefixes
+    // that must not become part of the expected code text.
+    const sourceElements = nodes(parse((await markdownToHtml(source)).html));
+    const fences = sourceElements.filter((n) => n.tagName === 'pre').map((pre) => {
+      const code = nodes(pre).find((n) => n.tagName === 'code');
+      const language = attr(code, 'class')?.split(/\s+/).find((c) => c.startsWith('language-'))?.slice('language-'.length) ?? '';
+      return { language, code: text(code).trimEnd() };
+    });
     const blocks = elements.filter((n) => n.tagName === 'pre');
     assert.equal(blocks.length, fences.length, chapter.id);
     for (const [i, block] of blocks.entries()) {
-      const language = fences[i][2].trim();
-      const expected = fences[i][3].trimEnd();
+      const language = fences[i].language;
+      const expected = fences[i].code;
       const actual = nodes(block).filter((n) => attr(n, 'class') === 'ec-line').map((n) => text(n).replace(/\n$/, '')).join('\n').trimEnd();
       assert.equal(actual, expected, chapter.id);
       if (language) assert.equal(attr(block, 'data-language'), language);
@@ -81,7 +88,7 @@ test('textbook math and code render without freezing editable content to old sna
       }
     }
     const copy = elements.filter((n) => n.tagName === 'button' && attr(n, 'data-code') !== undefined);
-    assert.deepEqual(copy.map((n) => attr(n, 'data-code').replaceAll(String.fromCharCode(127), '\n').trimEnd()), fences.map((f) => f[3].trimEnd()));
+    assert.deepEqual(copy.map((n) => attr(n, 'data-code').replaceAll(String.fromCharCode(127), '\n').trimEnd()), fences.map((f) => f.code));
   }
   assert.ok(formulaCount > 0, 'textbook must contain accessible MathML');
 });

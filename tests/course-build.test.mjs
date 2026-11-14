@@ -66,6 +66,10 @@ test('actual Astro builds validate course pages, module numbering, references, a
     // Also prove the real loader respects custom slugs, not just source filenames.
     const docPath = path.join(fixture, 'src/content/docs/textbook/ml/linear-models/index.md');
     await writeFile(docPath, (await readFile(docPath, 'utf8')).replace('contentKind: textbook', 'contentKind: textbook\nslug: textbook/renamed-example'), 'utf8');
+    // Published courses can share this canonical chapter; keep their references
+    // valid while the isolated fixture exercises a custom slug.
+    const pishPath = path.join(fixture, 'src/content/courses/intro-ml-dl-pish/2026-fall.yaml');
+    await writeFile(pishPath, (await readFile(pishPath, 'utf8')).replaceAll('doc: textbook/ml/linear-models', 'doc: textbook/renamed-example'), 'utf8');
     const manifestPath = path.join(fixture, 'src/content/courses/ml/2026-fall.yaml');
     const manifest = (await readFile(manifestPath, 'utf8')).replaceAll('\r\n', '\n').replaceAll('doc: textbook/ml/linear-models', 'doc: textbook/renamed-example');
     // Exercise a display-only label and every remaining organizational role in the real schema.

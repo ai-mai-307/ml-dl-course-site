@@ -56,6 +56,7 @@ export default defineConfig({
         { label: 'Курсы', link: '/courses/' },
         { label: 'Инструкции', items: [
           { label: 'Обзор инструкций', slug: 'guides' },
+          { label: 'Jupyter: Colab и VS Code', slug: 'guides/jupyter-python' },
           { label: 'GitHub Classroom — архив', slug: 'guides/github-classroom' },
           { label: 'DataSphere — требует обновления', items: [
             { slug: 'guides/datasphere/clone-repository' },

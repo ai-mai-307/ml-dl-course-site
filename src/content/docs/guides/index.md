@@ -1,11 +1,15 @@
 ---
 title: Инструкции
-description: Архивные справочные инструкции по GitHub Classroom и Yandex DataSphere.
+description: Jupyter в Google Colab и VS Code; архивные инструкции по GitHub Classroom и Yandex DataSphere.
 contentKind: reference
 ---
 
+## Jupyter Notebook
+
+- [Jupyter: Colab и VS Code](./jupyter-python/) — актуальная инструкция по запуску учебных Python-ноутбуков.
+
 > [!WARNING] Архивные справочные материалы
-> Эти инструкции перенесены из предыдущей версии курса. На осенний семестр 2026 года GitHub Classroom не используется в текущих курсах, а инструкции по DataSphere требуют обновления. Они не описывают действующий порядок выполнения и сдачи заданий.
+> Инструкции по GitHub Classroom и DataSphere перенесены из предыдущей версии курса. На осенний семестр 2026 года GitHub Classroom не используется в текущих курсах, а инструкции по DataSphere требуют обновления. Они не описывают действующий порядок выполнения и сдачи заданий.
 
 ## GitHub Classroom
 

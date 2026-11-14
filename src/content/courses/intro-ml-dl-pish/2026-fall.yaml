@@ -21,4 +21,47 @@ pages:
   - role: resources
     doc: courses/intro-ml-dl-pish/2026-fall/resources
 
-modules: []
+modules:
+  - title: Знакомство с машинным обучением
+    label: Лекция №1
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/ml/introduction
+        label: Конспект
+
+  - title: Классическое машинное обучение
+    label: Лекция №2
+    resources:
+      - type: doc
+        role: theory
+        doc: textbook/ml/preprocessing
+        label: Конспект 1 · Предобработка данных
+      - type: doc
+        role: theory
+        doc: textbook/ml/linear-models
+        label: Конспект 2 · Линейные модели и метрики
+      - type: doc
+        role: theory
+        doc: textbook/ml/trees-and-ensembles
+        label: Конспект 3 · Деревья и ансамбли
+      - type: link
+        role: slides
+        label: Презентация
+        href: https://docs.google.com/presentation/d/1vp6y8y97sO9mbNCYBNlIr6Y_Mtm3Rg6dFZF5HfqTqyc/edit?usp=sharing
+      - type: doc
+        role: assignment
+        doc: courses/intro-ml-dl-pish/2026-fall/assignments/hw-01
+        label: Домашнее задание №1
+      - type: link
+        role: notebook
+        label: Блокнот-заготовка ДЗ №1
+        href: https://ai-mai-307.github.io/ml-dl-course-site/downloads/intro-ml-dl-pish/2026-fall/hw01/hw01_starter.ipynb
+      - type: link
+        role: other
+        label: Датасет CSV для ДЗ №1
+        href: https://ai-mai-307.github.io/ml-dl-course-site/downloads/intro-ml-dl-pish/2026-fall/hw01/diamonds_hw01.csv
+      - type: doc
+        role: guide
+        doc: guides/jupyter-python
+        label: Jupyter · Colab и VS Code
